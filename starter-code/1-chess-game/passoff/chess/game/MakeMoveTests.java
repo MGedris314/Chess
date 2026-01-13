@@ -22,6 +22,9 @@ public class MakeMoveTests {
 
     @Test
     @DisplayName("Make Valid King Move")
+//     Kings are allowed to move to any square surounding it, as long as it doesn't put it in check.
+//     Castle requires that the king hasn't moved, and the castling rook hasn't moved either.  The king moves two left or right and the rook moves to the opposite
+//     side.  You cannot castle through a check, meaning that the king cannot pass through a square that would put it in check even if it moves through it.
     public void makeValidKingMove() throws InvalidMoveException {
         game.setBoard(TestUtilities.loadBoard("""
                 | | | | | | | | |
@@ -53,6 +56,7 @@ public class MakeMoveTests {
 
     @Test
     @DisplayName("Make Valid Queen Move")
+//     Queens can move in any direction any number of spaces.
     public void makeValidQueenMove() throws InvalidMoveException {
         game.setBoard(TestUtilities.loadBoard("""
                 | | | | | | | | |
@@ -84,6 +88,7 @@ public class MakeMoveTests {
 
     @Test
     @DisplayName("Make Valid Rook Move")
+//     Rooks can move left/right and up/down any number of spaces, along with castling (see kings section)
     public void makeValidRookMove() throws InvalidMoveException {
         game.setBoard(TestUtilities.loadBoard("""
                 | | | | |k| | | |
@@ -115,6 +120,8 @@ public class MakeMoveTests {
 
     @Test
     @DisplayName("Make Valid Knight Move")
+//     Knights move three spaces that have to be in a combination of up and down, minimum of one space in either direction.  Permutations of those moves are:
+//     (U1 L2), (U1 R2), (U2 L1), (U2 R1), (D1 L2), (D1 R2), (D2 L1), (D2 R1), (U1 L2), (U1 R2), (U2 L1), (U2 R1) 
     public void makeValidKnightMove() throws InvalidMoveException {
         game.setBoard(TestUtilities.loadBoard("""
                 | | | | |k| | | |
@@ -146,6 +153,7 @@ public class MakeMoveTests {
 
     @Test
     @DisplayName("Make Valid Bishop Move")
+//     Bishops can move in any diagonal direction any number of spaces
     public void makeValidBishopMove() throws InvalidMoveException {
         game.setBoard(TestUtilities.loadBoard("""
                 | | | | |k| | | |
@@ -177,6 +185,9 @@ public class MakeMoveTests {
 
     @Test
     @DisplayName("Make Valid Pawn Move")
+//     Pawns can only move forward one space unless they are on home row which they can move two spots forward.
+//     Pawns capture diagonaly forward one space and the enpassant.  En passant occurs when a pawn moves out of the range of capturing.  The capturing pawn still
+//     captures the pawn that moved, but the movement is the same as if it captured normally.
     public void makeValidPawnMove() throws InvalidMoveException {
         game.setBoard(TestUtilities.loadBoard("""
                 | |k| | | | | | |
