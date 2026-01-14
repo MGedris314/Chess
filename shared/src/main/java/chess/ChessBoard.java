@@ -6,7 +6,9 @@ package chess;
  * Note: You can add to this class, but you may not alter
  * signature of the existing methods.
  */
+// 2D array used for creation.
 public class ChessBoard {
+    ChessPiece[][] squares = new ChessPiece [8][8];
 
     public ChessBoard() {
         
@@ -19,7 +21,8 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        throw new RuntimeException("Not implemented");
+        // Board is one based java is zero based.  Arithmatic should fix it
+        squares [position.getRow()-1][position.getColumn()-1] = piece;
     }
 
     /**
@@ -30,7 +33,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        throw new RuntimeException("Not implemented");
+        return squares [position.getRow()-1][position.getColumn()-1];
     }
 
     /**
