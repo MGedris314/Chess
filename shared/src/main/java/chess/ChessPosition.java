@@ -1,4 +1,5 @@
 package chess;
+// Complete
 
 /**
  * Represents a single square position on a chess board

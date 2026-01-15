@@ -17,6 +17,7 @@ public class ChessPiece {
         this.pieceColor = pieceColor;
         this.type = type;
     }
+    
 
     /**
      * The various different chess piece options
@@ -42,6 +43,75 @@ public class ChessPiece {
      */
     public PieceType getPieceType() {
         return type;
+    }
+
+    public static void piece_movement(String piece, ChessPosition myPosition){
+        // I want this to take the piece and use an if statement to see where the piece can move.  From there I want it to return the possible options of that
+        // that pieces movement.
+        // possible_moves = []
+        /*
+        if (piece == "pawn"){
+            if (myPosition == 2){ //the piece is on home row and can move two
+                possible_moves.append(myPosition.row+1, myPosition.col)
+                possible_moves.append(myPosition.row+2, myPosition.col)
+                return possible_moves
+            } 
+            else{
+            possible_moves.append(myPosition.row+1)
+            retrun possible_moves
+            }
+        }
+
+        if (piece == "rook"){ // can move any number of spaces up, down, left or right
+            start_row = myPosition.row
+            start_col = myPosition.col
+            if (start_row == 1){
+                for x in range 7{
+                   possible_moves.append(myPosition.row+x, myPosiiton.col)
+                }
+                
+            }
+            else{
+                while start_row != 1{
+                    possible_moves.append(myPosition.row-1, myPosiiton.col);
+                    start_row -=1;
+                }
+                start_row = myPosition.row
+                while start_row != 8{
+                    possible_moves.append(myPosition.row+1, myPosiiton.col)
+                    start_row+=1
+                }    
+            }
+            if (start_col == 1){
+                for x in range 7{
+                   possible_moves.append(myPosition.row, myPosiiton.col+x)
+                }
+            }
+            else{
+                while start_col != 1{
+                    possible_moves.append(myPosition.row, myPosiiton.col-1);
+                    start_col -=1;
+                }
+                start_col = myPosition.col
+                while start_col != 8{
+                    possible_moves.append(myPosition.row, myPosiiton.col+1)
+                    start_col+=1
+                }    
+            }
+
+        }
+
+
+
+
+
+
+
+
+        */
+                
+            
+        
     }
 
     /**
