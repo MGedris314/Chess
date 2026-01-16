@@ -48,12 +48,11 @@ public class ChessPiece {
 
     public Collection<ChessMove> move_king(ChessPosition myPosition){
         ArrayList<ChessMove> moves =  new ArrayList<ChessMove>();
-//      What we'll need to do for each of these is create an array of objects of type chess moves.  Those appear as follow:
+//      What we'll need to do for each of these is creates an array of objects of type chess moves.  Those appear as follows:
 //      public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece)
 //      With the exception of pawns set promotion piece to null.
 //      Keep myPosition as the start position we only need to edit the end position.  Do that by using the position and then .get row/column
 
-//      Default, one space in all directions.
         if (myPosition.getRow() == 1){
 //            Left edge
             if (myPosition.getColumn() == 1){
@@ -75,7 +74,8 @@ public class ChessPiece {
                 moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+1),null));
             }
 
-        } else if (myPosition.getRow() == 8){
+        }
+        else if (myPosition.getRow() == 8){
 //            Right edge
             if (myPosition.getColumn() == 1){
 //              Top left corner
@@ -97,15 +97,35 @@ public class ChessPiece {
             }
 
         }
-        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-1),null));
-        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()),null));
-        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()+1),null));
-        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
-        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
-        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()-1),null));
-        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()),null));
-        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+1),null));
+        else if (myPosition.getColumn() == 1){
+//          Bottom Row
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-1),null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()),null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()+1),null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
 
+        }
+        else if (myPosition.getColumn() == 8){
+//          Top Row
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()-1),null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()),null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+1),null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
+
+        }
+        else {
+//      Default, one space in all directions.
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1), null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()), null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1), null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn() - 1), null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn() + 1), null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1), null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()), null));
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 1), null));
+        }
         return moves;
     }
 
@@ -122,7 +142,7 @@ public class ChessPiece {
             } 
             else{
             possible_moves.append(myPosition.row+1)
-            retrun possible_moves
+            return possible_moves
             }
         }
 
@@ -202,7 +222,7 @@ public class ChessPiece {
         }
         if (piece.getPieceType() == PieceType.KING){
             System.out.println(myPosition);
-            return List.of();
+            return move_king(myPosition);
         }
         return List.of();
     }
