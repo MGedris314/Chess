@@ -45,7 +45,7 @@ public class ChessPiece {
         return type;
     }
 
-    public static void piece_movement(String piece, ChessPosition myPosition){
+    public Collection<ChessMove> piece_movement(String piece, ChessPosition myPosition){
         // I want this to take the piece and use an if statement to see where the piece can move.  From there I want it to return the possible options of that
         // that pieces movement.
         // possible_moves = []
@@ -100,17 +100,9 @@ public class ChessPiece {
             }
 
         }
-
-
-
-
-
-
-
-
         */
                 
-            
+            return null;
         
     }
 
