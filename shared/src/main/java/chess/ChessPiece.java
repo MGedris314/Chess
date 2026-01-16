@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,6 +44,21 @@ public class ChessPiece {
      */
     public PieceType getPieceType() {
         return type;
+    }
+
+    public Collection<ChessMove> move_king(ChessPosition myPosition){
+        ArrayList<String> moves =  new ArrayList<String>();
+//      Add moves for one space in all directions.
+        moves.add("");
+        moves.add("");
+        moves.add("");
+        moves.add("");
+        moves.add("");
+        moves.add("");
+        moves.add("");
+        moves.add("");
+
+        return null;
     }
 
     public Collection<ChessMove> piece_movement(String piece, ChessPosition myPosition){
@@ -117,6 +133,27 @@ public class ChessPiece {
         // Returns all known locations that a piece can end up given a piece and a starting position.
         ChessPiece piece = board.getPiece(myPosition);
         if (piece.getPieceType() == PieceType.BISHOP){
+            System.out.println(myPosition);
+            return List.of();
+        }
+        if (piece.getPieceType() == PieceType.KNIGHT){
+            System.out.println(myPosition);
+            return List.of();
+        }
+        if (piece.getPieceType() == PieceType.ROOK){
+            System.out.println(myPosition);
+            return List.of();
+        }
+        if (piece.getPieceType() == PieceType.PAWN){
+            System.out.println(myPosition);
+            return List.of();
+        }
+        if (piece.getPieceType() == PieceType.QUEEN){
+            System.out.println(myPosition);
+            return List.of();
+        }
+        if (piece.getPieceType() == PieceType.KING){
+            System.out.println(myPosition);
             return List.of();
         }
         return List.of();
