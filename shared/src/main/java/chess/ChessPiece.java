@@ -47,18 +47,37 @@ public class ChessPiece {
     }
 
     public Collection<ChessMove> move_king(ChessPosition myPosition){
-        ArrayList<String> moves =  new ArrayList<String>();
-//      Add moves for one space in all directions.
-        moves.add("");
-        moves.add("");
-        moves.add("");
-        moves.add("");
-        moves.add("");
-        moves.add("");
-        moves.add("");
-        moves.add("");
+        ArrayList<ChessMove> moves =  new ArrayList<ChessMove>();
+//      What we'll need to do for each of these is create an array of objects of type chess moves.  Those appear as follow:
+//      public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece)
+//      With the exception of pawns set promotion piece to null.
+//      Keep myPosition as the start position we only need to edit the end position.  Do that by using the position and then .get row/column
 
-        return null;
+//      Default, one space in all directions.
+        if (myPosition.getRow() == 1){
+            if (myPosition.getColumn() == 1){
+//              Bottom left corner
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()+1),null));
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()),null));
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
+            } else if (myPosition.getColumn() == 8) {
+//                Bottom right corner
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-1),null));
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()),null));
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
+            }
+
+        }
+        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-1),null));
+        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()),null));
+        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()+1),null));
+        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
+        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
+        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()-1),null));
+        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()),null));
+        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+1),null));
+
+        return moves;
     }
 
     public Collection<ChessMove> piece_movement(String piece, ChessPosition myPosition){
