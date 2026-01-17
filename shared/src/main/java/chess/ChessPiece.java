@@ -132,12 +132,12 @@ public class ChessPiece {
     public Collection<ChessMove> move_rook(ChessPosition myPosition){
 //      A rook is capable of moving up, down, left, and right any amount of spaces available to a max of 7
         ArrayList<ChessMove> moves =  new ArrayList<ChessMove>();
-        if (myPosition.getRow() == 1){
-            if (myPosition.getColumn() == 1){
+        if (myPosition.getRow() == 1) {
+            if (myPosition.getColumn() == 1) {
 //              Bottom left
-                for (int x = 1; x<7; x++){
-                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+x, myPosition.getColumn()),null));
-                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+x),null));
+                for (int x = 1; x < 7; x++) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + x, myPosition.getColumn()), null));
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn() + x), null));
                 }
             }
             if (myPosition.getColumn() == 8) {
@@ -147,6 +147,7 @@ public class ChessPiece {
                     moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn() - x), null));
                 }
             }
+        }
         else if (myPosition.getRow() == 8) {
                 if (myPosition.getColumn() == 1) {
 //              Bottom left
@@ -163,9 +164,34 @@ public class ChessPiece {
                     }
                 }
             }
-            return moves;
+        else{
+        // Here we have to figure out where on the board we are and from there we have to find how far in one direction we can move
+//           Get starting values
+             int start_col = myPosition.getColumn();
+             int start_row = myPosition.getRow();
+//           Find total movement abilities
+             int to_left = start_col-1;
+             int to_right = 8-start_col;
+             int up = 8-start_row;
+             int down = start_row-1;
+             System.out.println(to_left);
+            System.out.println(to_right);
+            System.out.println(up);
+            System.out.println(down);
+             for (int x = to_left; x > 0; x--){
+                 moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-x), null));
+             }
+             for (int x = to_right; x < 8; x++){
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-x), null));
+             }
+            for (int x = up; x < 8; x++){
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-x), null));
+            }
+            for (int x = down; x > 0; x--){
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-x), null));
+            }
         }
-        return null;
+        return moves;
     }
 
     public Collection<ChessMove> piece_movement(String piece, ChessPosition myPosition){
