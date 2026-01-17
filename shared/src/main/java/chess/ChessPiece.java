@@ -129,6 +129,45 @@ public class ChessPiece {
         return moves;
     }
 
+    public Collection<ChessMove> move_rook(ChessPosition myPosition){
+//      A rook is capable of moving up, down, left, and right any amount of spaces available to a max of 7
+        ArrayList<ChessMove> moves =  new ArrayList<ChessMove>();
+        if (myPosition.getRow() == 1){
+            if (myPosition.getColumn() == 1){
+//              Bottom left
+                for (int x = 1; x<7; x++){
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+x, myPosition.getColumn()),null));
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+x),null));
+                }
+            }
+            if (myPosition.getColumn() == 8) {
+//              Bottom left
+                for (int x = 1; x < 7; x++) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + x, myPosition.getColumn()), null));
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn() - x), null));
+                }
+            }
+        else if (myPosition.getRow() == 8) {
+                if (myPosition.getColumn() == 1) {
+//              Bottom left
+                    for (int x = 1; x < 7; x++) {
+                        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - x, myPosition.getColumn()), null));
+                        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn() + x), null));
+                    }
+                }
+                if (myPosition.getColumn() == 8) {
+//              Bottom left
+                    for (int x = 1; x < 7; x++) {
+                        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - x, myPosition.getColumn()), null));
+                        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn() - x), null));
+                    }
+                }
+            }
+            return moves;
+        }
+        return null;
+    }
+
     public Collection<ChessMove> piece_movement(String piece, ChessPosition myPosition){
         // I want this to take the piece and use an if statement to see where the piece can move.  From there I want it to return the possible options of that
         // that pieces movement.
@@ -210,7 +249,7 @@ public class ChessPiece {
         }
         if (piece.getPieceType() == PieceType.ROOK){
             System.out.println(myPosition);
-            return List.of();
+            return move_rook(myPosition);
         }
         if (piece.getPieceType() == PieceType.PAWN){
             System.out.println(myPosition);
