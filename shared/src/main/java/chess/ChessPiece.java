@@ -170,9 +170,36 @@ public class ChessPiece {
         int start_row = myPosition.getRow();
         int start_col = myPosition.getColumn();
 //      NE
-        int x = start_row; int y = start_col;
-        while( x>8 || y>8){
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-x), null));
+        int x = start_row; int y = start_col; int loop_count = 0;
+        while( x<8 && y<8){
+            loop_count++;
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+loop_count, myPosition.getColumn()+loop_count), null));
+            x++;
+            y++;
+        }
+//      SE
+        x = start_row; y = start_col;  loop_count = 0;
+        while( x<=8 && y<=8){
+            loop_count++;
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()+loop_count), null));
+            x++;
+            y++;
+        }
+//      SW
+        x = start_row; y = start_col; loop_count = 0;
+        while( x<8 && y<8){
+            loop_count++;
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()-loop_count), null));
+            x++;
+            y++;
+        }
+//      NW
+        x = start_row; y = start_col; loop_count = 0;
+        while( x<8 && y<8){
+            loop_count++;
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+loop_count, myPosition.getColumn()-loop_count), null));
+            x++;
+            y++;
         }
         return moves;
     }
@@ -250,7 +277,7 @@ public class ChessPiece {
         ChessPiece piece = board.getPiece(myPosition);
         if (piece.getPieceType() == PieceType.BISHOP){
             System.out.println(myPosition);
-            return List.of();
+            return move_bishop(myPosition);
         }
         if (piece.getPieceType() == PieceType.KNIGHT){
             System.out.println(myPosition);
