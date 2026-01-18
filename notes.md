@@ -10,6 +10,10 @@ ChessMove
 ChessBoard
 
 
+Test types:
+King: Just check friendly pieces
+Rook: Capturing pieces stops movement, remove all values after that from move list.
+
 Why king tests are failing:  Not checking for block from friendly piece.
 
 To do for tomorrow:
