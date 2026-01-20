@@ -204,6 +204,63 @@ public class ChessPiece {
         return moves;
     }
 
+    public Collection<ChessMove> move_queen(ChessPosition myPosition){
+        ArrayList<ChessMove> moves =  new ArrayList<ChessMove>();
+//   Get starting values
+        int start_col = myPosition.getColumn();
+        int start_row = myPosition.getRow();
+//           Find total movement abilities
+        int to_left = start_col-1;
+        int to_right = 8-start_col;
+        int up = 8-start_row;
+        int down = start_row-1;
+        for (int x = to_left; x > 0; x--){
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-x), null));
+        }
+        for (int x = to_right; x > 0; x--){
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+x), null));
+        }
+        for (int x = up; x > 0; x--){
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+x, myPosition.getColumn()), null));
+        }
+        for (int x = down; x > 0; x--){
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-x, myPosition.getColumn()), null));
+        }
+//      NE
+        int x = start_row; int y = start_col; int loop_count = 0;
+        while( x<8 && y<8){
+            loop_count++;
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+loop_count, myPosition.getColumn()+loop_count), null));
+            x++;
+            y++;
+        }
+//      SE
+        x = start_row; y = start_col;  loop_count = 0;
+        while( x<=8 && y<=8){
+            loop_count++;
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()+loop_count), null));
+            x++;
+            y++;
+        }
+//      SW
+        x = start_row; y = start_col; loop_count = 0;
+        while( x<8 && y<8){
+            loop_count++;
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()-loop_count), null));
+            x++;
+            y++;
+        }
+//      NW
+        x = start_row; y = start_col; loop_count = 0;
+        while( x<8 && y<8){
+            loop_count++;
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+loop_count, myPosition.getColumn()-loop_count), null));
+            x++;
+            y++;
+        }
+        return moves;
+    }
+
     public Collection<ChessMove> piece_movement(String piece, ChessPosition myPosition){
         // I want this to take the piece and use an if statement to see where the piece can move.  From there I want it to return the possible options of that
         // that pieces movement.
@@ -293,7 +350,7 @@ public class ChessPiece {
         }
         if (piece.getPieceType() == PieceType.QUEEN){
             System.out.println(myPosition);
-            return List.of();
+            return move_queen(myPosition);
         }
         if (piece.getPieceType() == PieceType.KING){
             System.out.println(myPosition);
