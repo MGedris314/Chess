@@ -261,6 +261,28 @@ public class ChessPiece {
         return moves;
     }
 
+    public Collection<ChessMove> move_pawn(ChessPosition myPosition, ChessPiece piece, ChessBoard board){
+//   I know the syntax for this isn't fully correct.  Run with it until we can get help tomorrow.
+//   White moves up, black moves down.
+        ArrayList<ChessMove> moves =  new ArrayList<ChessMove>();
+        int row = myPosition.getRow();
+        int col = myPosition.getColumn();
+        if(piece.getTeamColor() == ChessGame.TeamColor.WHITE){
+//       Standard
+            ChessPosition left_check = new ChessPosition(row+1, col-1);
+            ChessPosition right_check = new ChessPosition(row+1, col+1);
+            ChessPiece left_capture = board.getPiece(left_check);
+            ChessPiece right_capture = board.getPiece(right_check);
+
+            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()), null));
+
+        }
+        else if(piece.getTeamColor() == ChessGame.TeamColor.BLACK){
+        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()), null));
+        }
+        return moves;
+    }
+
     public Collection<ChessMove> piece_movement(String piece, ChessPosition myPosition){
         // I want this to take the piece and use an if statement to see where the piece can move.  From there I want it to return the possible options of that
         // that pieces movement.
