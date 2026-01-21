@@ -389,20 +389,20 @@ public class ChessPiece {
             }
         }
 //      Left:
-        if (col < 7) {
-            if (col > 2) {
+        if (col > 2) {
+            if (row < 8) {
                 moves.add(new ChessMove(myPosition, new ChessPosition(row + 1, col - 2), null));
             }
-            if (col > 1) {
+            if (row > 1) {
                 moves.add(new ChessMove(myPosition, new ChessPosition(row - 1, col - 2), null));
             }
         }
 //      Right:
-        if (row < 7) {
-            if (col < 8) {
+        if (col < 7) {
+            if (row < 8) {
                 moves.add(new ChessMove(myPosition, new ChessPosition(row + 1, col + 2), null));
             }
-            if (col > 1) {
+            if (row > 1) {
                 moves.add(new ChessMove(myPosition, new ChessPosition(row -1, col +2), null));
             }
         }
@@ -488,7 +488,7 @@ public class ChessPiece {
         }
         if (piece.getPieceType() == PieceType.KNIGHT){
             System.out.println(myPosition);
-            return List.of();
+            return move_knight(myPosition);
         }
         if (piece.getPieceType() == PieceType.ROOK){
             System.out.println(myPosition);
