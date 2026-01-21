@@ -379,7 +379,33 @@ public class ChessPiece {
                 moves.add(new ChessMove(myPosition, new ChessPosition(row+2, col-1), null));
             }
         }
-
+//      down:
+        if (row > 2) {
+            if (col < 8) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(row - 2, col + 1), null));
+            }
+            if (col > 1) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(row - 2, col - 1), null));
+            }
+        }
+//      Left:
+        if (col < 7) {
+            if (col > 2) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(row + 1, col - 2), null));
+            }
+            if (col > 1) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(row - 1, col - 2), null));
+            }
+        }
+//      Right:
+        if (row < 7) {
+            if (col < 8) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(row + 1, col + 2), null));
+            }
+            if (col > 1) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(row -1, col +2), null));
+            }
+        }
         return moves;
     }
 
