@@ -366,6 +366,23 @@ public class ChessPiece {
         return moves;
     }
 
+    public Collection<ChessMove> move_knight(ChessPosition myPosition){
+        int row  = myPosition.getRow();
+        int col = myPosition.getColumn();
+        ArrayList<ChessMove>moves = new ArrayList<ChessMove>();
+//      up:  Doesn't work rows 7 or >
+        if (row < 7){
+            if (col < 8){
+                moves.add(new ChessMove(myPosition, new ChessPosition(row+2, col+1), null));
+            }
+            if (col > 1){
+                moves.add(new ChessMove(myPosition, new ChessPosition(row+2, col-1), null));
+            }
+        }
+
+        return moves;
+    }
+
     public Collection<ChessMove> piece_movement(String piece, ChessPosition myPosition){
         // I want this to take the piece and use an if statement to see where the piece can move.  From there I want it to return the possible options of that
         // that pieces movement.
