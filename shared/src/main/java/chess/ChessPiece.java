@@ -3,6 +3,7 @@ package chess;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a single chess piece
@@ -45,86 +46,203 @@ public class ChessPiece {
     public PieceType getPieceType() {
         return type;
     }
+//    Use block bellow:
+//    piece.getTeamColor().equals(ChessGame.TeamColor.WHITE
 
-    public Collection<ChessMove> move_king(ChessPosition myPosition){
+    public Collection<ChessMove> move_king(ChessPosition myPosition, ChessBoard board, ChessPiece piece){
         ArrayList<ChessMove> moves =  new ArrayList<ChessMove>();
+
 //      What we'll need to do for each of these is creates an array of objects of type chess moves.  Those appear as follows:
 //      public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece)
 //      With the exception of pawns set promotion piece to null.
 //      Keep myPosition as the start position we only need to edit the end position.  Do that by using the position and then .get row/column
-
+        int row =  myPosition.getRow();
+        int col =  myPosition.getColumn();
         if (myPosition.getRow() == 1){
+            ChessPiece check1 = board.getPiece(new ChessPosition(row+1, col-1));
+            ChessPiece check2 = board.getPiece(new ChessPosition(row+1, col));
+            ChessPiece check3 = board.getPiece(new ChessPosition(row+1, col+1));
+            ChessPiece check4 = board.getPiece(new ChessPosition(row, col+1));
+            ChessPiece check5 = board.getPiece(new ChessPosition(row, col-1));
 //            Left edge
             if (myPosition.getColumn() == 1){
-//              Bottom left corner
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()+1),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
-            } else if (myPosition.getColumn() == 8) {
-//                Bottom right corner
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-1),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
+//              Bottom left corner 2 3 4
+                if(check2 == null || !(check2.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()), null));
+                }
+                if(check3 == null || !(check3.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()+1), null));
+                }
+                if(check4 == null || !(check4.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
+                }
+            }
+            else if (myPosition.getColumn() == 8) {
+//                Bottom right corner 1 2 5
+                if(check1 == null || !(check1.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-1),null));
+                }
+                if(check2 == null || !(check2.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()), null));
+                }
+                if(check5 == null || !(check5.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1), null));
+                }
             }
             else{
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()+1),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+1),null));
+                if(check1 == null || !(check1.getTeamColor().equals(piece.getTeamColor()))){
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1), null));
+                }
+                if(check2 == null || !(check2.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()), null));
+                }
+                if(check3 == null || !(check3.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()+1), null));
+                }
+                if(check4 == null || !(check4.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
+                }
+
+                if(check5 == null || !(check5.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1), null));
+                }
             }
 
         }
         else if (myPosition.getRow() == 8){
-//            Right edge
+//          Right edge
+            ChessPiece check4 = board.getPiece(new ChessPosition(row+1, col-1));
+            ChessPiece check5 = board.getPiece(new ChessPosition(row, col-1));
+            ChessPiece check6 = board.getPiece(new ChessPosition(row-1, col-1));
+            ChessPiece check7 = board.getPiece(new ChessPosition(row-1, col));
+            ChessPiece check8 = board.getPiece(new ChessPosition(row-1, col-1));
+
             if (myPosition.getColumn() == 1){
 //              Top left corner
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+1),null));
-            } else if (myPosition.getColumn() == 8) {
+                if(check4 == null || !(check4.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
+                }
+                if(check7 == null || !(check7.getTeamColor().equals(piece.getTeamColor()))){
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()), null));
+                }
+                if(check8 == null || !(check8.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()-1), null));
+                }
+            }
+            else if (myPosition.getColumn() == 8) {
 //              Top right corner
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()-1),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()),null));
+                if(check5 == null || !(check6.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
+                }
+                if(check6 == null || !(check6.getTeamColor().equals(piece.getTeamColor()))){
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1), null));
+                }
+                if(check7 == null || !(check7.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()), null));
+                }
             }
             else{
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-1),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()),null));
-                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()-1),null));
+                if(check4 == null || !(check4.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
+                }
+                if(check5 == null || !(check5.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
+                }
+                if(check6 == null || !(check6.getTeamColor().equals(piece.getTeamColor()))){
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1), null));
+                }
+                if(check7 == null || !(check7.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()), null));
+                }
+                if(check8 == null || !(check8.getTeamColor().equals(piece.getTeamColor()))) {
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()-1), null));
+                }
             }
 
         }
         else if (myPosition.getColumn() == 1){
-//          Bottom Row
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-1),null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()),null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()+1),null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
+            ChessPiece check2 = board.getPiece(new ChessPosition(row+1, col));
+            ChessPiece check3 = board.getPiece(new ChessPosition(row+1, col+1));
+            ChessPiece check4 = board.getPiece(new ChessPosition(row, col+1));
+            ChessPiece check7 = board.getPiece(new ChessPosition(row-1, col));
+            ChessPiece check8 = board.getPiece(new ChessPosition(row-1, col+1));
+//          Left column
+            if(check2 == null || !(check2.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()), null));
+            }
+            if(check3 == null || !(check3.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()+1), null));
+            }
+            if(check4 == null || !(check4.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
+            }
+            if(check7 == null || !(check7.getTeamColor().equals(piece.getTeamColor()))){
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()), null));
+            }
+            if(check8 == null || !(check8.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()-1), null));
+            }
 
         }
         else if (myPosition.getColumn() == 8){
-//          Top Row
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()-1),null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()),null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+1),null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
+            ChessPiece check1 = board.getPiece(new ChessPosition(row+1, col-1));
+            ChessPiece check2 = board.getPiece(new ChessPosition(row+1, col));
+            ChessPiece check5 = board.getPiece(new ChessPosition(row, col-1));
+            ChessPiece check6 = board.getPiece(new ChessPosition(row-1, col-1));
+            ChessPiece check7 = board.getPiece(new ChessPosition(row-1, col));
+
+//          Right column
+            if(check1 == null || !(check1.getTeamColor().equals(piece.getTeamColor()))){
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1), null));
+            }
+            if(check2 == null || !(check2.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()), null));
+            }
+            if(check5 == null || !(check5.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
+            }
+            if(check6 == null || !(check6.getTeamColor().equals(piece.getTeamColor()))){
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1), null));
+            }
+            if(check7 == null || !(check7.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()), null));
+            }
 
         }
         else {
 //      Default, one space in all directions.
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1), null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()), null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1), null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn() - 1), null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn() + 1), null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1), null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()), null));
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 1), null));
+            ChessPiece check1 = board.getPiece(new ChessPosition(row+1, col-1));
+            ChessPiece check2 = board.getPiece(new ChessPosition(row+1, col));
+            ChessPiece check3 = board.getPiece(new ChessPosition(row+1, col+1));
+            ChessPiece check4 = board.getPiece(new ChessPosition(row, col+1));
+            ChessPiece check5 = board.getPiece(new ChessPosition(row, col-1));
+            ChessPiece check6 = board.getPiece(new ChessPosition(row-1, col-1));
+            ChessPiece check7 = board.getPiece(new ChessPosition(row-1, col));
+            ChessPiece check8 = board.getPiece(new ChessPosition(row-1, col+1));
+            if(check1 == null || !(check1.getTeamColor().equals(piece.getTeamColor()))){
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1), null));
+            }
+            if(check2 == null || !(check2.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()), null));
+            }
+            if(check3 == null || !(check3.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()+1), null));
+            }
+            if(check4 == null || !(check4.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
+            }
+            if(check5 == null || !(check5.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
+            }
+            if(check6 == null || !(check6.getTeamColor().equals(piece.getTeamColor()))){
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1), null));
+            }
+            if(check7 == null || !(check7.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()), null));
+            }
+            if(check8 == null || !(check8.getTeamColor().equals(piece.getTeamColor()))) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()+1), null));
+            }
         }
         return moves;
     }
@@ -267,7 +385,7 @@ public class ChessPiece {
         ArrayList<ChessMove> moves =  new ArrayList<ChessMove>();
         int row = myPosition.getRow();
         int col = myPosition.getColumn();
-        if(piece.getTeamColor() == ChessGame.TeamColor.WHITE){
+        if(piece.getTeamColor().equals(ChessGame.TeamColor.WHITE)){ //How to get color for phase 0
             ChessPosition left_check = new ChessPosition(row+1, col-1);
             ChessPosition right_check = new ChessPosition(row+1, col+1);
             ChessPosition forward_check = new ChessPosition(row+1, col);
@@ -409,68 +527,6 @@ public class ChessPiece {
         return moves;
     }
 
-    public Collection<ChessMove> piece_movement(String piece, ChessPosition myPosition){
-        // I want this to take the piece and use an if statement to see where the piece can move.  From there I want it to return the possible options of that
-        // that pieces movement.
-        // possible_moves = []
-        /*
-        if (piece == "pawn"){
-            if (myPosition == 2){ //the piece is on home row and can move two
-                possible_moves.append(myPosition.row+1, myPosition.col)
-                possible_moves.append(myPosition.row+2, myPosition.col)
-                return possible_moves
-            } 
-            else{
-            possible_moves.append(myPosition.row+1)
-            return possible_moves
-            }
-        }
-
-        if (piece == "rook"){ // can move any number of spaces up, down, left or right
-            start_row = myPosition.row
-            start_col = myPosition.col
-            if (start_row == 1){
-                for x in range 7{
-                   possible_moves.append(myPosition.row+x, myPosiiton.col)
-                }
-                
-            }
-            else{
-                while start_row != 1{
-                    possible_moves.append(myPosition.row-1, myPosiiton.col);
-                    start_row -=1;
-                }
-                start_row = myPosition.row
-                while start_row != 8{
-                    possible_moves.append(myPosition.row+1, myPosiiton.col)
-                    start_row+=1
-                }    
-            }
-            if (start_col == 1){
-                for x in range 7{
-                   possible_moves.append(myPosition.row, myPosiiton.col+x)
-                }
-            }
-            else{
-                while start_col != 1{
-                    possible_moves.append(myPosition.row, myPosiiton.col-1);
-                    start_col -=1;
-                }
-                start_col = myPosition.col
-                while start_col != 8{
-                    possible_moves.append(myPosition.row, myPosiiton.col+1)
-                    start_col+=1
-                }    
-            }
-
-        }
-        */
-                
-            return null;
-        
-    }
-
-
 
     /**
      * Calculates all the positions a chess piece can move to
@@ -504,8 +560,22 @@ public class ChessPiece {
         }
         if (piece.getPieceType() == PieceType.KING){
             System.out.println(myPosition);
-            return move_king(myPosition);
+            return move_king(myPosition, board, piece);
         }
         return List.of();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessPiece that = (ChessPiece) o;
+        return pieceColor == that.pieceColor && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pieceColor, type);
     }
 }
