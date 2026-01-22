@@ -271,14 +271,35 @@ public class ChessPiece {
              break;
          }
      }
-     for (int x = to_right; x > 0; x--){
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+x), null));
+     for (int x = 1; x <= to_right; x++){
+         ChessPiece check = board.getPiece(new ChessPosition( myPosition.getRow(), myPosition.getColumn()+x));
+         if (check == null) {
+             moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+x), null));
+         }
+         else if(!check.getTeamColor().equals(piece.getTeamColor())){
+             moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+x), null));
+             break;
+         }
+         else{
+             break;
+         }
+
      }
-     for (int x = up; x > 0; x--){
-        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+x, myPosition.getColumn()), null));
+     for (int x = 1; x <= up; x++){
+         ChessPiece check = board.getPiece(new ChessPosition( myPosition.getRow()+x, myPosition.getColumn()));
+         if (check == null) {
+             moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+x, myPosition.getColumn()), null));
+         }
+         else if(!check.getTeamColor().equals(piece.getTeamColor())){
+             moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+x, myPosition.getColumn()), null));
+             break;
+         }
+         else{
+             break;
+         }
+
      }
      for (int x = 1; x <= down; x++){
-
          ChessPiece check = board.getPiece(new ChessPosition( myPosition.getRow()-x, myPosition.getColumn()));
          if (check == null) {
              moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-x, myPosition.getColumn()), null));
