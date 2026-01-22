@@ -111,7 +111,7 @@ public class ChessPiece {
         }
         else if (myPosition.getRow() == 8){
 //          Right edge
-            ChessPiece check4 = board.getPiece(new ChessPosition(row+1, col-1));
+            ChessPiece check4 = board.getPiece(new ChessPosition(row, col-1));
             ChessPiece check5 = board.getPiece(new ChessPosition(row, col-1));
             ChessPiece check6 = board.getPiece(new ChessPosition(row-1, col-1));
             ChessPiece check7 = board.getPiece(new ChessPosition(row-1, col));
