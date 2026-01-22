@@ -44,9 +44,10 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
+        System.out.println(new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
         for(int x=1; x<9; x++){
             addPiece(new ChessPosition(2, x), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
-            addPiece(new ChessPosition(7, x), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
+            addPiece(new ChessPosition(7, x), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
         }
         addPiece(new ChessPosition(1,1), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.ROOK));
         addPiece(new ChessPosition(1,8), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.ROOK));
@@ -82,5 +83,16 @@ public class ChessBoard {
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(squares);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder write_out = new StringBuilder();
+        for (int x = 1; x < squares.length +1; x++) {
+            for (int y = 1; y < squares.length +1; y++) {
+                write_out.append(getPiece(new ChessPosition(x, y)));
+            }
+        }
+        return write_out.toString();
     }
 }
