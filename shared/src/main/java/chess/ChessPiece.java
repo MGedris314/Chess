@@ -247,7 +247,7 @@ public class ChessPiece {
         return moves;
     }
 
-    public Collection<ChessMove> move_rook(ChessPosition myPosition){
+    public Collection<ChessMove> move_rook(ChessPosition myPosition, ChessBoard board, ChessPiece piece){
 //      A rook is capable of moving up, down, left, and right any amount of spaces available to a max of 7
     ArrayList<ChessMove> moves =  new ArrayList<ChessMove>();
 //   Get starting values
@@ -258,12 +258,18 @@ public class ChessPiece {
      int to_right = 8-start_col;
      int up = 8-start_row;
      int down = start_row-1;
-     System.out.println(to_left);
-     System.out.println(to_right);
-     System.out.println(up);
-     System.out.println(down);
-     for (int x = to_left; x > 0; x--){
-         moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-x), null));
+     for (int x = 1; x <=to_left; x++){
+         ChessPiece check = board.getPiece(new ChessPosition( myPosition.getRow(), myPosition.getColumn()-x));
+         if (check == null) {
+             moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn() - x), null));
+         }
+         else if(!check.getTeamColor().equals(piece.getTeamColor())){
+             moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn() - x), null));
+             break;
+         }
+         else{
+             break;
+         }
      }
      for (int x = to_right; x > 0; x--){
             moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+x), null));
@@ -271,8 +277,19 @@ public class ChessPiece {
      for (int x = up; x > 0; x--){
         moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+x, myPosition.getColumn()), null));
      }
-     for (int x = down; x > 0; x--){
-        moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-x, myPosition.getColumn()), null));
+     for (int x = 1; x <= down; x++){
+
+         ChessPiece check = board.getPiece(new ChessPosition( myPosition.getRow()-x, myPosition.getColumn()));
+         if (check == null) {
+             moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-x, myPosition.getColumn()), null));
+         }
+         else if(!check.getTeamColor().equals(piece.getTeamColor())){
+             moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-x, myPosition.getColumn()), null));
+             break;
+         }
+         else{
+             break;
+         }
      }
         return moves;
     }
@@ -572,7 +589,7 @@ public class ChessPiece {
         }
         if (piece.getPieceType() == PieceType.ROOK){
             System.out.println(myPosition);
-            return move_rook(myPosition);
+            return move_rook(myPosition, board, piece);
         }
         if (piece.getPieceType() == PieceType.PAWN){
             System.out.println(myPosition);
