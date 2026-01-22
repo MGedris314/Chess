@@ -59,13 +59,11 @@ public class ChessPiece {
         int row =  myPosition.getRow();
         int col =  myPosition.getColumn();
         if (myPosition.getRow() == 1){
-            ChessPiece check1 = board.getPiece(new ChessPosition(row+1, col-1));
-            ChessPiece check2 = board.getPiece(new ChessPosition(row+1, col));
-            ChessPiece check3 = board.getPiece(new ChessPosition(row+1, col+1));
-            ChessPiece check4 = board.getPiece(new ChessPosition(row, col+1));
-            ChessPiece check5 = board.getPiece(new ChessPosition(row, col-1));
 //            Left edge
             if (myPosition.getColumn() == 1){
+                ChessPiece check2 = board.getPiece(new ChessPosition(row+1, col));
+                ChessPiece check3 = board.getPiece(new ChessPosition(row+1, col+1));
+                ChessPiece check4 = board.getPiece(new ChessPosition(row, col+1));
 //              Bottom left corner 2 3 4
                 if(check2 == null || !(check2.getTeamColor().equals(piece.getTeamColor()))) {
                     moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn()), null));
@@ -78,6 +76,9 @@ public class ChessPiece {
                 }
             }
             else if (myPosition.getColumn() == 8) {
+                ChessPiece check1 = board.getPiece(new ChessPosition(row+1, col-1));
+                ChessPiece check2 = board.getPiece(new ChessPosition(row+1, col));
+                ChessPiece check5 = board.getPiece(new ChessPosition(row, col-1));
 //                Bottom right corner 1 2 5
                 if(check1 == null || !(check1.getTeamColor().equals(piece.getTeamColor()))) {
                     moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-1),null));
@@ -90,6 +91,11 @@ public class ChessPiece {
                 }
             }
             else{
+                ChessPiece check1 = board.getPiece(new ChessPosition(row+1, col-1));
+                ChessPiece check2 = board.getPiece(new ChessPosition(row+1, col));
+                ChessPiece check3 = board.getPiece(new ChessPosition(row+1, col+1));
+                ChessPiece check4 = board.getPiece(new ChessPosition(row, col+1));
+                ChessPiece check5 = board.getPiece(new ChessPosition(row, col-1));
                 if(check1 == null || !(check1.getTeamColor().equals(piece.getTeamColor()))){
                     moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1), null));
                 }
@@ -102,7 +108,6 @@ public class ChessPiece {
                 if(check4 == null || !(check4.getTeamColor().equals(piece.getTeamColor()))) {
                     moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
                 }
-
                 if(check5 == null || !(check5.getTeamColor().equals(piece.getTeamColor()))) {
                     moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1), null));
                 }
@@ -111,14 +116,11 @@ public class ChessPiece {
         }
         else if (myPosition.getRow() == 8){
 //          Right edge
-            ChessPiece check4 = board.getPiece(new ChessPosition(row, col-1));
-            ChessPiece check5 = board.getPiece(new ChessPosition(row, col-1));
-            ChessPiece check6 = board.getPiece(new ChessPosition(row-1, col-1));
-            ChessPiece check7 = board.getPiece(new ChessPosition(row-1, col));
-            ChessPiece check8 = board.getPiece(new ChessPosition(row-1, col-1));
-
             if (myPosition.getColumn() == 1){
 //              Top left corner
+                ChessPiece check4 = board.getPiece(new ChessPosition(row, col-1));
+                ChessPiece check7 = board.getPiece(new ChessPosition(row-1, col));
+                ChessPiece check8 = board.getPiece(new ChessPosition(row-1, col-1));
                 if(check4 == null || !(check4.getTeamColor().equals(piece.getTeamColor()))) {
                     moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
                 }
@@ -131,6 +133,9 @@ public class ChessPiece {
             }
             else if (myPosition.getColumn() == 8) {
 //              Top right corner
+                ChessPiece check5 = board.getPiece(new ChessPosition(row, col-1));
+                ChessPiece check6 = board.getPiece(new ChessPosition(row-1, col-1));
+                ChessPiece check7 = board.getPiece(new ChessPosition(row-1, col));
                 if(check5 == null || !(check6.getTeamColor().equals(piece.getTeamColor()))) {
                     moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1),null));
                 }
@@ -142,6 +147,11 @@ public class ChessPiece {
                 }
             }
             else{
+                ChessPiece check4 = board.getPiece(new ChessPosition(row, col-1));
+                ChessPiece check5 = board.getPiece(new ChessPosition(row, col-1));
+                ChessPiece check6 = board.getPiece(new ChessPosition(row-1, col-1));
+                ChessPiece check7 = board.getPiece(new ChessPosition(row-1, col));
+                ChessPiece check8 = board.getPiece(new ChessPosition(row-1, col-1));
                 if(check4 == null || !(check4.getTeamColor().equals(piece.getTeamColor()))) {
                     moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
                 }
