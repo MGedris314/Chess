@@ -118,9 +118,9 @@ public class ChessPiece {
 //          Right edge
             if (myPosition.getColumn() == 1){
 //              Top left corner
-                ChessPiece check4 = board.getPiece(new ChessPosition(row, col-1));
+                ChessPiece check4 = board.getPiece(new ChessPosition(row, col+1));
                 ChessPiece check7 = board.getPiece(new ChessPosition(row-1, col));
-                ChessPiece check8 = board.getPiece(new ChessPosition(row-1, col-1));
+                ChessPiece check8 = board.getPiece(new ChessPosition(row-1, col+1));
                 if(check4 == null || !(check4.getTeamColor().equals(piece.getTeamColor()))) {
                     moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1),null));
                 }
@@ -128,7 +128,7 @@ public class ChessPiece {
                     moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()), null));
                 }
                 if(check8 == null || !(check8.getTeamColor().equals(piece.getTeamColor()))) {
-                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()-1), null));
+                    moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn()+8), null));
                 }
             }
             else if (myPosition.getColumn() == 8) {
@@ -147,7 +147,7 @@ public class ChessPiece {
                 }
             }
             else{
-                ChessPiece check4 = board.getPiece(new ChessPosition(row, col-1));
+                ChessPiece check4 = board.getPiece(new ChessPosition(row, col+1));
                 ChessPiece check5 = board.getPiece(new ChessPosition(row, col-1));
                 ChessPiece check6 = board.getPiece(new ChessPosition(row-1, col-1));
                 ChessPiece check7 = board.getPiece(new ChessPosition(row-1, col));
@@ -359,13 +359,13 @@ public class ChessPiece {
 //      SE
         x = start_row; y = start_col;  loop_count = 0;
         while( x<=8 && y<=8){
+            loop_count++;
             if (start_row == 1 || start_col == 8){
                 break;
             }
-            if (myPosition.getColumn()+loop_count >= 9 || myPosition.getRow() - loop_count <=0){
+            if (myPosition.getColumn()+loop_count > 8 || myPosition.getRow() - loop_count <=0){
                 break;
             }
-            loop_count++;
             ChessPiece check = board.getPiece(new ChessPosition( myPosition.getRow()-loop_count, myPosition.getColumn()+loop_count));
             if (check == null) {
                 moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()+loop_count), null));
@@ -382,14 +382,14 @@ public class ChessPiece {
         }
 //      SW
         x = start_row; y = start_col; loop_count = 0;
-        while( x<8 && y<8){
+        while( x>=0 && y>=0){
+            loop_count++;
             if (start_row == 1 || start_col == 1){
                 break;
             }
             if (myPosition.getColumn()-loop_count <= 0 || myPosition.getRow() - loop_count <=0){
                 break;
             }
-            loop_count++;
             ChessPiece check = board.getPiece(new ChessPosition( myPosition.getRow()-loop_count, myPosition.getColumn()-loop_count));
             if (check == null) {
                 moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()-loop_count), null));
@@ -401,8 +401,8 @@ public class ChessPiece {
             else{
                 break;
             }
-            x++;
-            y++;
+            x--;
+            y--;
         }
 //      NW
         x = start_row; y = start_col; loop_count = 0;
