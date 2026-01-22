@@ -530,15 +530,17 @@ public class ChessPiece {
         }
 //      SW
         x = start_row; y = start_col; loop_count = 0;
-        while( x<8 && y<8){
+        while( x>=0 && y>=0){
+            System.out.println("Hit the while");
+            loop_count++;
             if (start_row == 1 || start_col == 1){
+                System.out.println("In here for some reason");
                 break;
             }
             if (myPosition.getColumn()-loop_count <= 0 || myPosition.getRow() - loop_count <=0){
                 System.out.println("Imitatively into break");
                 break;
             }
-            loop_count++;
             ChessPiece check = board.getPiece(new ChessPosition( myPosition.getRow()-loop_count, myPosition.getColumn()-loop_count));
             if (check == null) {
                 moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()-loop_count), null));
@@ -548,10 +550,11 @@ public class ChessPiece {
                 break;
             }
             else{
+                System.out.println("Why did this break fire?");
                 break;
             }
-            x++;
-            y++;
+            x--;
+            y--;
         }
 //      NW
         x = start_row; y = start_col; loop_count = 0;
