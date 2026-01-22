@@ -315,7 +315,7 @@ public class ChessPiece {
         return moves;
     }
 
-    public Collection<ChessMove> move_bishop(ChessPosition myPosition){
+    public Collection<ChessMove> move_bishop(ChessPosition myPosition, ChessBoard board, ChessPiece piece){
         ArrayList<ChessMove>moves =  new ArrayList<>();
 /*  for reference, row first column second
 *   NE: +x +x
@@ -329,23 +329,68 @@ public class ChessPiece {
         int x = start_row; int y = start_col; int loop_count = 0;
         while( x<8 && y<8){
             loop_count++;
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+loop_count, myPosition.getColumn()+loop_count), null));
+            if (myPosition.getColumn()+loop_count >= 9 || myPosition.getRow() + loop_count >= 9){
+                break;
+            }
+            ChessPiece check = board.getPiece(new ChessPosition( myPosition.getRow()+loop_count, myPosition.getColumn()+loop_count));
+            if (check == null) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+loop_count, myPosition.getColumn()+loop_count), null));
+            }
+            else if(!check.getTeamColor().equals(piece.getTeamColor())){
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+loop_count, myPosition.getColumn()+loop_count), null));
+                break;
+            }
+            else{
+                break;
+            }
             x++;
             y++;
         }
 //      SE
         x = start_row; y = start_col;  loop_count = 0;
         while( x<=8 && y<=8){
+            if (start_row == 1 || start_col == 8){
+                break;
+            }
+            if (myPosition.getColumn()+loop_count >= 9 || myPosition.getRow() - loop_count <=0){
+                break;
+            }
             loop_count++;
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()+loop_count), null));
+            ChessPiece check = board.getPiece(new ChessPosition( myPosition.getRow()-loop_count, myPosition.getColumn()+loop_count));
+            if (check == null) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()+loop_count), null));
+            }
+            else if(!check.getTeamColor().equals(piece.getTeamColor())){
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()+loop_count), null));
+                break;
+            }
+            else{
+                break;
+            }
             x++;
             y++;
         }
 //      SW
         x = start_row; y = start_col; loop_count = 0;
         while( x<8 && y<8){
+            if (start_row == 1 || start_col == 1){
+                break;
+            }
+            if (myPosition.getColumn()-loop_count <= 0 || myPosition.getRow() - loop_count <=0){
+                break;
+            }
             loop_count++;
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()-loop_count), null));
+            ChessPiece check = board.getPiece(new ChessPosition( myPosition.getRow()-loop_count, myPosition.getColumn()-loop_count));
+            if (check == null) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()-loop_count), null));
+            }
+            else if(!check.getTeamColor().equals(piece.getTeamColor())){
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()-loop_count, myPosition.getColumn()-loop_count), null));
+                break;
+            }
+            else{
+                break;
+            }
             x++;
             y++;
         }
@@ -353,7 +398,20 @@ public class ChessPiece {
         x = start_row; y = start_col; loop_count = 0;
         while( x<8 && y<8){
             loop_count++;
-            moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+loop_count, myPosition.getColumn()-loop_count), null));
+            if (myPosition.getColumn()-loop_count <= 0 || myPosition.getRow() + loop_count >=9){
+                break;
+            }
+            ChessPiece check = board.getPiece(new ChessPosition( myPosition.getRow()+loop_count, myPosition.getColumn()-loop_count));
+            if (check == null) {
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+loop_count, myPosition.getColumn()-loop_count), null));
+            }
+            else if(!check.getTeamColor().equals(piece.getTeamColor())){
+                moves.add(new ChessMove(myPosition, new ChessPosition(myPosition.getRow()+loop_count, myPosition.getColumn()-loop_count), null));
+                break;
+            }
+            else{
+                break;
+            }
             x++;
             y++;
         }
@@ -602,7 +660,7 @@ public class ChessPiece {
         ChessPiece piece = board.getPiece(myPosition);
         if (piece.getPieceType() == PieceType.BISHOP){
             System.out.println(myPosition);
-            return move_bishop(myPosition);
+            return move_bishop(myPosition, board, piece);
         }
         if (piece.getPieceType() == PieceType.KNIGHT){
             System.out.println(myPosition);
