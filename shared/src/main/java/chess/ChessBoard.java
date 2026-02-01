@@ -24,7 +24,7 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        // Board is one based java is zero based.  Arithmatic should fix it
+        // Board is one based java is zero based.  Arithmetic should fix it
         squares [position.getRow()-1][position.getColumn()-1] = piece;
     }
 
