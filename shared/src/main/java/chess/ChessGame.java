@@ -17,8 +17,29 @@ public class ChessGame {
     /**
      * @return Which team's turn it is
      */
+
+//    Setting up variables that we'll probably be using later
+    boolean White_t = true;
+    public ChessPiece find_king(ChessBoard board){
+        for(int x = 1; x<9; x++){
+            for(int y = 1; y<9; y++){
+                ChessPosition finder = new ChessPosition(x, y);
+                ChessPiece found = board.getPiece(finder);
+                if (found != null && found.getPieceType()== ChessPiece.PieceType.KING){
+                    return found;
+                }
+                else{return null;}
+            }
+        }
+        return null;
+    }
     public TeamColor getTeamTurn() {
-        throw new RuntimeException("Not implemented");
+        if(White_t == true){
+            return TeamColor.WHITE;
+        }
+        else{
+            return TeamColor.BLACK;
+        }
     }
 
     /**
@@ -96,7 +117,7 @@ public class ChessGame {
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
-        throw new RuntimeException("Not implemented");
+        board.resetBoard();
     }
 
     /**
