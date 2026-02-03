@@ -23,18 +23,20 @@ public class ChessGame {
     boolean White_t = true;
     boolean White_check = false;
     boolean Black_check = false;
-    ChessPosition King_W = new ChessPosition(0 ,0);
+    ChessPosition King_W = new ChessPosition(0 ,0); //Figure out how to call the board we've set up here.
     ChessPosition King_B = new ChessPosition(0 ,0);
     ArrayList <ChessPosition> white_team = new ArrayList<ChessPosition>();
     ArrayList <ChessPosition> black_team = new ArrayList<ChessPosition>();
 
-    public ChessPosition find_king(ChessBoard board){
+    public ChessPosition find_king(ChessBoard board, TeamColor color){
         for(int x = 1; x<9; x++){
             for(int y = 1; y<9; y++){
                 ChessPosition finder = new ChessPosition(x, y);
                 ChessPiece found = board.getPiece(finder);
-                if (found != null && found.getPieceType()== ChessPiece.PieceType.KING){
+                if (found != null && found.getPieceType() == ChessPiece.PieceType.KING){
+                    if(found.getTeamColor() == color){
                     return finder;
+                    }
                 }
             }
         }
@@ -47,6 +49,30 @@ public class ChessGame {
         }
         else{
             return TeamColor.BLACK;
+        }
+    }
+
+    public  void find_white_team(ChessBoard board){
+        for(int x = 1; x<9; x++){
+            for(int y = 1; y<9; y++){
+                ChessPosition finder = new ChessPosition(x, y);
+                ChessPiece found = board.getPiece(finder);
+                if (found != null && found.getTeamColor() == TeamColor.WHITE){
+                    white_team.add(finder);
+                }
+            }
+        }
+    }
+
+    public void find_black_team(ChessBoard board){
+        for(int x = 1; x<9; x++){
+            for(int y = 1; y<9; y++){
+                ChessPosition finder = new ChessPosition(x, y);
+                ChessPiece found = board.getPiece(finder);
+                if (found != null && found.getTeamColor() == TeamColor.BLACK){
+                    black_team.add(finder);
+                }
+            }
         }
     }
 
