@@ -10,7 +10,8 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessGame {
-
+    ChessBoard board = new ChessBoard(); //Figure out how to set up the board.
+    TeamColor team_turn = TeamColor.WHITE;
     public ChessGame() {
 
     }
@@ -20,11 +21,10 @@ public class ChessGame {
      */
 
 //    Setting up variables that we'll probably be using later
-    boolean White_t = true;
     boolean White_check = false;
     boolean Black_check = false;
-    ChessPosition King_W = new ChessPosition(0 ,0); //Figure out how to call the board we've set up here.
-    ChessPosition King_B = new ChessPosition(0 ,0);
+    ChessPosition King_W = find_king(board, TeamColor.WHITE);
+    ChessPosition King_B = find_king(board, TeamColor.BLACK);
     ArrayList <ChessPosition> white_team = new ArrayList<ChessPosition>();
     ArrayList <ChessPosition> black_team = new ArrayList<ChessPosition>();
 
@@ -44,12 +44,7 @@ public class ChessGame {
     }
 
     public TeamColor getTeamTurn() {
-        if(White_t == true){
-            return TeamColor.WHITE;
-        }
-        else{
-            return TeamColor.BLACK;
-        }
+        return team_turn;
     }
 
     public  void find_white_team(ChessBoard board){
@@ -76,13 +71,21 @@ public class ChessGame {
         }
     }
 
+    public Collection<ChessMove> possible_white(ChessBoard board){
+        ArrayList<ChessMove> possible = new ArrayList<ChessMove>();
+        for(int i = 0; i<white_team.size(); i++){
+            ChessPiece hold = board.getPiece(white_team.get(i));
+        }
+        return possible;
+    }
+
     /**
      * Set's which teams turn it is
      *
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        throw new RuntimeException("Not implemented");
+        team_turn = team;
     }
 
     /**
