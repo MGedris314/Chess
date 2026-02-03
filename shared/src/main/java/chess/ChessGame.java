@@ -20,19 +20,24 @@ public class ChessGame {
 
 //    Setting up variables that we'll probably be using later
     boolean White_t = true;
-    public ChessPiece find_king(ChessBoard board){
+    boolean White_check = false;
+    boolean Black_check = false;
+    ChessPosition King_W = new ChessPosition(0 ,0);
+    ChessPosition King_B = new ChessPosition(0 ,0);
+
+    public ChessPosition find_king(ChessBoard board){
         for(int x = 1; x<9; x++){
             for(int y = 1; y<9; y++){
                 ChessPosition finder = new ChessPosition(x, y);
                 ChessPiece found = board.getPiece(finder);
                 if (found != null && found.getPieceType()== ChessPiece.PieceType.KING){
-                    return found;
+                    return finder;
                 }
-                else{return null;}
             }
         }
         return null;
     }
+
     public TeamColor getTeamTurn() {
         if(White_t == true){
             return TeamColor.WHITE;
@@ -87,7 +92,15 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        if(teamColor == TeamColor.WHITE && White_check){
+            return true;
+        }
+        if(teamColor == TeamColor.BLACK && Black_check){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
