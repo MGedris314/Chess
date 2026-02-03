@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -24,6 +25,8 @@ public class ChessGame {
     boolean Black_check = false;
     ChessPosition King_W = new ChessPosition(0 ,0);
     ChessPosition King_B = new ChessPosition(0 ,0);
+    ArrayList <ChessPosition> white_team = new ArrayList<ChessPosition>();
+    ArrayList <ChessPosition> black_team = new ArrayList<ChessPosition>();
 
     public ChessPosition find_king(ChessBoard board){
         for(int x = 1; x<9; x++){

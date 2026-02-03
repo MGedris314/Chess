@@ -198,6 +198,9 @@ public class ChessPiece {
         int left = col-1;
         boolean king = false;
         if(piece.type == PieceType.KING){king = true;}
+        if(piece.type == PieceType.KNIGHT){return move_knight(myposiiton, board, piece);}
+        if(piece.type == PieceType.PAWN){return move_pawn(myposiiton, board, piece);}
+
         ArrayList<ChessMove> moves = new ArrayList<ChessMove>();
 
 //      N+ S- E+ W-
@@ -339,7 +342,7 @@ public class ChessPiece {
         }
         if (piece.getPieceType() == PieceType.KNIGHT){
             System.out.println(myPosition);
-            return move_knight(myPosition, board, piece);
+            return move_calc(myPosition, board, piece);
         }
         if (piece.getPieceType() == PieceType.ROOK){
             System.out.println(myPosition);
@@ -347,7 +350,7 @@ public class ChessPiece {
         }
         if (piece.getPieceType() == PieceType.PAWN){
             System.out.println(myPosition);
-            return move_pawn(myPosition, board, piece);
+            return move_calc(myPosition, board, piece);
         }
         if (piece.getPieceType() == PieceType.QUEEN){
             System.out.println(myPosition);
