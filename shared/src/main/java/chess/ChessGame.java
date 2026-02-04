@@ -1,5 +1,6 @@
 package chess;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -71,12 +72,34 @@ public class ChessGame {
         }
     }
 
-    public Collection<ChessMove> possible_white(ChessBoard board){
-        ArrayList<ChessMove> possible = new ArrayList<ChessMove>();
+    public Collection<ChessPosition> possible_white(ChessBoard board){
+        ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
+        ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
         for(int i = 0; i<white_team.size(); i++){
             ChessPiece hold = board.getPiece(white_team.get(i));
+            possible_moves.addAll(hold.move_calc(white_team.get(i), board, hold));
         }
-        return possible;
+        for(int i = 0; i<possible_moves.size(); i++){
+            ChessMove current = possible_moves.get(i);
+            ChessPosition end = current.getEndPosition();
+            end_points.add(end);
+        }
+        return end_points;
+    }
+
+    public Collection<ChessPosition> possible_black(ChessBoard board){
+        ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
+        ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
+        for(int i = 0; i<black_team.size(); i++){
+            ChessPiece hold = board.getPiece(black_team.get(i));
+            possible_moves.addAll(hold.move_calc(black_team.get(i), board, hold));
+        }
+        for(int i = 0; i<possible_moves.size(); i++){
+            ChessMove current = possible_moves.get(i);
+            ChessPosition end = current.getEndPosition();
+            end_points.add(end);
+        }
+        return end_points;
     }
 
     /**
