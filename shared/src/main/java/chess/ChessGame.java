@@ -49,6 +49,7 @@ public class ChessGame {
     }
 
     public  void find_white_team(ChessBoard board){
+        white_team.clear();
         for(int x = 1; x<9; x++){
             for(int y = 1; y<9; y++){
                 ChessPosition finder = new ChessPosition(x, y);
@@ -61,6 +62,7 @@ public class ChessGame {
     }
 
     public void find_black_team(ChessBoard board){
+        black_team.clear();
         for(int x = 1; x<9; x++){
             for(int y = 1; y<9; y++){
                 ChessPosition finder = new ChessPosition(x, y);
@@ -100,6 +102,28 @@ public class ChessGame {
             end_points.add(end);
         }
         return end_points;
+    }
+
+    public boolean white_in_check(ChessBoard board){
+        find_black_team(board);
+        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_black(board));
+        for(int x = 0; x<endings.size(); x++){
+            if(endings.get(x) == King_W){
+                White_check = true;
+            }
+        }
+        return White_check;
+    }
+
+    public boolean black_in_check(ChessBoard board){
+        find_white_team(board);
+        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_white(board));
+        for(int x = 0; x<endings.size(); x++){
+            if(endings.get(x) == King_W){
+                Black_check = true;
+            }
+        }
+        return Black_check;
     }
 
     /**
@@ -147,11 +171,13 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        if(teamColor == TeamColor.WHITE && White_check){
-            return true;
+
+
+        if(teamColor == TeamColor.WHITE){
+            return white_in_check(board);
         }
-        if(teamColor == TeamColor.BLACK && Black_check){
-            return true;
+        if(teamColor == TeamColor.BLACK){
+            return black_in_check(board);
         }
         else{
             return false;
