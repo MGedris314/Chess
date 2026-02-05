@@ -189,10 +189,18 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         if(teamColor == TeamColor.WHITE){
-            return white_in_check(board);
+            boolean white_mate = isInCheckmate(TeamColor.WHITE);
+            if(!white_mate) {
+                return white_in_check(board);
+            }
+            return true;
         }
         if(teamColor == TeamColor.BLACK){
-            return black_in_check(board);
+            boolean black_mate = isInCheckmate(TeamColor.BLACK);
+            if(!black_mate) {
+                return black_in_check(board);
+            }
+            return true;
         }
         else{
             return false;
