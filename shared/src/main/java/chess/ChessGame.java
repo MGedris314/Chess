@@ -126,6 +126,13 @@ public class ChessGame {
         return Black_check;
     }
 
+    public Collection<ChessMove> valid_white(){
+        return null;
+    }
+    public Collection<ChessMove> valid_black(){
+        return null;
+    }
+
     /**
      * Set's which teams turn it is
      *
@@ -151,7 +158,17 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece piece = board.getPiece(startPosition);
+        if(piece.getTeamColor() == TeamColor.WHITE){
+            return valid_white();
+        }
+        else if(piece.getTeamColor() == TeamColor.BLACK){
+            return valid_black();
+        }
+        else{
+            System.out.println("Something has gone wrong to get to this point, check your logic");
+            return null;
+        }
     }
 
     /**
@@ -171,8 +188,6 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-
-
         if(teamColor == TeamColor.WHITE){
             return white_in_check(board);
         }
@@ -191,7 +206,28 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        if(teamColor==TeamColor.WHITE){
+            ArrayList<ChessMove> moves_out = validMoves(King_W);
+            if(moves_out == null && White_check){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        if(teamColor==TeamColor.BLACK){
+            ArrayList<ChessMove> moves_out = validMoves(King_B);
+            if(moves_out == null && Black_check){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            System.out.println("Something has gone horribly wrong to hit this statement.");
+            return false;
+        }
     }
 
     /**
@@ -202,7 +238,28 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        if(teamColor==TeamColor.WHITE){
+            ArrayList<ChessMove> moves_out = validMoves(King_W);
+            if(moves_out == null && !White_check){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        if(teamColor==TeamColor.BLACK){
+            ArrayList<ChessMove> moves_out = validMoves(King_B);
+            if(moves_out == null && !Black_check){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            System.out.println("Something has gone horribly wrong to hit this statement.");
+            return false;
+        }
     }
 
     /**
@@ -220,6 +277,6 @@ public class ChessGame {
      * @return the chessboard
      */
     public ChessBoard getBoard() {
-        throw new RuntimeException("Not implemented");
+        return board;
     }
 }
