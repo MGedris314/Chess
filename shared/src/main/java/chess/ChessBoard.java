@@ -11,10 +11,10 @@ import java.util.Objects;
  */
 // 2D array used for creation.
 public class ChessBoard {
-    ChessPiece[][] squares = new ChessPiece [8][8];
+    ChessPiece[][] squares;
 
     public ChessBoard() {
-        
+         this.squares = new ChessPiece [8][8];
     }
 
     /**

@@ -3,6 +3,7 @@ package chess;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -11,10 +12,24 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessGame {
-    ChessBoard board = new ChessBoard(); //Figure out how to set up the board.
-    TeamColor team_turn = TeamColor.WHITE;
+    ChessBoard board; //Figure out how to set up the board.
+    TeamColor team_turn;
+    boolean White_check;
+    boolean Black_check;
+    ChessPosition King_W;
+    ChessPosition King_B;
+    ArrayList <ChessPosition> white_team;
+    ArrayList <ChessPosition> black_team;
     public ChessGame() {
-
+        this.team_turn = TeamColor.WHITE;
+        this.board = new ChessBoard();
+        this.board.resetBoard();
+        White_check = false;
+        Black_check = false;
+        King_W = find_king(this.board, TeamColor.WHITE);
+        King_B = find_king(this.board, TeamColor.BLACK);
+        white_team = new ArrayList<ChessPosition>();
+        black_team = new ArrayList<ChessPosition>();
     }
 
     /**
@@ -22,12 +37,6 @@ public class ChessGame {
      */
 
 //    Setting up variables that we'll probably be using later
-    boolean White_check = false;
-    boolean Black_check = false;
-    ChessPosition King_W = find_king(board, TeamColor.WHITE);
-    ChessPosition King_B = find_king(board, TeamColor.BLACK);
-    ArrayList <ChessPosition> white_team = new ArrayList<ChessPosition>();
-    ArrayList <ChessPosition> black_team = new ArrayList<ChessPosition>();
 
     public ChessPosition find_king(ChessBoard board, TeamColor color){
         for(int x = 1; x<9; x++){
@@ -48,7 +57,7 @@ public class ChessGame {
         return team_turn;
     }
 
-    public  void find_white_team(ChessBoard board){
+    public void find_white_team(ChessBoard board){
         white_team.clear();
         for(int x = 1; x<9; x++){
             for(int y = 1; y<9; y++){
@@ -107,8 +116,9 @@ public class ChessGame {
     public boolean white_in_check(ChessBoard board){
         find_black_team(board);
         ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_black(board));
+        King_W = find_king(board, TeamColor.WHITE);
         for(int x = 0; x<endings.size(); x++){
-            if(endings.get(x) == King_W){
+            if(endings.get(x).equals(King_W)){
                 White_check = true;
             }
         }
@@ -118,8 +128,10 @@ public class ChessGame {
     public boolean black_in_check(ChessBoard board){
         find_white_team(board);
         ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_white(board));
+        King_B = find_king(board, TeamColor.BLACK);
         for(int x = 0; x<endings.size(); x++){
-            if(endings.get(x) == King_W){
+            System.out.println(endings.get(x));
+            if(endings.get(x).equals(King_B)){
                 Black_check = true;
             }
         }
@@ -189,18 +201,10 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         if(teamColor == TeamColor.WHITE){
-            boolean white_mate = isInCheckmate(TeamColor.WHITE);
-            if(!white_mate) {
                 return white_in_check(board);
-            }
-            return true;
         }
         if(teamColor == TeamColor.BLACK){
-            boolean black_mate = isInCheckmate(TeamColor.BLACK);
-            if(!black_mate) {
-                return black_in_check(board);
-            }
-            return true;
+            return black_in_check(board);
         }
         else{
             return false;
@@ -215,20 +219,12 @@ public class ChessGame {
      */
     public boolean isInCheckmate(TeamColor teamColor) {
         if(teamColor==TeamColor.WHITE){
-            ArrayList<ChessMove> moves_out = validMoves(King_W);
-            if(moves_out == null && White_check){
-                return true;
-            }
-            else{
+            if(!White_check){
                 return false;
             }
         }
         if(teamColor==TeamColor.BLACK){
-            ArrayList<ChessMove> moves_out = validMoves(King_B);
-            if(moves_out == null && Black_check){
-                return true;
-            }
-            else{
+            if(!Black_check){
                 return false;
             }
         }
@@ -236,6 +232,7 @@ public class ChessGame {
             System.out.println("Something has gone horribly wrong to hit this statement.");
             return false;
         }
+        return false;
     }
 
     /**
@@ -246,28 +243,29 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        if(teamColor==TeamColor.WHITE){
-            ArrayList<ChessMove> moves_out = validMoves(King_W);
-            if(moves_out == null && !White_check){
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-        if(teamColor==TeamColor.BLACK){
-            ArrayList<ChessMove> moves_out = validMoves(King_B);
-            if(moves_out == null && !Black_check){
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-        else{
-            System.out.println("Something has gone horribly wrong to hit this statement.");
-            return false;
-        }
+//        if(teamColor==TeamColor.WHITE){
+//            ArrayList<ChessMove> moves_out = validMoves(King_W);
+//            if(moves_out == null && !White_check){
+//                return true;
+//            }
+//            else{
+//                return false;
+//            }
+//        }
+//        if(teamColor==TeamColor.BLACK){
+//            ArrayList<ChessMove> moves_out = validMoves(King_B);
+//            if(moves_out == null && !Black_check){
+//                return true;
+//            }
+//            else{
+//                return false;
+//            }
+//        }
+//        else{
+//            System.out.println("Something has gone horribly wrong to hit this statement.");
+//            return false;
+//        }
+        return false;
     }
 
     /**
@@ -276,7 +274,7 @@ public class ChessGame {
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
-        board.resetBoard();
+        this.board = board;
     }
 
     /**
@@ -286,5 +284,19 @@ public class ChessGame {
      */
     public ChessBoard getBoard() {
         return board;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessGame chessGame = (ChessGame) o;
+        return White_check == chessGame.White_check && Black_check == chessGame.Black_check && Objects.equals(board, chessGame.board) && team_turn == chessGame.team_turn && Objects.equals(King_W, chessGame.King_W) && Objects.equals(King_B, chessGame.King_B) && Objects.equals(white_team, chessGame.white_team) && Objects.equals(black_team, chessGame.black_team);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(board, team_turn, White_check, Black_check, King_W, King_B, white_team, black_team);
     }
 }

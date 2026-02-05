@@ -31,3 +31,5 @@ Phase 2 notes
 Figure out the phase 3 specs.
 Creat a diagram for each endpoint(URL's with code attached to it).  There are 7, and we will implement them all in phase 3
 We only need to create six diagrams as one is taken care of as an example.
+The one that's done for us is register.
+You may want to check a few of the links to figure out how the site works and how to set up the diagrams.
