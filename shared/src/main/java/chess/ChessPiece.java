@@ -295,7 +295,7 @@ public class ChessPiece {
         }
 //      SW --
         for(int x = 1; x<8; x++){
-            if(down == 0 || right==0 || row-x<1 || col-x<1 || piece.type == PieceType.ROOK){break;}
+            if(down == 0 || left==0 || row-x<1 || col-x<1 || piece.type == PieceType.ROOK){break;}
             ChessPosition check = new ChessPosition(row - x, col - x);
             ChessPiece check1 = board.getPiece(check);
             if(check1 == null){

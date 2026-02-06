@@ -195,6 +195,7 @@ public class ChessGame {
 
     public boolean white_in_check(ChessBoard board){
         find_black_team(board);
+        White_check = false;
         ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_black_ends(board));
         King_W = find_king(board, TeamColor.WHITE);
         for(int x = 0; x<endings.size(); x++){
@@ -207,12 +208,13 @@ public class ChessGame {
 
     public boolean black_in_check(ChessBoard board){
         find_white_team(board);
+        Black_check = false;
         ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_white_ends(board));
         King_B = find_king(board, TeamColor.BLACK);
         for(int x = 0; x<endings.size(); x++){
-            System.out.println(endings.get(x));
             if(endings.get(x).equals(King_B)){
                 Black_check = true;
+                break;
             }
         }
         return Black_check;
@@ -282,7 +284,7 @@ public class ChessGame {
                     valid_moves.add(moves_to_check.get(x));
                 }
             }
-            return valid_moves;
+           return valid_moves;
         }
         else{
             System.out.println("Something has gone wrong to get to this point, check your logic");
@@ -302,7 +304,8 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        ChessPosition mover = move.getStartPosition();
+//        ArrayList <ChessMove> is_valid = validMoves(mover);
         /*
         Calls valid moves
         * */

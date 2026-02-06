@@ -101,6 +101,7 @@ public class ChessBoard {
             for (int y = 1; y < squares.length +1; y++) {
                 write_out.append(getPiece(new ChessPosition(x, y)));
             }
+            write_out.append("\n");
         }
         return write_out.toString();
     }
