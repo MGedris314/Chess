@@ -254,6 +254,21 @@ public class ChessGame {
         ArrayList <ChessMove> moves_to_check = new ArrayList<ChessMove>();
         moves_to_check.addAll(piece.move_calc(startPosition, board, piece));
         if(piece.getTeamColor() == TeamColor.WHITE){
+            for(int x = 0; x<moves_to_check.size(); x++){
+                ChessPosition start_point = moves_to_check.get(x).getStartPosition();
+                ChessPosition end_point = moves_to_check.get(x).getEndPosition();
+                int end_x = end_point.getRow();
+                int end_y = end_point.getColumn();
+                int start_x = start_point.getRow();
+                int start_y = start_point.getColumn();
+                //Clone board here
+                //Add piece to cloned board at end position
+                //Remove piece from start position
+                boolean validated = white_in_check(board);
+                if(!validated){
+                    valid_moves.add(moves_to_check.get(x));
+                }
+            }
             return valid_moves;
             /*
             * Okay, I know I'm close, here's what I need to do.
