@@ -161,7 +161,7 @@ public class ChessGame {
         return end_points;
     }
 
-    public Collection<ChessMove> possible_white_start(ChessBoard board){
+    public Collection<ChessPosition> possible_white_start(ChessBoard board){
 //      If full is true, we run the full thing.  Otherwise, we just get the moves.
         ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
@@ -169,17 +169,27 @@ public class ChessGame {
             ChessPiece hold = board.getPiece(white_team.get(i));
             possible_moves.addAll(hold.move_calc(white_team.get(i), board, hold));
         }
-        return possible_moves;
+        for(int i = 0; i<possible_moves.size(); i++){
+            ChessMove current = possible_moves.get(i);
+            ChessPosition start = current.getStartPosition();
+            end_points.add(start);
+        }
+        return end_points;
     }
 
-    public Collection<ChessMove> possible_black_start(ChessBoard board){
+    public Collection<ChessPosition> possible_black_start(ChessBoard board){
         ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
         for(int i = 0; i<black_team.size(); i++){
             ChessPiece hold = board.getPiece(black_team.get(i));
             possible_moves.addAll(hold.move_calc(black_team.get(i), board, hold));
         }
-        return possible_moves;
+        for(int i = 0; i<possible_moves.size(); i++){
+            ChessMove current = possible_moves.get(i);
+            ChessPosition start = current.getStartPosition();
+            end_points.add(start);
+        }
+        return end_points;
     }
 
     public boolean white_in_check(ChessBoard board){
@@ -240,15 +250,25 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece piece = board.getPiece(startPosition);
+        ArrayList <ChessMove> valid_moves = new ArrayList<ChessMove>();
+        ArrayList <ChessMove> moves_to_check = new ArrayList<ChessMove>();
+        moves_to_check.addAll(piece.move_calc(startPosition, board, piece));
         if(piece.getTeamColor() == TeamColor.WHITE){
-            return valid_white();
+            return valid_moves;
+            /*
+            * Okay, I know I'm close, here's what I need to do.
+            * I need to figure out how to clone the board.  Ideally using the constructor method.
+            * I need to move pieces around and then call the is in check method on it
+            * If the piece results in not being in check, add it to the valid moves array and return it.
+            * Reset the cloned board and repeat.
+            * */
         }
         else if(piece.getTeamColor() == TeamColor.BLACK){
-            return valid_black();
+            return valid_moves;
         }
         else{
             System.out.println("Something has gone wrong to get to this point, check your logic");
-            return null;
+            return valid_moves;
         }
         /*
         for loop calling make move for all possible moves?
@@ -307,6 +327,8 @@ public class ChessGame {
                 return false;
             }
 //          Last resort, move a piece to interrupt check.
+            ArrayList <ChessPosition> valid_pass_in = new ArrayList<ChessPosition>();
+            valid_pass_in.addAll(possible_white_start(board)); //This gives us all possible moves that the white team can make.
         }
         if(teamColor==TeamColor.BLACK){
             if(!Black_check){
