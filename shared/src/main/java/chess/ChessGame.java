@@ -61,7 +61,7 @@ public class ChessGame {
         ArrayList<ChessMove> escape = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> possible_moves = new ArrayList<ChessPosition>();
         escape.addAll(king.move_calc(King_W, board, king));
-        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_black(board));
+        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_black_ends(board));
         for(int i = 0; i< escape.size(); i++){
             ChessMove current = escape.get(i);
             ChessPosition end_point = current.getEndPosition();
@@ -83,7 +83,7 @@ public class ChessGame {
         ArrayList<ChessMove> escape = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> possible_moves = new ArrayList<ChessPosition>();
         escape.addAll(king.move_calc(King_B, board, king));
-        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_white(board));
+        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_white_ends(board));
         for(int i = 0; i< escape.size(); i++){
             ChessMove current = escape.get(i);
             ChessPosition end_point = current.getEndPosition();
@@ -129,13 +129,15 @@ public class ChessGame {
         }
     }
 
-    public Collection<ChessPosition> possible_white(ChessBoard board){
+    public Collection<ChessPosition> possible_white_ends(ChessBoard board){
+//      If full is true, we run the full thing.  Otherwise, we just get the moves.
         ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
         for(int i = 0; i<white_team.size(); i++){
             ChessPiece hold = board.getPiece(white_team.get(i));
             possible_moves.addAll(hold.move_calc(white_team.get(i), board, hold));
         }
+        
         for(int i = 0; i<possible_moves.size(); i++){
             ChessMove current = possible_moves.get(i);
             ChessPosition end = current.getEndPosition();
@@ -144,7 +146,7 @@ public class ChessGame {
         return end_points;
     }
 
-    public Collection<ChessPosition> possible_black(ChessBoard board){
+    public Collection<ChessPosition> possible_black_ends(ChessBoard board){
         ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
         for(int i = 0; i<black_team.size(); i++){
@@ -159,9 +161,30 @@ public class ChessGame {
         return end_points;
     }
 
+    public Collection<ChessMove> possible_white_start(ChessBoard board){
+//      If full is true, we run the full thing.  Otherwise, we just get the moves.
+        ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
+        ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
+        for(int i = 0; i<white_team.size(); i++){
+            ChessPiece hold = board.getPiece(white_team.get(i));
+            possible_moves.addAll(hold.move_calc(white_team.get(i), board, hold));
+        }
+        return possible_moves;
+    }
+
+    public Collection<ChessMove> possible_black_start(ChessBoard board){
+        ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
+        ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
+        for(int i = 0; i<black_team.size(); i++){
+            ChessPiece hold = board.getPiece(black_team.get(i));
+            possible_moves.addAll(hold.move_calc(black_team.get(i), board, hold));
+        }
+        return possible_moves;
+    }
+
     public boolean white_in_check(ChessBoard board){
         find_black_team(board);
-        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_black(board));
+        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_black_ends(board));
         King_W = find_king(board, TeamColor.WHITE);
         for(int x = 0; x<endings.size(); x++){
             if(endings.get(x).equals(King_W)){
@@ -173,7 +196,7 @@ public class ChessGame {
 
     public boolean black_in_check(ChessBoard board){
         find_white_team(board);
-        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_white(board));
+        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_white_ends(board));
         King_B = find_king(board, TeamColor.BLACK);
         for(int x = 0; x<endings.size(); x++){
             System.out.println(endings.get(x));
@@ -274,13 +297,16 @@ public class ChessGame {
     public boolean isInCheckmate(TeamColor teamColor) {
 //        Just call valid moves
         if(teamColor==TeamColor.WHITE){
+//          Base case, if we're not in check, we're not in check mate.
             if(!White_check){
                 return false;
             }
+//          Second case, if the king can move, it's not check mate.
             boolean king_move = king_escape_w(board, teamColor);
             if(king_move){
                 return false;
             }
+//          Last resort, move a piece to interrupt check.
         }
         if(teamColor==TeamColor.BLACK){
             if(!Black_check){
