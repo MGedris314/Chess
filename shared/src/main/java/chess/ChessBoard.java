@@ -17,6 +17,15 @@ public class ChessBoard {
          this.squares = new ChessPiece [8][8];
     }
 
+    public ChessBoard(ChessBoard board){
+        this.squares = new ChessPiece[8][8];
+        for(int x = 0; x<8; x++){
+            for(int y = 0; y<8; y++){
+                this.squares[x][y]=board.squares[x][y];
+            }
+        }
+    }
+
     /**
      * Adds a chess piece to the chessboard
      *

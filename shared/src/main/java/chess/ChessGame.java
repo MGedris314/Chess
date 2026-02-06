@@ -21,6 +21,7 @@ public class ChessGame {
     ChessPosition King_B;
     ArrayList <ChessPosition> white_team;
     ArrayList <ChessPosition> black_team;
+
     public ChessGame() {
         this.team_turn = TeamColor.WHITE;
         this.board = new ChessBoard();
@@ -255,30 +256,32 @@ public class ChessGame {
         moves_to_check.addAll(piece.move_calc(startPosition, board, piece));
         if(piece.getTeamColor() == TeamColor.WHITE){
             for(int x = 0; x<moves_to_check.size(); x++){
+                ChessBoard cloned = new ChessBoard(board);
                 ChessPosition start_point = moves_to_check.get(x).getStartPosition();
                 ChessPosition end_point = moves_to_check.get(x).getEndPosition();
-                int end_x = end_point.getRow();
-                int end_y = end_point.getColumn();
-                int start_x = start_point.getRow();
-                int start_y = start_point.getColumn();
                 //Clone board here
-                //Add piece to cloned board at end position
-                //Remove piece from start position
-                boolean validated = white_in_check(board);
+                cloned.addPiece(end_point, board.getPiece(startPosition));
+                cloned.addPiece(start_point, null);
+                boolean validated = white_in_check(cloned);
                 if(!validated){
                     valid_moves.add(moves_to_check.get(x));
                 }
             }
             return valid_moves;
-            /*
-            * Okay, I know I'm close, here's what I need to do.
-            * I need to figure out how to clone the board.  Ideally using the constructor method.
-            * I need to move pieces around and then call the is in check method on it
-            * If the piece results in not being in check, add it to the valid moves array and return it.
-            * Reset the cloned board and repeat.
-            * */
         }
         else if(piece.getTeamColor() == TeamColor.BLACK){
+            for(int x = 0; x<moves_to_check.size(); x++){
+                ChessBoard cloned = new ChessBoard(board);
+                ChessPosition start_point = moves_to_check.get(x).getStartPosition();
+                ChessPosition end_point = moves_to_check.get(x).getEndPosition();
+                //Clone board here
+                cloned.addPiece(end_point, board.getPiece(startPosition));
+                cloned.addPiece(start_point, null);
+                boolean validated = black_in_check(cloned);
+                if(!validated){
+                    valid_moves.add(moves_to_check.get(x));
+                }
+            }
             return valid_moves;
         }
         else{
