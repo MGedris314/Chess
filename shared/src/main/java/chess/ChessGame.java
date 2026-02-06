@@ -2,6 +2,7 @@ package chess;
 
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -51,6 +52,51 @@ public class ChessGame {
             }
         }
         return null;
+    }
+
+    public boolean king_escape_w(ChessBoard board, TeamColor color){
+//      This checks to see if the king can escape
+        King_W = find_king(board, color);
+        ChessPiece king = board.getPiece(King_W);
+        ArrayList<ChessMove> escape = new ArrayList<ChessMove>();
+        ArrayList<ChessPosition> possible_moves = new ArrayList<ChessPosition>();
+        escape.addAll(king.move_calc(King_W, board, king));
+        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_black(board));
+        for(int i = 0; i< escape.size(); i++){
+            ChessMove current = escape.get(i);
+            ChessPosition end_point = current.getEndPosition();
+            possible_moves.add(end_point);
+        }
+        for(int x = 0; x<possible_moves.size(); x++){
+            boolean open = Arrays.asList(endings).contains(possible_moves.get(x));
+            if(!open){
+                return true;
+//              This means the king has at least one escape option by moving it's self.
+            }
+        }
+        return false;
+    }
+    public boolean king_escape_b(ChessBoard board, TeamColor color){
+//      This checks to see if the king can escape
+        King_B = find_king(board, color);
+        ChessPiece king = board.getPiece(King_B);
+        ArrayList<ChessMove> escape = new ArrayList<ChessMove>();
+        ArrayList<ChessPosition> possible_moves = new ArrayList<ChessPosition>();
+        escape.addAll(king.move_calc(King_B, board, king));
+        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_white(board));
+        for(int i = 0; i< escape.size(); i++){
+            ChessMove current = escape.get(i);
+            ChessPosition end_point = current.getEndPosition();
+            possible_moves.add(end_point);
+        }
+        for(int x = 0; x<possible_moves.size(); x++){
+            boolean open = Arrays.asList(endings).contains(possible_moves.get(x));
+            if(!open){
+                return true;
+//              This means the king has at least one escape option by moving it's self.
+            }
+        }
+        return false;
     }
 
     public TeamColor getTeamTurn() {
@@ -181,6 +227,11 @@ public class ChessGame {
             System.out.println("Something has gone wrong to get to this point, check your logic");
             return null;
         }
+        /*
+        for loop calling make move for all possible moves?
+
+        return all valid moves after adding them to an array.
+        * */
     }
 
     /**
@@ -191,6 +242,9 @@ public class ChessGame {
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
         throw new RuntimeException("Not implemented");
+        /*
+        Calls valid moves
+        * */
     }
 
     /**
@@ -201,7 +255,7 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         if(teamColor == TeamColor.WHITE){
-                return white_in_check(board);
+            return white_in_check(board);
         }
         if(teamColor == TeamColor.BLACK){
             return black_in_check(board);
@@ -218,13 +272,22 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
+//        Just call valid moves
         if(teamColor==TeamColor.WHITE){
             if(!White_check){
+                return false;
+            }
+            boolean king_move = king_escape_w(board, teamColor);
+            if(king_move){
                 return false;
             }
         }
         if(teamColor==TeamColor.BLACK){
             if(!Black_check){
+                return false;
+            }
+            boolean king_move = king_escape_b(board, teamColor);
+            if(king_move){
                 return false;
             }
         }
@@ -243,28 +306,20 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-//        if(teamColor==TeamColor.WHITE){
-//            ArrayList<ChessMove> moves_out = validMoves(King_W);
-//            if(moves_out == null && !White_check){
-//                return true;
-//            }
-//            else{
-//                return false;
-//            }
-//        }
-//        if(teamColor==TeamColor.BLACK){
-//            ArrayList<ChessMove> moves_out = validMoves(King_B);
-//            if(moves_out == null && !Black_check){
-//                return true;
-//            }
-//            else{
-//                return false;
-//            }
-//        }
-//        else{
-//            System.out.println("Something has gone horribly wrong to hit this statement.");
-//            return false;
-//        }
+        if(teamColor==TeamColor.WHITE){
+            if (White_check){
+                return false;
+            }
+        }
+        if(teamColor==TeamColor.BLACK){
+            if(Black_check){
+                return false;
+            }
+        }
+        else{
+            System.out.println("Something has gone horribly wrong to hit this statement.");
+            return false;
+        }
         return false;
     }
 
