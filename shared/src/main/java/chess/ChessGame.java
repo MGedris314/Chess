@@ -62,7 +62,8 @@ public class ChessGame {
         ArrayList<ChessMove> escape = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> possible_moves = new ArrayList<ChessPosition>();
         escape.addAll(king.move_calc(King_W, board, king));
-        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_black_ends(board));
+        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>();
+        endings.addAll(possible_black_ends(board));
         for(int i = 0; i< escape.size(); i++){
             ChessMove current = escape.get(i);
             ChessPosition end_point = current.getEndPosition();
@@ -70,7 +71,7 @@ public class ChessGame {
         }
         for(int x = 0; x<possible_moves.size(); x++){
             boolean open = Arrays.asList(endings).contains(possible_moves.get(x));
-            if(!open){
+            if(open){
                 return true;
 //              This means the king has at least one escape option by moving it's self.
             }
@@ -92,7 +93,7 @@ public class ChessGame {
         }
         for(int x = 0; x<possible_moves.size(); x++){
             boolean open = Arrays.asList(endings).contains(possible_moves.get(x));
-            if(!open){
+            if(open){
                 return true;
 //              This means the king has at least one escape option by moving it's self.
             }
@@ -304,8 +305,31 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
+        InvalidMoveException wrong = new InvalidMoveException();
+        ChessPiece has_piece = board.getPiece(move.getStartPosition());
+        if(has_piece == null){
+            throw wrong;
+        }
         ChessPosition mover = move.getStartPosition();
-//        ArrayList <ChessMove> is_valid = validMoves(mover);
+        ArrayList <ChessMove> is_valid = new ArrayList<ChessMove>();
+        is_valid.addAll(validMoves(mover));
+        if(is_valid.isEmpty()){
+
+            throw wrong;
+        }
+        else{
+            ChessPosition start_point = move.getStartPosition();
+            ChessPosition end_point = move.getEndPosition();
+            //Clone board here
+            board.addPiece(end_point, board.getPiece(start_point));
+            board.addPiece(start_point, null);
+            if(team_turn == TeamColor.BLACK){
+                team_turn = TeamColor.WHITE;
+            }
+            else if(team_turn == TeamColor.WHITE){
+                team_turn = TeamColor.BLACK;
+            }
+        }
         /*
         Calls valid moves
         * */
@@ -339,6 +363,7 @@ public class ChessGame {
 //        Just call valid moves
         if(teamColor==TeamColor.WHITE){
 //          Base case, if we're not in check, we're not in check mate.
+            White_check = white_in_check(board);
             if(!White_check){
                 return false;
             }
@@ -349,15 +374,37 @@ public class ChessGame {
             }
 //          Last resort, move a piece to interrupt check.
             ArrayList <ChessPosition> valid_pass_in = new ArrayList<ChessPosition>();
+            ArrayList <ChessMove> valid_outs = new ArrayList<ChessMove>();
             valid_pass_in.addAll(possible_white_start(board)); //This gives us all possible moves that the white team can make.
+            for(int y = 0; y<valid_pass_in.size(); y++){
+                ChessPosition start_point = valid_pass_in.get(y);
+                valid_outs.addAll(validMoves(start_point));
+            }
+            if(valid_outs.isEmpty()){
+                //If it is empty there are no outs, we are in checkmate.
+                return true;
+            }
         }
         if(teamColor==TeamColor.BLACK){
+            Black_check = black_in_check(board);
             if(!Black_check){
                 return false;
             }
             boolean king_move = king_escape_b(board, teamColor);
             if(king_move){
                 return false;
+            }
+            //Last resort, move a piece to interrupt check.
+            ArrayList <ChessPosition> valid_pass_in = new ArrayList<ChessPosition>();
+            ArrayList <ChessMove> valid_outs = new ArrayList<ChessMove>();
+            valid_pass_in.addAll(possible_black_start(board)); //This gives us all possible moves that the white team can make.
+            for(int y = 0; y<valid_pass_in.size(); y++){
+                ChessPosition start_point = valid_pass_in.get(y);
+                valid_outs.addAll(validMoves(start_point));
+            }
+            if(valid_outs.isEmpty()){
+                //If it is empty there are no outs, we are in checkmate.
+                return true;
             }
         }
         else{
