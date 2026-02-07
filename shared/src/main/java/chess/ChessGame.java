@@ -423,13 +423,47 @@ public class ChessGame {
      */
     public boolean isInStalemate(TeamColor teamColor) {
         if(teamColor==TeamColor.WHITE){
+            White_check = white_in_check(board);
             if (White_check){
                 return false;
             }
+            boolean king_move = king_escape_w(board, teamColor);
+            if(!king_move && White_check==true){
+                return false;
+            }
+//          Last resort, move a piece to interrupt check.
+            ArrayList <ChessPosition> valid_pass_in = new ArrayList<ChessPosition>();
+            ArrayList <ChessMove> valid_outs = new ArrayList<ChessMove>();
+            valid_pass_in.addAll(possible_white_start(board)); //This gives us all possible moves that the white team can make.
+            for(int y = 0; y<valid_pass_in.size(); y++){
+                ChessPosition start_point = valid_pass_in.get(y);
+                valid_outs.addAll(validMoves(start_point));
+            }
+            if(valid_outs.isEmpty() && White_check == false){
+                //If it is empty there are no outs, we are in checkmate.
+                return true;
+            }
         }
         if(teamColor==TeamColor.BLACK){
+            Black_check = black_in_check(board);
             if(Black_check){
                 return false;
+            }
+            boolean king_move = king_escape_b(board, teamColor);
+            if(!king_move && Black_check==true){
+                return false;
+            }
+//          Last resort, move a piece to interrupt check.
+            ArrayList <ChessPosition> valid_pass_in = new ArrayList<ChessPosition>();
+            ArrayList <ChessMove> valid_outs = new ArrayList<ChessMove>();
+            valid_pass_in.addAll(possible_black_start(board)); //This gives us all possible moves that the black team can make.
+            for(int y = 0; y<valid_pass_in.size(); y++){
+                ChessPosition start_point = valid_pass_in.get(y);
+                valid_outs.addAll(validMoves(start_point));
+            }
+            if(valid_outs.isEmpty() && Black_check == false){
+                //If it is empty there are no outs, we are in checkmate.
+                return true;
             }
         }
         else{
