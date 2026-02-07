@@ -307,13 +307,24 @@ public class ChessGame {
         if(has_piece == null){
             throw wrong;
         }
+        if(has_piece.getTeamColor() != team_turn){
+            throw wrong;
+        }
         ChessPosition mover = move.getStartPosition();
         ArrayList <ChessMove> is_valid = new ArrayList<ChessMove>();
         is_valid.addAll(validMoves(mover));
+        ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>();
+        for(int x = 0; x<is_valid.size(); x++){
+            ChessMove current = is_valid.get(x);
+            ChessPosition current_end = current.getEndPosition();
+            endings.add(current_end);
+        }
+
         if(is_valid.isEmpty()){
 
             throw wrong;
         }
+
 
         else{
             ChessPosition start_point = move.getStartPosition();
