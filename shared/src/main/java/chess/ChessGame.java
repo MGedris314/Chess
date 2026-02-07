@@ -319,8 +319,26 @@ public class ChessGame {
             ChessPosition start_point = move.getStartPosition();
             ChessPosition end_point = move.getEndPosition();
             //Clone board here
-            board.addPiece(end_point, board.getPiece(start_point));
-            board.addPiece(start_point, null);
+            if(move.getPromotionPiece() == null) {
+                board.addPiece(end_point, board.getPiece(start_point));
+                board.addPiece(start_point, null);
+            }
+            else if(move.getPromotionPiece() == ChessPiece.PieceType.KNIGHT){
+                board.addPiece(end_point, new ChessPiece(team_turn, ChessPiece.PieceType.KNIGHT));
+                board.addPiece(start_point, null);
+            }
+            else if(move.getPromotionPiece() == ChessPiece.PieceType.ROOK){
+                board.addPiece(end_point, new ChessPiece(team_turn, ChessPiece.PieceType.ROOK));
+                board.addPiece(start_point, null);
+            }
+            else if(move.getPromotionPiece() == ChessPiece.PieceType.QUEEN){
+                board.addPiece(end_point, new ChessPiece(team_turn, ChessPiece.PieceType.QUEEN));
+                board.addPiece(start_point, null);
+            }
+            else if(move.getPromotionPiece() == ChessPiece.PieceType.BISHOP){
+                board.addPiece(end_point, new ChessPiece(team_turn, ChessPiece.PieceType.BISHOP));
+                board.addPiece(start_point, null);
+            }
             if(team_turn == TeamColor.BLACK){
                 team_turn = TeamColor.WHITE;
             }
