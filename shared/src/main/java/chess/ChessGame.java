@@ -324,9 +324,25 @@ public class ChessGame {
 
             throw wrong;
         }
-
-
         else{
+            ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
+            possible_moves.addAll(has_piece.move_calc(move.getStartPosition(), board, has_piece));
+            ArrayList<ChessPosition> possible_ends = new ArrayList<ChessPosition>();
+            for (int x = 0; x < possible_moves.size(); x++) {
+                ChessMove current = possible_moves.get(x);
+                ChessPosition end_point = current.getEndPosition();
+                possible_ends.add(end_point);
+            }
+            boolean can_move = false;
+            for (int x = 0; x < possible_moves.size(); x++) {
+                if(possible_ends.get(x).equals(move.getEndPosition())){
+                    can_move = true;
+                    break;
+                }
+            }
+            if(!can_move){
+                throw wrong;
+            }
             ChessPosition start_point = move.getStartPosition();
             ChessPosition end_point = move.getEndPosition();
             //Clone board here
