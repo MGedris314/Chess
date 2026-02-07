@@ -82,6 +82,7 @@ public class ChessGame {
 //      This checks to see if the king can escape
         King_B = find_king(board, color);
         ChessPiece king = board.getPiece(King_B);
+
         ArrayList<ChessMove> escape = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> possible_moves = new ArrayList<ChessPosition>();
         escape.addAll(king.move_calc(King_B, board, king));
@@ -92,7 +93,7 @@ public class ChessGame {
             possible_moves.add(end_point);
         }
         for(int x = 0; x<possible_moves.size(); x++){
-            boolean open = Arrays.asList(endings).contains(possible_moves.get(x));
+            boolean open =  Arrays.asList(endings).contains(possible_moves.get(x));
             if(open){
                 return true;
 //              This means the king has at least one escape option by moving it's self.
@@ -180,6 +181,7 @@ public class ChessGame {
     }
 
     public Collection<ChessPosition> possible_black_start(ChessBoard board){
+        find_black_team(board);
         ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
         for(int i = 0; i<black_team.size(); i++){
@@ -213,6 +215,7 @@ public class ChessGame {
         ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_white_ends(board));
         King_B = find_king(board, TeamColor.BLACK);
         for(int x = 0; x<endings.size(); x++){
+            Black_check = false;
             if(endings.get(x).equals(King_B)){
                 Black_check = true;
                 break;
@@ -221,12 +224,6 @@ public class ChessGame {
         return Black_check;
     }
 
-    public Collection<ChessMove> valid_white(){
-        return null;
-    }
-    public Collection<ChessMove> valid_black(){
-        return null;
-    }
 
     /**
      * Set's which teams turn it is
@@ -317,6 +314,7 @@ public class ChessGame {
 
             throw wrong;
         }
+
         else{
             ChessPosition start_point = move.getStartPosition();
             ChessPosition end_point = move.getEndPosition();
@@ -368,10 +366,10 @@ public class ChessGame {
                 return false;
             }
 //          Second case, if the king can move, it's not check mate.
-            boolean king_move = king_escape_w(board, teamColor);
-            if(king_move){
-                return false;
-            }
+//            boolean king_move = king_escape_w(board, teamColor);
+//            if(king_move){
+//                return false;
+//            }
 //          Last resort, move a piece to interrupt check.
             ArrayList <ChessPosition> valid_pass_in = new ArrayList<ChessPosition>();
             ArrayList <ChessMove> valid_outs = new ArrayList<ChessMove>();
@@ -390,10 +388,10 @@ public class ChessGame {
             if(!Black_check){
                 return false;
             }
-            boolean king_move = king_escape_b(board, teamColor);
-            if(king_move){
-                return false;
-            }
+//            boolean king_move = king_escape_b(board, teamColor);
+//            if(king_move){
+//                return false;
+//            }
             //Last resort, move a piece to interrupt check.
             ArrayList <ChessPosition> valid_pass_in = new ArrayList<ChessPosition>();
             ArrayList <ChessMove> valid_outs = new ArrayList<ChessMove>();
@@ -449,8 +447,11 @@ public class ChessGame {
             if(Black_check){
                 return false;
             }
-            boolean king_move = king_escape_b(board, teamColor);
-            if(!king_move && Black_check==true){
+            ArrayList<ChessMove> valid_out=new ArrayList<ChessMove>();
+            ChessPosition king_position = find_king(board, TeamColor.BLACK);
+            valid_out.addAll(validMoves(king_position));
+
+            if(valid_out.size()>0){
                 return false;
             }
 //          Last resort, move a piece to interrupt check.
