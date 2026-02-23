@@ -12,13 +12,13 @@ public class Server {
 
     public Server() {
 
-        javalin = Javalin.create(config -> config.staticFiles.add("web"));
-        .post("/user", this::addUser);
-        .post("/session", this::logIn);
-        .post("/game", this::createGame);
-        .put("/game", this::joinGame);
-        .get("game", this::listGames);
-        .delete("/session", this::logOut);
+        javalin = Javalin.create(config -> config.staticFiles.add("web"))
+        .post("/user", this::addUser)
+        .post("/session", this::logIn)
+        .post("/game", this::createGame)
+        .put("/game", this::joinGame)
+        .get("game", this::listGames)
+        .delete("/session", this::logOut)
         .delete("/db", this::fullClear);
         // Register your endpoints and exception handlers here.
 
