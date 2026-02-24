@@ -32,9 +32,10 @@ public class Server {
     }
 
     private void addUser(Context ctx){
-        handler.register(ctx.body());
-
+        String addin = handler.register(ctx.body());
+        ctx.result(addin);
     }
+
     private void logIn(Context ctx){
         int x = 0;
     }

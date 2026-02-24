@@ -17,6 +17,12 @@ public class UserService {
 
     public RegisterResult GetUser(UserData user_info){
         UserData return_val = dataAccess.findUser(user_info.username());
+        if(return_val == null) {
+            createUser(user_info);
+            AuthData authorize = linkAuth(user_info);
+            RegisterResult regResult = new RegisterResult(authorize.authToken(), authorize.userName());
+            return regResult;
+        }
         return null;
     }
 
@@ -32,8 +38,9 @@ public class UserService {
 
     public AuthData linkAuth(UserData user_info){
         String authToken = AuthGeneration();
-//        Send auth data over.
-        return new AuthData(user_info.username(), authToken);
+        AuthData authorized = new AuthData(user_info.username(), authToken);
+        dataAccess.addAuthToken(authorized);
+        return authorized;
     }
 
 }
