@@ -19,4 +19,11 @@ public class UserHandler {
         return new Gson().toJson(regi);
     }
 
+    public String log_in (String data_asJson){
+        UserService userService = new UserService(dataAccess);
+        UserData userdata = new Gson().fromJson(data_asJson, UserData.class);
+        RegisterResult regi = userService.LogUser(userdata);
+        return null;
+    }
+
 }

@@ -26,6 +26,12 @@ public class UserService {
         return null;
     }
 
+    public RegisterResult LogUser(UserData user_info){
+        UserData return_val = dataAccess.findUser((user_info.username()));
+//      If the data doesn't return null we continue.  To do so we need to check the passwords to see if they match. Figure out how to check hash maps.
+        return null;
+    }
+
     public UserData createUser(UserData user_info){
 //        create and call a function for adding User names to the database inside dataaccess
         dataAccess.addUser(user_info.username(), user_info);

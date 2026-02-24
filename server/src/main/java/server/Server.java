@@ -37,7 +37,7 @@ public class Server {
     }
 
     private void logIn(Context ctx){
-        int x = 0;
+
     }
     private void createGame(Context ctx){
         int x = 0;
