@@ -1,33 +1,39 @@
 package server;
 
+import dataaccess.DataAccess;
+import dataaccess.MemoryDataAccess;
+import handler.UserHandler;
 import io.javalin.*;
 import com.google.gson.Gson;
 import io.javalin.http.Context;
 import io.javalin.Javalin;
+import org.eclipse.jetty.server.Authentication;
 
 
 public class Server {
-
     private final Javalin javalin;
+    private final UserHandler handler;
 
     public Server() {
+        this(new UserHandler(new MemoryDataAccess()));
 
-        javalin = Javalin.create(config -> config.staticFiles.add("web"))
-        .post("/user", this::addUser)
-        .post("/session", this::logIn)
-        .post("/game", this::createGame)
-        .put("/game", this::joinGame)
-        .get("game", this::listGames)
-        .delete("/session", this::logOut)
-        .delete("/db", this::fullClear);
         // Register your endpoints and exception handlers here.
-
-
+    }
+    public Server(UserHandler handler){
+        this.handler = handler;
+        javalin = Javalin.create(config -> config.staticFiles.add("web"))
+                .post("/user", this::addUser)
+                .post("/session", this::logIn)
+                .post("/game", this::createGame)
+                .put("/game", this::joinGame)
+                .get("game", this::listGames)
+                .delete("/session", this::logOut)
+                .delete("/db", this::fullClear);
     }
 
-
     private void addUser(Context ctx){
-        int x = 0;
+        handler.register(ctx.body());
+
     }
     private void logIn(Context ctx){
         int x = 0;

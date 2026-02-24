@@ -1,9 +1,12 @@
 package dataaccess;
 
-import org.eclipse.jetty.server.Authentication;
+import model.AuthData;
+import model.GameData;
+import model.UserData;
 
 public interface DataAccess {
 
+    UserData findUser(String username);
 
 
 }
