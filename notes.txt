@@ -38,3 +38,16 @@ You may want to check a few of the links to figure out how the site works and ho
 Phase 3 notes:
 Currently I'm following the layout on the example known as pet shop on the github.  Important note here is that we don't need to use the websocket stuff,
 the data base stuff, or the SQL stuff.  From what I can tell the points we need to work on are all going to be in the main folder for this phase.
+
+
+
+
+2/23/2026 update:
+Read before jumping in tomorrow.  We're about halfway through the register user function which is good.  I think once we get that we should be able to
+set up the log in and log out functions fairly easily.  See if we can have those in the ground by tomorrow.  Delete should be fairly easy to.
+Here's what we need to do:
+We need to be able to take the data that we have passed into memory and made sure that it's unique for the setting.  Once we do that we need to add the
+user to the hash map.
+Once that's done we need to generate an auth token and add that as well.
+After that's all said and done we need to return those values to the user with a 200 success code.  Follow the flow chart that we made and we should
+be good to go.  Rock on, you've got this self.
