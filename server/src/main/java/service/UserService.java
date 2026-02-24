@@ -38,6 +38,14 @@ public class UserService {
         return null;
     }
 
+    public boolean authenticate(AuthData authData){
+        AuthData allowed = dataAccess.findAuth(authData.authToken());
+        if(allowed != null) {
+            return true;
+        }
+        else {return false;}
+    }
+
     public static String AuthGeneration(){
         return UUID.randomUUID().toString();
     }

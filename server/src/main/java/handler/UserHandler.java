@@ -2,6 +2,7 @@ package handler;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccess;
+import model.AuthData;
 import model.UserData;
 import service.UserService;
 import model.RegisterResult;
@@ -23,6 +24,13 @@ public class UserHandler {
         UserService userService = new UserService(dataAccess);
         UserData userdata = new Gson().fromJson(data_asJson, UserData.class);
         RegisterResult regi = userService.LogUser(userdata);
+        return null;
+    }
+
+    public String Authorize (String data_asJson){
+        UserService userService = new UserService(dataAccess);
+        AuthData author = new Gson().fromJson(data_asJson, AuthData.class);
+        boolean authorized = userService.authenticate(author);
         return null;
     }
 

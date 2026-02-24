@@ -26,4 +26,9 @@ public class MemoryDataAccess implements DataAccess {
         return null;
     }
 
+    @Override
+    public AuthData findAuth(String authData) {
+
+    }
+
 }

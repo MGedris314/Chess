@@ -37,7 +37,8 @@ public class Server {
     }
 
     private void logIn(Context ctx){
-
+        String logged = handler.log_in(ctx.body());
+        ctx.result(logged);
     }
     private void createGame(Context ctx){
         int x = 0;
@@ -49,7 +50,7 @@ public class Server {
         int x = 0;
     }
     private void logOut(Context ctx){
-        int x = 0;
+//        String logout = handler.
     }
     private void fullClear(Context ctx){
         int x = 0;

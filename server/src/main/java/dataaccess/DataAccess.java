@@ -9,5 +9,6 @@ public interface DataAccess {
     UserData findUser(String username);
     UserData addUser(String username, UserData password);
     AuthData addAuthToken(AuthData authToken);
+    AuthData findAuth(String authData);
 
 }
