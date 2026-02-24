@@ -7,6 +7,7 @@ import model.UserData;
 public interface DataAccess {
 
     UserData findUser(String username);
-
+    UserData addUser(String username, UserData password);
+    AuthData addAuthToken(AuthData authToken);
 
 }

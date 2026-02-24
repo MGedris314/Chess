@@ -14,7 +14,7 @@ public class UserHandler {
     UserService userService = new UserService(dataAccess);
     public String register(String data_asJSON) {
         UserData userdata = new Gson().fromJson(data_asJSON, UserData.class);
-        userService.registration(userdata);
+        userService.GetUser(userdata);
         return null;
     }
 

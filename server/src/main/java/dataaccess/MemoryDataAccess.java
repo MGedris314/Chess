@@ -14,4 +14,16 @@ public class MemoryDataAccess implements DataAccess {
     public UserData findUser(String username){
         return userDataHasMap.get(username);
     }
+
+    public UserData addUser(String username, UserData password){
+        userDataHasMap.put(username, password);
+        return null;
+    }
+
+    @Override
+    public AuthData addAuthToken(AuthData authToken) {
+        authDataHashMap.put(authToken.authToken(), authToken);
+        return null;
+    }
+
 }
