@@ -24,7 +24,7 @@ public class UserHandler {
         UserService userService = new UserService(dataAccess);
         UserData userdata = new Gson().fromJson(data_asJson, UserData.class);
         RegisterResult regi = userService.LogUser(userdata);
-        return null;
+        return new Gson().toJson(regi);
     }
 
     public String log_out (String data_string){

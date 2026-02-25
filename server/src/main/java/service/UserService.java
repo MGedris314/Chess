@@ -28,6 +28,13 @@ public class UserService {
 
     public RegisterResult LogUser(UserData user_info){
         UserData return_val = dataAccess.findUser((user_info.username()));
+        if(return_val!= null){
+            if(return_val.password().equals(user_info.password())){
+                AuthData authorize = linkAuth(user_info);
+                RegisterResult regResult = new RegisterResult(authorize.authToken(), authorize.userName());
+                return regResult;
+            }
+        }
 //      If the data doesn't return null we continue.  To do so we need to check the passwords to see if they match. Figure out how to check hash maps.
         return null;
     }
