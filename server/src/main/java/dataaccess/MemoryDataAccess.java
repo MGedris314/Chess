@@ -28,7 +28,17 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public AuthData findAuth(String authData) {
+        if(authDataHashMap.containsKey(authData)){
+            return authDataHashMap.get(authData);
+        }
+        else{
+            return null;
+        }
+    }
 
+    @Override
+    public void removeAuth(String authData) {
+        authDataHashMap.remove(authData);
     }
 
 }

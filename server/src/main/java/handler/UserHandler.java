@@ -27,10 +27,9 @@ public class UserHandler {
         return null;
     }
 
-    public String Authorize (String data_asJson){
+    public String log_out (String data_string){
         UserService userService = new UserService(dataAccess);
-        AuthData author = new Gson().fromJson(data_asJson, AuthData.class);
-        boolean authorized = userService.authenticate(author);
+        String authorized = userService.logOut(data_string);
         return null;
     }
 

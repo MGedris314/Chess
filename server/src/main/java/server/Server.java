@@ -50,7 +50,8 @@ public class Server {
         int x = 0;
     }
     private void logOut(Context ctx){
-//        String logout = handler.
+        String logout = handler.log_out(ctx.header("authorization"));
+        ctx.result(logout);
     }
     private void fullClear(Context ctx){
         int x = 0;

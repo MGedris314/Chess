@@ -38,12 +38,25 @@ public class UserService {
         return null;
     }
 
-    public boolean authenticate(AuthData authData){
-        AuthData allowed = dataAccess.findAuth(authData.authToken());
+    public boolean authenticate(String authData){
+        AuthData allowed = dataAccess.findAuth(authData);
         if(allowed != null) {
             return true;
         }
         else {return false;}
+    }
+
+    public String logOut(String authData){
+        boolean is_valid = authenticate(authData);
+        if (is_valid){
+            dataAccess.removeAuth(authData);
+        }
+        if(!is_valid){
+            System.out.println("Something went wrong");
+            return null;
+        }
+        System.out.println("We're in.");
+        return null;
     }
 
     public static String AuthGeneration(){
