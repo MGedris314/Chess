@@ -65,7 +65,7 @@ public class UserService {
 
     public AuthData linkAuth(UserData user_info){
         String authToken = AuthGeneration();
-        AuthData authorized = new AuthData(user_info.username(), authToken);
+        AuthData authorized = new AuthData(authToken, user_info.username());
         dataAccess.addAuthToken(authorized);
         return authorized;
     }

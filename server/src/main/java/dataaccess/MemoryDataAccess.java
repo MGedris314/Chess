@@ -22,7 +22,7 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public AuthData addAuthToken(AuthData authToken) {
-        authDataHashMap.put(authToken.authToken(), authToken);
+        authDataHashMap.put(authToken.userName(), authToken);
         return null;
     }
 
