@@ -51,3 +51,7 @@ user to the hash map.
 Once that's done we need to generate an auth token and add that as well.
 After that's all said and done we need to return those values to the user with a 200 success code.  Follow the flow chart that we made and we should
 be good to go.  Rock on, you've got this self.
+
+2/24/2026 update
+Register, Log in, and Log out are all set.  Well mostly.  The storage for the token hashmap is a bit goofy and I don't have the return statement quite
+right for the log out function.  I think tomorrow we need to take a run at create games.  Get some help from a TA as a starting point and make it run!
