@@ -5,6 +5,7 @@ import dataaccess.DataAccess;
 import model.AuthData;
 import model.UserData;
 import model.GameData;
+import model.PublicGame;
 import service.UserService;
 import model.RegisterResult;
 import service.GameService;
