@@ -3,6 +3,7 @@ package dataaccess;
 import model.GameData;
 import model.UserData;
 import model.AuthData;
+import model.PublicGame;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +14,7 @@ public class MemoryDataAccess implements DataAccess {
     final private HashMap<String, UserData> userDataHasMap = new HashMap<>();
     final private HashMap<String, AuthData> authDataHashMap = new HashMap<>();
     final private ArrayList<GameData> games = new ArrayList<GameData>();
+    final private ArrayList<PublicGame> returnable = new ArrayList<PublicGame>();
 
 
     @Override
@@ -53,13 +55,19 @@ public class MemoryDataAccess implements DataAccess {
     }
 
     @Override
+    public void createPublic(PublicGame pub) {
+        returnable.add(pub);
+    }
+
+
+    @Override
     public int gameID() {
         return games.size();
     }
 
     @Override
-    public ArrayList<GameData> gameReturn() {
-        return games;
+    public ArrayList<PublicGame> gameReturn() {
+        return returnable;
     }
 
     @Override
@@ -77,6 +85,7 @@ public class MemoryDataAccess implements DataAccess {
     @Override
     public void clearGames() {
         games.clear();
+        returnable.clear();
     }
 
 }

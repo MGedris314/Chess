@@ -56,7 +56,7 @@ public class UserHandler {
 
     public String getGames(){
         GameService gameService = new GameService((dataAccess));
-        Collection<GameData> games = gameService.returnGames();
+        Collection<PublicGame> games = gameService.returnGames();
         return new Gson().toJson(games);
     }
 

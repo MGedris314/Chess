@@ -3,6 +3,7 @@ package dataaccess;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
+import model.PublicGame;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,8 +17,9 @@ public interface DataAccess {
     AuthData findAuth(String authData);
     void removeAuth(String authData);
     int createGame(GameData gameName);
+    void createPublic(PublicGame pub);
     int gameID();
-    ArrayList<GameData> gameReturn();
+    ArrayList<PublicGame> gameReturn();
     void clearAuth();
     void clearUsers();
     void clearGames();
