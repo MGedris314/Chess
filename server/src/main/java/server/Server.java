@@ -41,7 +41,7 @@ public class Server {
         ctx.result(logged);
     }
     private void createGame(Context ctx){
-        int x = 0;
+//        There are two things we need to pass in
     }
     private void joinGame(Context ctx){
         int x = 0;

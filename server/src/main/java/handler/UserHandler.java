@@ -30,7 +30,7 @@ public class UserHandler {
     public String log_out (String data_string){
         UserService userService = new UserService(dataAccess);
         String authorized = userService.logOut(data_string);
-        return null;
+        return new Gson().toJson(authorized);
     }
 
 }

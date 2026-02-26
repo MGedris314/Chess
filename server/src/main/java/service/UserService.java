@@ -63,7 +63,8 @@ public class UserService {
             return null;
         }
         System.out.println("We're in.");
-        return null;
+        String return_message = "";
+        return return_message;
     }
 
     public static String AuthGeneration(){
