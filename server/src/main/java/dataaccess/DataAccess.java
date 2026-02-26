@@ -18,4 +18,7 @@ public interface DataAccess {
     int createGame(GameData gameName);
     int gameID();
     ArrayList<GameData> gameReturn();
+    void clearAuth();
+    void clearUsers();
+    void clearGames();
 }

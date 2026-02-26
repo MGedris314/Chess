@@ -76,7 +76,8 @@ public class Server {
     }
 
     private void fullClear(Context ctx){
-        int x = 0;
+        String clear_out = handler.ClearDB();
+        ctx.result(clear_out);
     }
 
     public int run(int desiredPort) {

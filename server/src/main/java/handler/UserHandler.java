@@ -59,4 +59,11 @@ public class UserHandler {
         return new Gson().toJson(games);
     }
 
+    public String ClearDB(){
+        UserService userService = new UserService(dataAccess);
+        userService.DBClear();
+        String blank = "";
+        return new Gson().toJson(blank);
+    }
+
 }

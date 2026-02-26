@@ -78,4 +78,10 @@ public class UserService {
         return authorized;
     }
 
+    public void DBClear(){
+        dataAccess.clearUsers();
+        dataAccess.clearAuth();
+        dataAccess.clearGames();
+    }
+
 }

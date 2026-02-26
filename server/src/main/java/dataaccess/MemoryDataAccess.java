@@ -62,4 +62,21 @@ public class MemoryDataAccess implements DataAccess {
         return games;
     }
 
+    @Override
+    public void clearAuth() {
+        authDataHashMap.clear();
+        System.out.println("Hello there!");
+    }
+
+    @Override
+    public void clearUsers() {
+        userDataHasMap.clear();
+        System.out.println("Hello there!");
+    }
+
+    @Override
+    public void clearGames() {
+        games.clear();
+    }
+
 }
