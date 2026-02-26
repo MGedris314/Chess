@@ -44,7 +44,9 @@ public class UserHandler {
     public String addGame (String gameName){
         GameService gameService = new GameService((dataAccess));
         int gameID = gameService.createGame(gameName);
-        return new Gson().toJson(gameID);
+        String words = "game ID: ";
+        String return_val = words + gameID;
+        return new Gson().toJson(return_val);
     }
 
 }
