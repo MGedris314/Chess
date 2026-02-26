@@ -40,6 +40,7 @@ public class Server {
         String logged = handler.log_in(ctx.body());
         ctx.result(logged);
     }
+
     private void createGame(Context ctx){
 //        There are two things we need to pass in auth and game data
         boolean authentic = handler.authenticate(ctx.header("authorization"));
@@ -52,16 +53,28 @@ public class Server {
             ctx.result(ID);
         }
     }
+
     private void joinGame(Context ctx){
         int x = 0;
     }
+
     private void listGames(Context ctx){
-        int x = 0;
+        boolean authentic = handler.authenticate(ctx.header("authorization"));
+        if(authentic){
+            String games = handler.getGames();
+            ctx.result(games);
+        }
+        else{
+            String ID = "-1";
+            ctx.result(ID);
+        }
     }
+
     private void logOut(Context ctx){
         String logout = handler.log_out(ctx.header("authorization"));
         ctx.result(logout);
     }
+
     private void fullClear(Context ctx){
         int x = 0;
     }

@@ -5,7 +5,9 @@ import model.UserData;
 import model.AuthData;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 public class MemoryDataAccess implements DataAccess {
     final private HashMap<String, UserData> userDataHasMap = new HashMap<>();
@@ -53,6 +55,11 @@ public class MemoryDataAccess implements DataAccess {
     @Override
     public int gameID() {
         return games.size();
+    }
+
+    @Override
+    public ArrayList<GameData> gameReturn() {
+        return games;
     }
 
 }

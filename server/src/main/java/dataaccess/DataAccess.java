@@ -4,6 +4,10 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public interface DataAccess {
 
     UserData findUser(String username);
@@ -13,4 +17,5 @@ public interface DataAccess {
     void removeAuth(String authData);
     int createGame(GameData gameName);
     int gameID();
+    ArrayList<GameData> gameReturn();
 }

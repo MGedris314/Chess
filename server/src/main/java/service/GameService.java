@@ -4,6 +4,9 @@ import chess.ChessGame;
 import dataaccess.DataAccess;
 import model.GameData;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class GameService {
 
     private final DataAccess dataAccess;
@@ -19,4 +22,8 @@ public class GameService {
         return ID;
     }
 
+    public Collection<GameData> returnGames() {
+        ArrayList<GameData> games = dataAccess.gameReturn();
+        return games;
+    }
 }

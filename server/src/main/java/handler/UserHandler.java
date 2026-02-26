@@ -4,9 +4,12 @@ import com.google.gson.Gson;
 import dataaccess.DataAccess;
 import model.AuthData;
 import model.UserData;
+import model.GameData;
 import service.UserService;
 import model.RegisterResult;
 import service.GameService;
+
+import java.util.Collection;
 
 
 public class UserHandler {
@@ -47,6 +50,12 @@ public class UserHandler {
         String words = "game ID: ";
         String return_val = words + gameID;
         return new Gson().toJson(return_val);
+    }
+
+    public String getGames(){
+        GameService gameService = new GameService((dataAccess));
+        Collection<GameData> games = gameService.returnGames();
+        return new Gson().toJson(games);
     }
 
 }
