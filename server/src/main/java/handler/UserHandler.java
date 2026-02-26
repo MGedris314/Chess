@@ -6,6 +6,8 @@ import model.AuthData;
 import model.UserData;
 import service.UserService;
 import model.RegisterResult;
+import service.GameService;
+
 
 public class UserHandler {
     private DataAccess dataAccess;
@@ -31,6 +33,18 @@ public class UserHandler {
         UserService userService = new UserService(dataAccess);
         String authorized = userService.logOut(data_string);
         return new Gson().toJson(authorized);
+    }
+
+    public Boolean authenticate (String auth_token){
+        UserService userService = new UserService((dataAccess));
+        Boolean authentic = userService.authenticate(auth_token);
+        return  authentic;
+    }
+
+    public String addGame (String gameName){
+        GameService gameService = new GameService((dataAccess));
+        int gameID = gameService.createGame(gameName);
+        return new Gson().toJson(gameID);
     }
 
 }

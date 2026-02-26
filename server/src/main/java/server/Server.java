@@ -41,7 +41,16 @@ public class Server {
         ctx.result(logged);
     }
     private void createGame(Context ctx){
-//        There are two things we need to pass in
+//        There are two things we need to pass in auth and game data
+        boolean authentic = handler.authenticate(ctx.header("authorization"));
+        if(authentic){
+            String ID = handler.addGame(ctx.body());
+            ctx.result(ID);
+        }
+        else{
+            String ID = "-1";
+            ctx.result(ID);
+        }
     }
     private void joinGame(Context ctx){
         int x = 0;
