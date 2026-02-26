@@ -6,6 +6,7 @@ import model.AuthData;
 import model.UserData;
 import model.GameData;
 import model.PublicGame;
+import model.JoinGameData;
 import service.UserService;
 import model.RegisterResult;
 import service.GameService;
@@ -66,4 +67,9 @@ public class UserHandler {
         return new Gson().toJson(blank);
     }
 
+    public String JoinGame(String data_asJSON){
+        GameService gameService = new GameService(dataAccess);
+        JoinGameData joinData = new Gson().fromJson(data_asJSON, JoinGameData.class);
+        return null;
+    }
 }

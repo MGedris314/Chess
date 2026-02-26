@@ -55,7 +55,14 @@ public class Server {
     }
 
     private void joinGame(Context ctx){
-        int x = 0;
+        boolean authentic = handler.authenticate(ctx.header("authorization"));
+        if(authentic){
+//        Returns a string, we need to pass in the body to be used as a jgd type.
+        }
+        else{
+            String ID = "-1";
+            ctx.result(ID);
+        }
     }
 
     private void listGames(Context ctx){

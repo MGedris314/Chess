@@ -3,7 +3,7 @@ package service;
 import chess.ChessGame;
 import dataaccess.DataAccess;
 import model.GameData;
-
+import model.JoinGameData;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -25,5 +25,18 @@ public class GameService {
     public Collection<GameData> returnGames() {
         ArrayList<GameData> games = dataAccess.gameReturn();
         return games;
+    }
+
+    public String joinByColor(JoinGameData colorJoin){
+        String desiredColor = colorJoin.playerColor();
+        if(desiredColor.equalsIgnoreCase("White")){
+            return null;
+        }
+        else if(desiredColor.equalsIgnoreCase("Black")){
+            return null;
+        }
+        else {
+            return null;
+        }
     }
 }
