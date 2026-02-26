@@ -20,6 +20,9 @@ public interface DataAccess {
     void createPublic(PublicGame pub);
     int gameID();
     ArrayList<PublicGame> gameReturn();
+    GameData returnSingleGame(int gameID);
+    PublicGame editPublic(int gameID);
+    void updateGames(GameData game, PublicGame pub, int gameID);
     void clearAuth();
     void clearUsers();
     void clearGames();

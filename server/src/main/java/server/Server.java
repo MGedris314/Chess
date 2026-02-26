@@ -58,6 +58,7 @@ public class Server {
         boolean authentic = handler.authenticate(ctx.header("authorization"));
         if(authentic){
 //        Returns a string, we need to pass in the body to be used as a jgd type.
+            String token = ctx.header("authorization");
         }
         else{
             String ID = "-1";

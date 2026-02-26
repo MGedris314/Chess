@@ -71,6 +71,32 @@ public class MemoryDataAccess implements DataAccess {
     }
 
     @Override
+    public GameData returnSingleGame(int gameID) {
+        if(gameID <= games.size()) {
+            return games.get(gameID);
+        }
+        else{
+            return null;
+        }
+    }
+
+    @Override
+    public PublicGame editPublic(int gameID) {
+        if(gameID <= returnable.size()) {
+            return returnable.get(gameID);
+        }
+        else{
+            return null;
+        }
+    }
+
+    @Override
+    public void updateGames(GameData game, PublicGame pub, int GameID) {
+        games.set(GameID, game);
+        returnable.set(GameID, pub);
+    }
+
+    @Override
     public void clearAuth() {
         authDataHashMap.clear();
         System.out.println("Hello there!");

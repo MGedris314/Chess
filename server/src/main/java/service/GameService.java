@@ -2,6 +2,7 @@ package service;
 
 import chess.ChessGame;
 import dataaccess.DataAccess;
+import model.AuthData;
 import model.GameData;
 import model.JoinGameData;
 import model.PublicGame;
@@ -31,12 +32,27 @@ public class GameService {
         return games;
     }
 
-    public String joinByColor(JoinGameData colorJoin){
+    public String joinByColor(JoinGameData colorJoin, String authData){
         String desiredColor = colorJoin.playerColor();
+        int gameID = colorJoin.gameID();
+        GameData game = dataAccess.returnSingleGame(gameID);
+        PublicGame game1 = dataAccess.editPublic(gameID);
+        AuthData allowed = dataAccess.findAuth(authData);
         if(desiredColor.equalsIgnoreCase("White")){
+            if(game.whiteUsername().isBlank()){
+                game.whiteUsername() = allowed.userName();
+                game1.whiteUsername() = allowed.userName();
+                dataAccess.updateGames(game, game1, gameID);
+            }
+
             return null;
         }
         else if(desiredColor.equalsIgnoreCase("Black")){
+            if(game.whiteUsername().isBlank()){
+                game.blackUsername() = allowed.userName();
+                game1.blackUsername() = allowed.userName();
+                dataAccess.updateGames(game, game1, gameID);
+            }
             return null;
         }
         else {

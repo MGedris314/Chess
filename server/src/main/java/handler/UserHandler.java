@@ -67,7 +67,7 @@ public class UserHandler {
         return new Gson().toJson(blank);
     }
 
-    public String JoinGame(String data_asJSON){
+    public String JoinGame(String data_asJSON, String authToken){
         GameService gameService = new GameService(dataAccess);
         JoinGameData joinData = new Gson().fromJson(data_asJSON, JoinGameData.class);
         return null;
