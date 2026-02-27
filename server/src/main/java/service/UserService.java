@@ -5,6 +5,8 @@ import model.AuthData;
 import model.RegisterResult;
 import model.UserData;
 import exception.UserExceptions;
+import org.eclipse.jetty.server.Authentication;
+
 import java.util.UUID;
 
 
@@ -29,7 +31,7 @@ public class UserService {
         }
     }
 
-    public RegisterResult LogUser(UserData user_info){
+    public RegisterResult LogUser(UserData user_info) throws UserExceptions {
         UserData return_val = dataAccess.findUser((user_info.username()));
         if(return_val!= null){
             if(return_val.password().equals(user_info.password())){
@@ -37,8 +39,10 @@ public class UserService {
                 RegisterResult regResult = new RegisterResult(authorize.authToken(), authorize.userName());
                 return regResult;
             }
+            else{
+                throw new UserExceptions("401: Incorrect password");
+            }
         }
-//      If the data doesn't return null we continue.  To do so we need to check the passwords to see if they match. Figure out how to check hash maps.
         return null;
     }
 

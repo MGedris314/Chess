@@ -35,6 +35,7 @@ public class Server {
     }
 
     private void addUser(Context ctx){
+//        400 and 403
         try {
             String addin = handler.register(ctx.body());
             ctx.result(addin);
@@ -47,46 +48,60 @@ public class Server {
     }
 
     private void logIn(Context ctx){
-        String logged = handler.log_in(ctx.body());
-        ctx.result(logged);
+//        400 and 401
+        try {
+            String logged = handler.log_in(ctx.body());
+            ctx.result(logged);
+        }
+        catch (UserExceptions e){
+            ctx.status(400);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 400)));
+        }
     }
 
     private void createGame(Context ctx){
-//        There are two things we need to pass in auth and game data
-        boolean authentic = handler.authenticate(ctx.header("authorization"));
-        if(authentic){
-            String ID = handler.addGame(ctx.body());
-            ctx.result(ID);
+//        400 and 401
+        try {
+            boolean authentic = handler.authenticate(ctx.header("authorization"));
+            if (authentic) {
+                String ID = handler.addGame(ctx.body());
+                ctx.result(ID);
+            }
         }
-        else{
-            String ID = "-1";
-            ctx.result(ID);
+        catch (UserExceptions e){
+            ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         }
     }
 
     private void joinGame(Context ctx){
+//        400, 401, and 403
+        try{
         boolean authentic = handler.authenticate(ctx.header("authorization"));
-        if(authentic){
+            if (authentic) {
 //        Returns a string, we need to pass in the body to be used as a jgd type.
-            String token = ctx.header("authorization");
-            String joined = handler.JoinGame(ctx.body(), token);
-            ctx.result(joined);
+                String token = ctx.header("authorization");
+                String joined = handler.JoinGame(ctx.body(), token);
+                ctx.result(joined);
+            }
         }
-        else{
-            String ID = "-1";
-            ctx.result(ID);
+        catch (UserExceptions e){
+            ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         }
     }
 
     private void listGames(Context ctx){
-        boolean authentic = handler.authenticate(ctx.header("authorization"));
-        if(authentic){
-            String games = handler.getGames();
-            ctx.result(games);
+        try {
+            boolean authentic = handler.authenticate(ctx.header("authorization"));
+            if (authentic) {
+                String games = handler.getGames();
+                ctx.result(games);
+            }
         }
-        else{
-            String ID = "-1";
-            ctx.result(ID);
+        catch (UserExceptions e){
+                ctx.status(401);
+                ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         }
     }
 

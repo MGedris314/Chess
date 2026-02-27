@@ -28,9 +28,12 @@ public class UserHandler {
         return new Gson().toJson(regi);
     }
 
-    public String log_in (String data_asJson){
+    public String log_in (String data_asJson) throws UserExceptions{
         UserService userService = new UserService(dataAccess);
         UserData userdata = new Gson().fromJson(data_asJson, UserData.class);
+        if(userdata.username().isBlank() || userdata.password().isBlank()){
+            throw new UserExceptions("400: Error: bad request");
+        }
         RegisterResult regi = userService.LogUser(userdata);
         return new Gson().toJson(regi);
     }
@@ -41,10 +44,15 @@ public class UserHandler {
         return new Gson().toJson(authorized);
     }
 
-    public Boolean authenticate (String auth_token){
+    public Boolean authenticate (String auth_token) throws UserExceptions{
         UserService userService = new UserService((dataAccess));
         Boolean authentic = userService.authenticate(auth_token);
-        return  authentic;
+        if(authentic) {
+            return authentic;
+        }
+        else{
+            throw new UserExceptions("401: Unauthorized");
+        }
     }
 
     public String addGame (String gameName){

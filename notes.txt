@@ -61,7 +61,7 @@ right for the log out function.  I think tomorrow we need to take a run at creat
 Base levels for 200 status code work, now it's time to start throwing exceptions
 reg: 400 and 403
 LogI: 400 and 401
-LogO: 401
-List: 401
+LogO: 401 Done
+List: 401 Done
 Create: 400 and 401
 Join: 400, 401, and 403
