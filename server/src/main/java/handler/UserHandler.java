@@ -35,7 +35,7 @@ public class UserHandler {
         return new Gson().toJson(regi);
     }
 
-    public String log_out (String data_string){
+    public String log_out (String data_string) throws UserExceptions{
         UserService userService = new UserService(dataAccess);
         String authorized = userService.logOut(data_string);
         return new Gson().toJson(authorized);

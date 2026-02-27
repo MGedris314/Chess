@@ -40,8 +40,8 @@ public class Server {
             ctx.result(addin);
         }
         catch(UserExceptions e ){
-            ctx.status(401);
-            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
+            ctx.status(403);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 403)));
         }
 
     }
@@ -91,8 +91,14 @@ public class Server {
     }
 
     private void logOut(Context ctx){
-        String logout = handler.log_out(ctx.header("authorization"));
-        ctx.result(logout);
+        try {
+            String logout = handler.log_out(ctx.header("authorization"));
+            ctx.result(logout);
+        }
+        catch(UserExceptions e){
+            ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
+        }
     }
 
     private void fullClear(Context ctx){

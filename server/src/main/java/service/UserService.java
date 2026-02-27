@@ -25,7 +25,7 @@ public class UserService {
             return regResult;
         }
         else{
-            throw new UserExceptions("401: username already taken");
+            throw new UserExceptions("403: username already taken");
         }
     }
 
@@ -56,14 +56,13 @@ public class UserService {
         else {return false;}
     }
 
-    public String logOut(String authData){
+    public String logOut(String authData) throws UserExceptions{
         boolean is_valid = authenticate(authData);
         if (is_valid){
             dataAccess.removeAuth(authData);
         }
         if(!is_valid){
-            System.out.println("Something went wrong");
-            return null;
+            throw new UserExceptions("401: Unauthorized");
         }
         System.out.println("We're in.");
         String return_message = "";
