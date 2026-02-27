@@ -85,10 +85,15 @@ public class Server {
         try{
         boolean authentic = handler.authenticate(ctx.header("authorization"));
             if (authentic) {
-//        Returns a string, we need to pass in the body to be used as a jgd type.
-                String token = ctx.header("authorization");
-                String joined = handler.JoinGame(ctx.body(), token);
-                ctx.result(joined);
+                try {
+                    String token = ctx.header("authorization");
+                    String joined = handler.JoinGame(ctx.body(), token);
+                    ctx.result(joined);
+                }
+                catch (UserExceptions e){
+                    ctx.status(401);
+                    ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
+                }
             }
         }
         catch (UserExceptions e){

@@ -24,6 +24,9 @@ public class UserHandler {
     public String register(String data_asJSON) throws UserExceptions{
         UserService userService = new UserService(dataAccess);
         UserData userdata = new Gson().fromJson(data_asJSON, UserData.class);
+        if(userdata.username().isBlank() || userdata.password().isBlank() || userdata.email().isBlank()){
+            throw new UserExceptions("400: Error: bad request");
+        }
         RegisterResult regi = userService.GetUser(userdata);
         return new Gson().toJson(regi);
     }
@@ -79,9 +82,12 @@ public class UserHandler {
         return new Gson().toJson(blank);
     }
 
-    public String JoinGame(String data_asJSON, String authToken){
+    public String JoinGame(String data_asJSON, String authToken) throws UserExceptions{
         GameService gameService = new GameService(dataAccess);
         JoinGameData joinData = new Gson().fromJson(data_asJSON, JoinGameData.class);
+        if(joinData.playerColor().isBlank()){
+            throw new UserExceptions("400: Error: bad request");
+        }
         String join = gameService.joinByColor(joinData, authToken);
         return new Gson().toJson(join);
     }

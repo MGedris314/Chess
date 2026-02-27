@@ -72,7 +72,7 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public GameData returnSingleGame(int gameID) {
-        if(gameID <= games.size()) {
+        if(gameID <= games.size()-1) {
             return games.get(gameID);
         }
         else{
