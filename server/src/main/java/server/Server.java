@@ -2,12 +2,15 @@ package server;
 
 import dataaccess.DataAccess;
 import dataaccess.MemoryDataAccess;
+import exception.UserExceptions;
 import handler.UserHandler;
 import io.javalin.*;
 import com.google.gson.Gson;
 import io.javalin.http.Context;
 import io.javalin.Javalin;
 import org.eclipse.jetty.server.Authentication;
+
+import java.util.Map;
 
 
 public class Server {
@@ -32,8 +35,15 @@ public class Server {
     }
 
     private void addUser(Context ctx){
-        String addin = handler.register(ctx.body());
-        ctx.result(addin);
+        try {
+            String addin = handler.register(ctx.body());
+            ctx.result(addin);
+        }
+        catch(UserExceptions e ){
+            ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
+        }
+
     }
 
     private void logIn(Context ctx){

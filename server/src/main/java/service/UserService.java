@@ -4,6 +4,7 @@ import dataaccess.DataAccess;
 import model.AuthData;
 import model.RegisterResult;
 import model.UserData;
+import exception.UserExceptions;
 import java.util.UUID;
 
 
@@ -15,7 +16,7 @@ public class UserService {
         this.dataAccess = dataAccess;
     }
 
-    public RegisterResult GetUser(UserData user_info){
+    public RegisterResult GetUser(UserData user_info) throws UserExceptions{
         UserData return_val = dataAccess.findUser(user_info.username());
         if(return_val == null) {
             createUser(user_info);
@@ -23,7 +24,9 @@ public class UserService {
             RegisterResult regResult = new RegisterResult(authorize.authToken(), authorize.userName());
             return regResult;
         }
-        return null;
+        else{
+            throw new UserExceptions("401: username already taken");
+        }
     }
 
     public RegisterResult LogUser(UserData user_info){

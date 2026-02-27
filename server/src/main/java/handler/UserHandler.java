@@ -2,6 +2,7 @@ package handler;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccess;
+import exception.UserExceptions;
 import model.AuthData;
 import model.UserData;
 import model.GameData;
@@ -20,7 +21,7 @@ public class UserHandler {
         this.dataAccess = dataAccess;
     }
 
-    public String register(String data_asJSON) {
+    public String register(String data_asJSON) throws UserExceptions{
         UserService userService = new UserService(dataAccess);
         UserData userdata = new Gson().fromJson(data_asJSON, UserData.class);
         RegisterResult regi = userService.GetUser(userdata);
