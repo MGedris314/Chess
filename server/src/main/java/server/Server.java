@@ -59,6 +59,8 @@ public class Server {
         if(authentic){
 //        Returns a string, we need to pass in the body to be used as a jgd type.
             String token = ctx.header("authorization");
+            String joined = handler.JoinGame(ctx.body(), token);
+            ctx.result(joined);
         }
         else{
             String ID = "-1";

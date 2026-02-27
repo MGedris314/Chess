@@ -70,6 +70,7 @@ public class UserHandler {
     public String JoinGame(String data_asJSON, String authToken){
         GameService gameService = new GameService(dataAccess);
         JoinGameData joinData = new Gson().fromJson(data_asJSON, JoinGameData.class);
-        return null;
+        String join = gameService.joinByColor(joinData, authToken);
+        return new Gson().toJson(join);
     }
 }
