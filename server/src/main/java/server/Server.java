@@ -64,8 +64,14 @@ public class Server {
         try {
             boolean authentic = handler.authenticate(ctx.header("authorization"));
             if (authentic) {
-                String ID = handler.addGame(ctx.body());
-                ctx.result(ID);
+                try {
+                    String ID = handler.addGame(ctx.body());
+                    ctx.result(ID);
+                }
+                catch (UserExceptions e){
+                    ctx.status(400);
+                    ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 400)));
+                }
             }
         }
         catch (UserExceptions e){

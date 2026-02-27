@@ -55,8 +55,11 @@ public class UserHandler {
         }
     }
 
-    public String addGame (String gameName){
+    public String addGame (String gameName) throws UserExceptions{
         GameService gameService = new GameService((dataAccess));
+        if(gameName.isBlank()){
+            throw new UserExceptions("400: Error: bad request");
+        }
         int gameID = gameService.createGame(gameName);
         String words = "game ID: ";
         String return_val = words + gameID;
