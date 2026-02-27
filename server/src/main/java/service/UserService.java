@@ -27,7 +27,7 @@ public class UserService {
             return regResult;
         }
         else{
-            throw new UserExceptions("403: username already taken");
+            throw new UserExceptions("403: Error: bad request");
         }
     }
 

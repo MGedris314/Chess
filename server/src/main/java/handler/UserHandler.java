@@ -78,8 +78,8 @@ public class UserHandler {
     public String ClearDB(){
         UserService userService = new UserService(dataAccess);
         userService.DBClear();
-        String blank = "";
-        return new Gson().toJson(blank);
+        String blank = "{}";
+        return blank;
     }
 
     public String JoinGame(String data_asJSON, String authToken) throws UserExceptions{
