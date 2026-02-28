@@ -58,6 +58,10 @@ public class Server {
             ctx.result(logged);
         }
         catch (UserExceptions e){
+            ctx.status(400);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 400)));
+        }
+        catch (UserException401 e){
             ctx.status(401);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         }
@@ -74,14 +78,15 @@ public class Server {
                 }
                 catch (UserExceptions e){
                     ctx.status(400);
-                    ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 400)));
+                    ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
                 }
             }
         }
-        catch (UserExceptions e){
+        catch (UserException401 e){
             ctx.status(401);
-            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 400)));
         }
+
     }
 
     private void joinGame(Context ctx){
@@ -95,13 +100,17 @@ public class Server {
                     ctx.result(joined);
                 }
                 catch (UserExceptions e){
-                    ctx.status(401);
+                    ctx.status(400);
                     ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
                 }
             }
         }
-        catch (UserExceptions e){
+        catch (UserException401 e){
             ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
+        }
+        catch (UserException403 e){
+            ctx.status(403);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         }
     }
@@ -114,7 +123,7 @@ public class Server {
                 ctx.result(games);
             }
         }
-        catch (UserExceptions e){
+        catch (UserException401 e){
                 ctx.status(401);
                 ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         }
@@ -125,7 +134,7 @@ public class Server {
             String logout = handler.log_out(ctx.header("authorization"));
             ctx.result(logout);
         }
-        catch(UserExceptions e){
+        catch(UserException401 e){
             ctx.status(401);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         }

@@ -2,6 +2,7 @@ package service;
 
 import chess.ChessGame;
 import dataaccess.DataAccess;
+import exception.UserException403;
 import exception.UserExceptions;
 import model.AuthData;
 import model.GameData;
@@ -38,7 +39,7 @@ public class GameService {
         }
     }
 
-    public String joinByColor(JoinGameData colorJoin, String authData) throws UserExceptions {
+    public String joinByColor(JoinGameData colorJoin, String authData) throws UserExceptions, UserException403 {
         String desiredColor = colorJoin.playerColor();
         int gameID = colorJoin.gameID();
         GameData game = dataAccess.returnSingleGame(gameID);
@@ -54,7 +55,7 @@ public class GameService {
                 dataAccess.updateGames(game, game1, gameID);
             }
             else{
-                throw new UserExceptions("403: Error: Color taken");
+                throw new UserException403("403: Error: Color taken");
             }
             String empty = "{}";
             return empty;
@@ -66,7 +67,7 @@ public class GameService {
                 dataAccess.updateGames(game, game1, gameID);
             }
             else{
-                throw new UserExceptions("403: Error: Color taken");
+                throw new UserException403("403: Error: Color taken");
             }
             String empty = "{}";
             return empty;

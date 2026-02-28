@@ -31,7 +31,7 @@ public class UserService {
         }
     }
 
-    public RegisterResult LogUser(UserData user_info) throws UserExceptions {
+    public RegisterResult LogUser(UserData user_info) throws UserException401 {
         UserData return_val = dataAccess.findUser((user_info.username()));
         if(return_val!= null){
             if(return_val.password().equals(user_info.password())){
@@ -40,7 +40,7 @@ public class UserService {
                 return regResult;
             }
             else{
-                throw new UserExceptions("401: Incorrect password");
+                throw new UserException401("401: Incorrect password");
             }
         }
         return null;
@@ -60,13 +60,13 @@ public class UserService {
         else {return false;}
     }
 
-    public String logOut(String authData) throws UserExceptions{
+    public String logOut(String authData) throws UserException401{
         boolean is_valid = authenticate(authData);
         if (is_valid){
             dataAccess.removeAuth(authData);
         }
         if(!is_valid){
-            throw new UserExceptions("401: Error: unauthorized");
+            throw new UserException401("401: Error: unauthorized");
         }
         System.out.println("We're in.");
         String return_message = "{}";
