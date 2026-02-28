@@ -4,7 +4,7 @@ import dataaccess.DataAccess;
 import model.AuthData;
 import model.RegisterResult;
 import model.UserData;
-import exception.UserExceptions;
+import exception.*;
 import org.eclipse.jetty.server.Authentication;
 
 import java.util.UUID;
@@ -18,7 +18,7 @@ public class UserService {
         this.dataAccess = dataAccess;
     }
 
-    public RegisterResult GetUser(UserData user_info) throws UserExceptions{
+    public RegisterResult GetUser(UserData user_info) throws UserException403{
         UserData return_val = dataAccess.findUser(user_info.username());
         if(return_val == null) {
             createUser(user_info);
@@ -27,7 +27,7 @@ public class UserService {
             return regResult;
         }
         else{
-            throw new UserExceptions("403: Error: bad request");
+            throw new UserException403("403: Error: bad request");
         }
     }
 

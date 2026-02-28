@@ -2,7 +2,7 @@ package server;
 
 import dataaccess.DataAccess;
 import dataaccess.MemoryDataAccess;
-import exception.UserExceptions;
+import exception.*;
 import handler.UserHandler;
 import io.javalin.*;
 import com.google.gson.Gson;
@@ -42,6 +42,10 @@ public class Server {
         }
         catch(UserExceptions e ){
             ctx.status(400);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 400)));
+        }
+        catch(UserException403 e ){
+            ctx.status(403);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 403)));
         }
 

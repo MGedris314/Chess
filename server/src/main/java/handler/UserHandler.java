@@ -2,7 +2,7 @@ package handler;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccess;
-import exception.UserExceptions;
+import exception.*;
 import model.AuthData;
 import model.UserData;
 import model.GameData;
@@ -22,7 +22,7 @@ public class UserHandler {
         this.dataAccess = dataAccess;
     }
 
-    public String register(String data_asJSON) throws UserExceptions{
+    public String register(String data_asJSON) throws UserExceptions, UserException403{
         UserService userService = new UserService(dataAccess);
         UserData userdata = new Gson().fromJson(data_asJSON, UserData.class);
         if(userdata.username() == null || userdata.password() == null || userdata.email() == null){

@@ -62,7 +62,7 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public int gameID() {
-        return games.size();
+        return games.size() + 1;
     }
 
     @Override
