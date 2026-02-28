@@ -30,7 +30,12 @@ public class GameService {
 
     public Collection<PublicGame> returnGames() {
         ArrayList<PublicGame> games = dataAccess.gameReturn();
-        return games;
+        if(games!= null) {
+            return games;
+        }
+        else{
+            return null;
+        }
     }
 
     public String joinByColor(JoinGameData colorJoin, String authData) throws UserExceptions {
@@ -51,7 +56,7 @@ public class GameService {
             else{
                 throw new UserExceptions("403: Error: Color taken");
             }
-            String empty = "";
+            String empty = "{}";
             return empty;
         }
         else if(desiredColor.equalsIgnoreCase("Black")){
@@ -63,7 +68,7 @@ public class GameService {
             else{
                 throw new UserExceptions("403: Error: Color taken");
             }
-            String empty = "";
+            String empty = "{}";
             return empty;
         }
         else {

@@ -41,7 +41,7 @@ public class Server {
             ctx.result(addin);
         }
         catch(UserExceptions e ){
-            ctx.status(403);
+            ctx.status(400);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 403)));
         }
 
@@ -54,8 +54,8 @@ public class Server {
             ctx.result(logged);
         }
         catch (UserExceptions e){
-            ctx.status(400);
-            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 400)));
+            ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         }
     }
 

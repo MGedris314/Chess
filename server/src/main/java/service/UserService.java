@@ -66,10 +66,10 @@ public class UserService {
             dataAccess.removeAuth(authData);
         }
         if(!is_valid){
-            throw new UserExceptions("401: Unauthorized");
+            throw new UserExceptions("401: Error: unauthorized");
         }
         System.out.println("We're in.");
-        String return_message = "";
+        String return_message = "{}";
         return return_message;
     }
 

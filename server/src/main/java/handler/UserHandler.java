@@ -6,6 +6,7 @@ import exception.UserExceptions;
 import model.AuthData;
 import model.UserData;
 import model.GameData;
+import model.GameResult;
 import model.PublicGame;
 import model.JoinGameData;
 import service.UserService;
@@ -24,7 +25,7 @@ public class UserHandler {
     public String register(String data_asJSON) throws UserExceptions{
         UserService userService = new UserService(dataAccess);
         UserData userdata = new Gson().fromJson(data_asJSON, UserData.class);
-        if(userdata.username().isBlank() || userdata.password().isBlank() || userdata.email().isBlank()){
+        if(userdata.username().isBlank() || userdata.password() == null || userdata.email().isBlank()){
             throw new UserExceptions("400: Error: bad request");
         }
         RegisterResult regi = userService.GetUser(userdata);
@@ -44,7 +45,7 @@ public class UserHandler {
     public String log_out (String data_string) throws UserExceptions{
         UserService userService = new UserService(dataAccess);
         String authorized = userService.logOut(data_string);
-        return new Gson().toJson(authorized);
+        return authorized;
     }
 
     public Boolean authenticate (String auth_token) throws UserExceptions{
@@ -64,15 +65,22 @@ public class UserHandler {
             throw new UserExceptions("400: Error: bad request");
         }
         int gameID = gameService.createGame(gameName);
-        String words = "game ID: ";
-        String return_val = words + gameID;
-        return new Gson().toJson(return_val);
+        String words = "{game ID: ";
+        String return_val = words + gameID +"}";
+        GameResult ID = new GameResult(gameID);
+        return new Gson().toJson(ID);
     }
 
     public String getGames(){
         GameService gameService = new GameService((dataAccess));
         Collection<PublicGame> games = gameService.returnGames();
-        return new Gson().toJson(games);
+        if (games.size() > 0) {
+            return new Gson().toJson(games);
+        }
+        else {
+            String empty = "{}";
+            return empty;
+        }
     }
 
     public String ClearDB(){
@@ -89,6 +97,6 @@ public class UserHandler {
             throw new UserExceptions("400: Error: bad request");
         }
         String join = gameService.joinByColor(joinData, authToken);
-        return new Gson().toJson(join);
+        return join;
     }
 }
