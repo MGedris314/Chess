@@ -25,7 +25,7 @@ public class UserHandler {
     public String register(String data_asJSON) throws UserExceptions{
         UserService userService = new UserService(dataAccess);
         UserData userdata = new Gson().fromJson(data_asJSON, UserData.class);
-        if(userdata.username().isBlank() || userdata.password() == null || userdata.email().isBlank()){
+        if(userdata.username() == null || userdata.password() == null || userdata.email() == null){
             throw new UserExceptions("400: Error: bad request");
         }
         RegisterResult regi = userService.GetUser(userdata);
@@ -35,7 +35,7 @@ public class UserHandler {
     public String log_in (String data_asJson) throws UserExceptions{
         UserService userService = new UserService(dataAccess);
         UserData userdata = new Gson().fromJson(data_asJson, UserData.class);
-        if(userdata.username().isBlank() || userdata.password().isBlank()){
+        if(userdata.username() == null || userdata.password() == null){
             throw new UserExceptions("400: Error: bad request");
         }
         RegisterResult regi = userService.LogUser(userdata);
@@ -55,7 +55,7 @@ public class UserHandler {
             return authentic;
         }
         else{
-            throw new UserExceptions("401: Unauthorized");
+            throw new UserExceptions("401: Error: unauthorized");
         }
     }
 
@@ -93,7 +93,7 @@ public class UserHandler {
     public String JoinGame(String data_asJSON, String authToken) throws UserExceptions{
         GameService gameService = new GameService(dataAccess);
         JoinGameData joinData = new Gson().fromJson(data_asJSON, JoinGameData.class);
-        if(joinData.playerColor().isBlank()){
+        if(joinData.playerColor() == null){
             throw new UserExceptions("400: Error: bad request");
         }
         String join = gameService.joinByColor(joinData, authToken);

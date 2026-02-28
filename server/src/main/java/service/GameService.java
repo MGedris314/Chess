@@ -48,7 +48,7 @@ public class GameService {
         PublicGame game1 = dataAccess.editPublic(gameID);
         AuthData allowed = dataAccess.findAuth(authData);
         if(desiredColor.equalsIgnoreCase("White")){
-            if(game.whiteUsername().isBlank()){
+            if(game.whiteUsername() == null){
                 game = new GameData(game.gameID(), allowed.authToken(), game.blackUsername(), game.gameName(), game.game());
                 game1 = new PublicGame(game1.gameID(), allowed.authToken(), game1.blackUsername(), game1.gameName());
                 dataAccess.updateGames(game, game1, gameID);
@@ -60,7 +60,7 @@ public class GameService {
             return empty;
         }
         else if(desiredColor.equalsIgnoreCase("Black")){
-            if(game.blackUsername().isBlank()){
+            if(game.blackUsername() == null){
                 game = new GameData(game.gameID(), game.whiteUsername(), allowed.authToken(), game.gameName(), game.game());
                 game1 = new PublicGame(game.gameID(), game.whiteUsername(), allowed.authToken(), game.gameName());
                 dataAccess.updateGames(game, game1, gameID);
