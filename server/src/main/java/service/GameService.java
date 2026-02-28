@@ -70,8 +70,8 @@ public class GameService {
             return empty;
         }
         else if(desiredColor.equalsIgnoreCase("Black")){
-            if(game.blackUsername() == null){
-                if(game.blackUsername().isEmpty()) {
+            if(game.blackUsername().isEmpty()){
+                if(game.whiteUsername().isEmpty()) {
                     game = new GameData(game.gameID(), game.whiteUsername(), allowed.authToken(), game.gameName(), game.game());
                     game1 = new PublicGame(game.gameID(), null, allowed.authToken(), game.gameName());
                     dataAccess.updateGames(game, game1, gameID);
