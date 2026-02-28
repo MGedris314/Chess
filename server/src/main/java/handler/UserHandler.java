@@ -3,14 +3,8 @@ package handler;
 import com.google.gson.Gson;
 import dataaccess.DataAccess;
 import exception.*;
-import model.AuthData;
-import model.UserData;
-import model.GameData;
-import model.GameResult;
-import model.PublicGame;
-import model.JoinGameData;
+import model.*;
 import service.UserService;
-import model.RegisterResult;
 import service.GameService;
 
 import java.util.Collection;
@@ -64,7 +58,8 @@ public class UserHandler {
         if(gameName.equals("{}")){
             throw new UserExceptions("400: Error: bad request");
         }
-        int gameID = gameService.createGame(gameName);
+        GameName name = new Gson().fromJson(gameName, GameName.class);
+        int gameID = gameService.createGame(name.gameName());
         String words = "{game ID: ";
         String return_val = words + gameID +"}";
         GameResult ID = new GameResult(gameID);
@@ -73,14 +68,10 @@ public class UserHandler {
 
     public String getGames(){
         GameService gameService = new GameService((dataAccess));
-        Collection<PublicGame> games = gameService.returnGames();
-        if (games.size() > 0) {
-            return new Gson().toJson(games);
-        }
-        else {
-            String empty = "{}";
-            return empty;
-        }
+        GameList games = gameService.returnGames();
+
+        return new Gson().toJson(games);
+
     }
 
     public String ClearDB(){

@@ -1,10 +1,7 @@
 package dataaccess;
 
 import exception.UserException403;
-import model.AuthData;
-import model.GameData;
-import model.UserData;
-import model.PublicGame;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +17,7 @@ public interface DataAccess {
     int createGame(GameData gameName);
     void createPublic(PublicGame pub);
     int gameID();
-    ArrayList<PublicGame> gameReturn();
+    GameList gameReturn();
     GameData returnSingleGame(int gameID) throws UserException403;
     PublicGame editPublic(int gameID);
     void updateGames(GameData game, PublicGame pub, int gameID);

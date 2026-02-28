@@ -1,9 +1,6 @@
 package dataaccess;
 
-import model.GameData;
-import model.UserData;
-import model.AuthData;
-import model.PublicGame;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,8 +63,8 @@ public class MemoryDataAccess implements DataAccess {
     }
 
     @Override
-    public ArrayList<PublicGame> gameReturn() {
-        return returnable;
+    public GameList gameReturn() {
+        return new GameList(returnable);
     }
 
     @Override

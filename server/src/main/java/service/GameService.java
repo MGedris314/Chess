@@ -4,10 +4,7 @@ import chess.ChessGame;
 import dataaccess.DataAccess;
 import exception.UserException403;
 import exception.UserExceptions;
-import model.AuthData;
-import model.GameData;
-import model.JoinGameData;
-import model.PublicGame;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,8 +26,8 @@ public class GameService {
         return ID;
     }
 
-    public Collection<PublicGame> returnGames() {
-        ArrayList<PublicGame> games = dataAccess.gameReturn();
+    public GameList returnGames() {
+        GameList games = dataAccess.gameReturn();
         if(games!= null) {
             return games;
         }
