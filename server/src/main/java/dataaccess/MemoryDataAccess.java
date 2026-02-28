@@ -10,6 +10,7 @@ import java.util.List;
 public class MemoryDataAccess implements DataAccess {
     final private HashMap<String, UserData> userDataHasMap = new HashMap<>();
     final private HashMap<String, AuthData> authDataHashMap = new HashMap<>();
+    final private HashMap<Integer, PublicGame> publicGameHashMap = new HashMap<>();
     final private ArrayList<GameData> games = new ArrayList<GameData>();
     final private ArrayList<PublicGame> returnable = new ArrayList<PublicGame>();
 
@@ -54,6 +55,7 @@ public class MemoryDataAccess implements DataAccess {
     @Override
     public void createPublic(PublicGame pub) {
         returnable.add(pub);
+        publicGameHashMap.put(pub.gameID(), pub);
     }
 
 
@@ -63,8 +65,8 @@ public class MemoryDataAccess implements DataAccess {
     }
 
     @Override
-    public GameList gameReturn() {
-        return new GameList(returnable);
+    public GameRetrun gameReturn() {
+        return new GameRetrun(publicGameHashMap.values());
     }
 
     @Override

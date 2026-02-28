@@ -17,7 +17,7 @@ public interface DataAccess {
     int createGame(GameData gameName);
     void createPublic(PublicGame pub);
     int gameID();
-    GameList gameReturn();
+    GameRetrun gameReturn();
     GameData returnSingleGame(int gameID) throws UserException403;
     PublicGame editPublic(int gameID);
     void updateGames(GameData game, PublicGame pub, int gameID);

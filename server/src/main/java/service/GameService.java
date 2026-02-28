@@ -26,8 +26,8 @@ public class GameService {
         return ID;
     }
 
-    public GameList returnGames() {
-        GameList games = dataAccess.gameReturn();
+    public GameRetrun returnGames() {
+        GameRetrun games = dataAccess.gameReturn();
         if(games!= null) {
             return games;
         }
