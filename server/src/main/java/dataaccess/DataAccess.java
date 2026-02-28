@@ -1,5 +1,6 @@
 package dataaccess;
 
+import exception.UserException403;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
@@ -20,7 +21,7 @@ public interface DataAccess {
     void createPublic(PublicGame pub);
     int gameID();
     ArrayList<PublicGame> gameReturn();
-    GameData returnSingleGame(int gameID);
+    GameData returnSingleGame(int gameID) throws UserException403;
     PublicGame editPublic(int gameID);
     void updateGames(GameData game, PublicGame pub, int gameID);
     void clearAuth();
