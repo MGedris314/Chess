@@ -66,7 +66,7 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public GameRetrun gameReturn() {
-        return new GameRetrun(publicGameHashMap.values());
+        return new GameRetrun(returnable);
     }
 
     @Override
