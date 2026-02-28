@@ -40,10 +40,10 @@ public class UserService {
                 return regResult;
             }
             else{
-                throw new UserException401("401: Incorrect password");
+                throw new UserException401("401: Error: unauthorized");
             }
         }
-        return null;
+        throw new UserException401("401: Error: unauthorized");
     }
 
     public UserData createUser(UserData user_info){

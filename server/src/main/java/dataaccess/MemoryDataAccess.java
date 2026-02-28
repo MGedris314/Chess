@@ -92,8 +92,8 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public void updateGames(GameData game, PublicGame pub, int GameID) {
-        games.set(GameID, game);
-        returnable.set(GameID, pub);
+        games.set(GameID-1, game);
+        returnable.set(GameID-1, pub);
     }
 
     @Override
