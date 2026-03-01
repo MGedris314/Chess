@@ -6,6 +6,7 @@ import dataaccess.MemoryDataAccess;
 import exception.*;
 import exception.UserExceptions;
 import model.GameRetrun;
+import model.JoinGameData;
 import model.RegisterResult;
 import model.UserData;
 import org.eclipse.jetty.server.Authentication;
@@ -146,47 +147,57 @@ Guy is the existingUser, Steve is newUser
         Assertions.assertNotNull(regiResult.authToken());
 
     }
+
     @Test
     @Order(9)
     @DisplayName("Proper_Create")
     public void Create200() throws UserException403{
 
-        RegisterResult regiResult = userService.GetUser(Steve);
-        Assertions.assertNotNull(regiResult.authToken());
+        int gameId = gameService.createGame("Trial");
+        Assertions.assertNotNull(gameId);
 
     }
+
     @Test
     @Order(10)
     @DisplayName("Improper_Create")
     public void Create401() throws UserException403{
-
+//      Similar problem to improper list.
         RegisterResult regiResult = userService.GetUser(Steve);
         Assertions.assertNotNull(regiResult.authToken());
 
     }
+
     @Test
     @Order(11)
     @DisplayName("Proper_Join")
-    public void Join200() throws UserException403{
-
+    public void Join200() throws UserException403, UserExceptions{
+        int gameId = gameService.createGame("Trial");
         RegisterResult regiResult = userService.GetUser(Steve);
-        Assertions.assertNotNull(regiResult.authToken());
+        JoinGameData data = new JoinGameData("White", gameId);
+        String success = gameService.joinByColor(data, regiResult.authToken());
+        Assertions.assertEquals("{}", success);
 
     }
+
     @Test
     @Order(12)
     @DisplayName("Improper_Join")
-    public void Join401() throws UserException403{
+    public void Join400() throws UserException403, UserExceptions{
 
+        int gameId = gameService.createGame("Trial");
         RegisterResult regiResult = userService.GetUser(Steve);
-        Assertions.assertNotNull(regiResult.authToken());
+        JoinGameData data = new JoinGameData("White", 400);
+        String success = gameService.joinByColor(data, regiResult.authToken());
+        Assertions.assertEquals("{}", success);
 
     }
+
     @Test
     @Order(13)
     @DisplayName("Proper_Clear")
     public void Clear200() throws UserException403{
-
+//      How to write this test?
         RegisterResult regiResult = userService.GetUser(Steve);
         Assertions.assertNotNull(regiResult.authToken());
 
