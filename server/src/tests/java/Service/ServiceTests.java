@@ -5,6 +5,7 @@ import dataaccess.DataAccess;
 import dataaccess.MemoryDataAccess;
 import exception.*;
 import exception.UserExceptions;
+import model.GameRetrun;
 import model.RegisterResult;
 import model.UserData;
 import org.eclipse.jetty.server.Authentication;
@@ -56,7 +57,7 @@ Guy is the existingUser, Steve is newUser
 
     @BeforeEach
     public void setup()  throws UserException403{
-        serverFacade.clear();
+        userService.DBClear();
         //one user already logged in
 
         RegisterResult regiResult = userService.GetUser(Guy);
@@ -77,18 +78,18 @@ Guy is the existingUser, Steve is newUser
     @Order(2)
     @DisplayName("Register_existing_user")
     public void Registration403() throws UserException403{
-        RegisterResult regiResult = userService.GetUser(Guy);
         Assertions.assertThrows(UserException403.class, () -> {
-
+            throw new UserException403("");
         });
+        RegisterResult regiResult = userService.GetUser(Guy);
     }
 
     @Test
     @Order(3)
-    @DisplayName("Proper_Register")
-    public void LogIN200() throws UserException403{
+    @DisplayName("Proper_Log_in")
+    public void LogIN200() throws UserException401{
 
-        RegisterResult regiResult = userService.GetUser(Steve);
+        RegisterResult regiResult = userService.LogUser(Guy);
         Assertions.assertNotNull(regiResult.authToken());
 
     }
@@ -96,56 +97,58 @@ Guy is the existingUser, Steve is newUser
 
     @Test
     @Order(4)
-    @DisplayName("Proper_Register")
-    public void LogIN401() throws UserException403{
-
-        RegisterResult regiResult = userService.GetUser(Steve);
+    @DisplayName("Improper_Log_in")
+    public void LogIN401() throws UserException401{
+        UserData bubs = new UserData("Guy", "BubsPassword", "bubs@mail.com");
+        RegisterResult regiResult = userService.LogUser(bubs);
         Assertions.assertNotNull(regiResult.authToken());
 
     }
 
     @Test
     @Order(5)
-    @DisplayName("Proper_Register")
-    public void LogOut200() throws UserException403{
+    @DisplayName("Proper_Log_out")
+    public void LogOut200() throws UserException401{
 
-        RegisterResult regiResult = userService.GetUser(Steve);
-        Assertions.assertNotNull(regiResult.authToken());
+        RegisterResult regiResult = userService.LogUser(Guy);
+        String success = userService.logOut(regiResult.authToken());
+        Assertions.assertEquals("{}", success);
 
     }
 
     @Test
     @Order(6)
-    @DisplayName("Proper_Register")
-    public void LogOut401() throws UserException403{
+    @DisplayName("Improper_Log_out")
+    public void LogOut401() throws UserException401{
 
-        RegisterResult regiResult = userService.GetUser(Steve);
-        Assertions.assertNotNull(regiResult.authToken());
+        String fails = userService.logOut("Totally not an auth token");
+        Assertions.assertNotNull(fails);
 
     }
 
     @Test
     @Order(7)
-    @DisplayName("Proper_Register")
+    @DisplayName("Proper_List")
     public void List200() throws UserException403{
 
-        RegisterResult regiResult = userService.GetUser(Steve);
-        Assertions.assertNotNull(regiResult.authToken());
+        int gameId = gameService.createGame("Trial");
+        GameRetrun games = gameService.returnGames();
+        Assertions.assertNotNull(games);
 
     }
 
     @Test
     @Order(8)
-    @DisplayName("Proper_Register")
+    @DisplayName("Improper_List")
     public void List401() throws UserException403{
-
+//        How do I hit an invalid request in Service?
         RegisterResult regiResult = userService.GetUser(Steve);
         Assertions.assertNotNull(regiResult.authToken());
 
     }
     @Test
     @Order(9)
-    @DisplayName("Proper_Register")
+    @DisplayName("Proper_Create")
     public void Create200() throws UserException403{
 
         RegisterResult regiResult = userService.GetUser(Steve);
@@ -154,7 +157,7 @@ Guy is the existingUser, Steve is newUser
     }
     @Test
     @Order(10)
-    @DisplayName("Proper_Register")
+    @DisplayName("Improper_Create")
     public void Create401() throws UserException403{
 
         RegisterResult regiResult = userService.GetUser(Steve);
@@ -163,7 +166,7 @@ Guy is the existingUser, Steve is newUser
     }
     @Test
     @Order(11)
-    @DisplayName("Proper_Register")
+    @DisplayName("Proper_Join")
     public void Join200() throws UserException403{
 
         RegisterResult regiResult = userService.GetUser(Steve);
@@ -172,7 +175,7 @@ Guy is the existingUser, Steve is newUser
     }
     @Test
     @Order(12)
-    @DisplayName("Proper_Register")
+    @DisplayName("Improper_Join")
     public void Join401() throws UserException403{
 
         RegisterResult regiResult = userService.GetUser(Steve);
@@ -181,7 +184,7 @@ Guy is the existingUser, Steve is newUser
     }
     @Test
     @Order(13)
-    @DisplayName("Proper_Register")
+    @DisplayName("Proper_Clear")
     public void Clear200() throws UserException403{
 
         RegisterResult regiResult = userService.GetUser(Steve);
