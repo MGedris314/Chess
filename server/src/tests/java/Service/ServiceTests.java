@@ -3,7 +3,10 @@ package Service;
 import chess.ChessGame;
 import dataaccess.DataAccess;
 import dataaccess.MemoryDataAccess;
-import exception.UserException403;
+import exception.*;
+import exception.UserExceptions;
+import model.RegisterResult;
+import model.UserData;
 import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.*;
 import passoff.model.*;
@@ -23,8 +26,8 @@ but, I think that's probably not the best solution.
 Guy is the existingUser, Steve is newUser
 */
 
-    private static TestUser Guy;
-    private static TestUser Steve;
+    private static UserData Guy;
+    private static UserData Steve;
     private static TestCreateRequest createRequest;
     private static TestServerFacade serverFacade;
     private static Server server;
@@ -46,35 +49,143 @@ Guy is the existingUser, Steve is newUser
         serverFacade = new TestServerFacade("localhost", Integer.toString(port));
         gameService = new GameService(new MemoryDataAccess());
         userService = new UserService(new MemoryDataAccess());
-        Guy = new TestUser("Guy", "GuysPassword", "guy@mail.com");
-        Steve = new TestUser("Steve", "StevesPassword", "Steve@mail.com");
+        Guy = new UserData("Guy", "GuysPassword", "guy@mail.com");
+        Steve = new UserData("Steve", "StevesPassword", "Steve@mail.com");
         createRequest = new TestCreateRequest("testGame");
     }
 
     @BeforeEach
-    public void setup() {
+    public void setup()  throws UserException403{
         serverFacade.clear();
         //one user already logged in
 
-        TestAuthResult regResult = userService.GetUser(Guy);
-        existingAuth = regResult.getAuthToken();
+        RegisterResult regiResult = userService.GetUser(Guy);
+        Assertions.assertNotNull(regiResult.authToken());
     }
 
     @Test
     @Order(1)
     @DisplayName("Proper_Register")
-    public void Registration200(){
-        TestAuthResult regiResult = serverFacade.register(Steve);
-        Assertions.assertNotNull(regiResult.getAuthToken());
+    public void Registration200() throws UserException403{
+
+        RegisterResult regiResult = userService.GetUser(Steve);
+        Assertions.assertNotNull(regiResult.authToken());
+
     }
 
     @Test
     @Order(2)
-    @DisplayName("Register_existing")
-    public void Registration403(){
+    @DisplayName("Register_existing_user")
+    public void Registration403() throws UserException403{
+        RegisterResult regiResult = userService.GetUser(Guy);
         Assertions.assertThrows(UserException403.class, () -> {
-            TestAuthResult regiResult = serverFacade.register(Guy);
+
         });
     }
 
+    @Test
+    @Order(3)
+    @DisplayName("Proper_Register")
+    public void LogIN200() throws UserException403{
+
+        RegisterResult regiResult = userService.GetUser(Steve);
+        Assertions.assertNotNull(regiResult.authToken());
+
+    }
+
+
+    @Test
+    @Order(4)
+    @DisplayName("Proper_Register")
+    public void LogIN401() throws UserException403{
+
+        RegisterResult regiResult = userService.GetUser(Steve);
+        Assertions.assertNotNull(regiResult.authToken());
+
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("Proper_Register")
+    public void LogOut200() throws UserException403{
+
+        RegisterResult regiResult = userService.GetUser(Steve);
+        Assertions.assertNotNull(regiResult.authToken());
+
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("Proper_Register")
+    public void LogOut401() throws UserException403{
+
+        RegisterResult regiResult = userService.GetUser(Steve);
+        Assertions.assertNotNull(regiResult.authToken());
+
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("Proper_Register")
+    public void List200() throws UserException403{
+
+        RegisterResult regiResult = userService.GetUser(Steve);
+        Assertions.assertNotNull(regiResult.authToken());
+
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("Proper_Register")
+    public void List401() throws UserException403{
+
+        RegisterResult regiResult = userService.GetUser(Steve);
+        Assertions.assertNotNull(regiResult.authToken());
+
+    }
+    @Test
+    @Order(9)
+    @DisplayName("Proper_Register")
+    public void Create200() throws UserException403{
+
+        RegisterResult regiResult = userService.GetUser(Steve);
+        Assertions.assertNotNull(regiResult.authToken());
+
+    }
+    @Test
+    @Order(10)
+    @DisplayName("Proper_Register")
+    public void Create401() throws UserException403{
+
+        RegisterResult regiResult = userService.GetUser(Steve);
+        Assertions.assertNotNull(regiResult.authToken());
+
+    }
+    @Test
+    @Order(11)
+    @DisplayName("Proper_Register")
+    public void Join200() throws UserException403{
+
+        RegisterResult regiResult = userService.GetUser(Steve);
+        Assertions.assertNotNull(regiResult.authToken());
+
+    }
+    @Test
+    @Order(12)
+    @DisplayName("Proper_Register")
+    public void Join401() throws UserException403{
+
+        RegisterResult regiResult = userService.GetUser(Steve);
+        Assertions.assertNotNull(regiResult.authToken());
+
+    }
+    @Test
+    @Order(13)
+    @DisplayName("Proper_Register")
+    public void Clear200() throws UserException403{
+
+        RegisterResult regiResult = userService.GetUser(Steve);
+        Assertions.assertNotNull(regiResult.authToken());
+
+    }
 }
