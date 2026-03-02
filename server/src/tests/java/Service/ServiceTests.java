@@ -5,10 +5,7 @@ import dataaccess.DataAccess;
 import dataaccess.MemoryDataAccess;
 import exception.*;
 import exception.UserExceptions;
-import model.GameRetrun;
-import model.JoinGameData;
-import model.RegisterResult;
-import model.UserData;
+import model.*;
 import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.*;
 import passoff.model.*;
@@ -38,22 +35,14 @@ Guy is the existingUser, Steve is newUser
     private static UserService userService;
 
 
-    @AfterAll
-    static void stopServer() {
-        server.stop();
-    }
 
     @BeforeAll
     public static void init() {
-        server = new Server();
-        var port = server.run(0);
-        System.out.println("Started test HTTP server on " + port);
-        serverFacade = new TestServerFacade("localhost", Integer.toString(port));
-        gameService = new GameService(new MemoryDataAccess());
-        userService = new UserService(new MemoryDataAccess());
+        MemoryDataAccess memory = new MemoryDataAccess();
+        gameService = new GameService(memory);
+        userService = new UserService(memory);
         Guy = new UserData("Guy", "GuysPassword", "guy@mail.com");
         Steve = new UserData("Steve", "StevesPassword", "Steve@mail.com");
-        createRequest = new TestCreateRequest("testGame");
     }
 
     @BeforeEach
@@ -152,7 +141,8 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(8)
     @DisplayName("Improper_List")
-    public void List401(){
+    public void List400(){
+        userService.DBClear();
         GameRetrun games = gameService.returnGames();
         Assertions.assertEquals(0, games.games().size());
     }
@@ -170,7 +160,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(10)
     @DisplayName("Improper_Create")
-    public void Create401() throws UserException403{
+    public void Create403() throws UserException403{
 //      Similar problem to improper list.
         int gameID = gameService.createGame("");
         Assertions.assertEquals(-1, gameID);
@@ -210,22 +200,50 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(13)
     @DisplayName("Proper authenticate")
-    public void Authenticate200(){}
+    public void Authenticate200(){
+        try {
+            RegisterResult regiResult = userService.GetUser(Steve);
+            boolean authentic = userService.authenticate(regiResult.authToken());
+            Assertions.assertEquals(true, authentic);
+        }
+        catch (UserException403 e){
+            Assertions.assertTrue(false, "Something went wrong.");
+        }
+    }
 
     @Test
     @Order(14)
     @DisplayName("Improper authenticate")
-    public void Authenticate401(){}
+    public void Authenticate401(){
+        try {
+            RegisterResult regiResult = userService.GetUser(Steve);
+            boolean authentic = userService.authenticate("Totally an auth token");
+            Assertions.assertEquals(false, authentic);
+        }
+        catch (UserException403 e){
+            Assertions.assertTrue(true, "Something went wrong.");
+        }
+    }
 
     @Test
     @Order(15)
     @DisplayName("Proper link")
-    public void Link200(){}
+    public void Link200(){
+        UserData bubs = new UserData("Bubs", "bub's password", "bubs@mail.com");
+        AuthData authData = userService.linkAuth(bubs);
+        Assertions.assertNotNull(authData);
+    }
 
     @Test
     @Order(16)
     @DisplayName("Improper link")
-    public void Link400(){}
+    public void Link400(){
+
+        UserData bubs = new UserData("", "bub's password", "bubs@mail.com");
+        AuthData authData = userService.linkAuth(bubs);
+        Assertions.assertNull(authData);
+
+    }
 
     @Test
     @Order(17)

@@ -68,6 +68,9 @@ public class UserService {
     }
 
     public AuthData linkAuth(UserData user_info){
+        if(user_info.username().isEmpty()){
+            return null;
+        }
         String authToken = UUID.randomUUID().toString();
         AuthData authorized = new AuthData(authToken, user_info.username());
         dataAccess.addAuthToken(authorized);
