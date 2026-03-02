@@ -1,6 +1,5 @@
 package chess;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,30 +14,26 @@ import java.util.Objects;
 public class ChessGame {
     ChessBoard board; //Figure out how to set up the board.
     TeamColor team_turn;
-    boolean White_check;
-    boolean Black_check;
-    ChessPosition King_W;
-    ChessPosition King_B;
-    ArrayList <ChessPosition> white_team;
-    ArrayList <ChessPosition> black_team;
+    boolean whiteCheck;
+    boolean blackCheck;
+    ChessPosition kingW;
+    ChessPosition kingB;
+    ArrayList <ChessPosition> whiteTeam;
+    ArrayList <ChessPosition> blackTeam;
 
     public ChessGame() {
         this.team_turn = TeamColor.WHITE;
         this.board = new ChessBoard();
         this.board.resetBoard();
-        White_check = false;
-        Black_check = false;
-        King_W = find_king(this.board, TeamColor.WHITE);
-        King_B = find_king(this.board, TeamColor.BLACK);
-        white_team = new ArrayList<ChessPosition>();
-        black_team = new ArrayList<ChessPosition>();
+        whiteCheck = false;
+        blackCheck = false;
+        kingW = find_king(this.board, TeamColor.WHITE);
+        kingB = find_king(this.board, TeamColor.BLACK);
+        whiteTeam = new ArrayList<ChessPosition>();
+        blackTeam = new ArrayList<ChessPosition>();
     }
 
-    /**
-     * @return Which team's turn it is
-     */
-
-//    Setting up variables that we'll probably be using later
+    // @return Which team's turn it is
 
     public ChessPosition find_king(ChessBoard board, TeamColor color){
         for(int x = 1; x<9; x++){
@@ -57,11 +52,11 @@ public class ChessGame {
 
     public boolean king_escape_w(ChessBoard board, TeamColor color){
 //      This checks to see if the king can escape
-        King_W = find_king(board, color);
-        ChessPiece king = board.getPiece(King_W);
+        kingW = find_king(board, color);
+        ChessPiece king = board.getPiece(kingW);
         ArrayList<ChessMove> escape = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> possible_moves = new ArrayList<ChessPosition>();
-        escape.addAll(king.move_calc(King_W, board, king));
+        escape.addAll(king.moveCalc(kingW, board, king));
         ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>();
         endings.addAll(possible_black_ends(board));
         for(int i = 0; i< escape.size(); i++){
@@ -80,12 +75,12 @@ public class ChessGame {
     }
     public boolean king_escape_b(ChessBoard board, TeamColor color){
 //      This checks to see if the king can escape
-        King_B = find_king(board, color);
-        ChessPiece king = board.getPiece(King_B);
+        kingB = find_king(board, color);
+        ChessPiece king = board.getPiece(kingB);
 
         ArrayList<ChessMove> escape = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> possible_moves = new ArrayList<ChessPosition>();
-        escape.addAll(king.move_calc(King_B, board, king));
+        escape.addAll(king.moveCalc(kingB, board, king));
         ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_white_ends(board));
         for(int i = 0; i< escape.size(); i++){
             ChessMove current = escape.get(i);
@@ -107,26 +102,26 @@ public class ChessGame {
     }
 
     public void find_white_team(ChessBoard board){
-        white_team.clear();
+        whiteTeam.clear();
         for(int x = 1; x<9; x++){
             for(int y = 1; y<9; y++){
                 ChessPosition finder = new ChessPosition(x, y);
                 ChessPiece found = board.getPiece(finder);
                 if (found != null && found.getTeamColor() == TeamColor.WHITE){
-                    white_team.add(finder);
+                    whiteTeam.add(finder);
                 }
             }
         }
     }
 
     public void find_black_team(ChessBoard board){
-        black_team.clear();
+        blackTeam.clear();
         for(int x = 1; x<9; x++){
             for(int y = 1; y<9; y++){
                 ChessPosition finder = new ChessPosition(x, y);
                 ChessPiece found = board.getPiece(finder);
                 if (found != null && found.getTeamColor() == TeamColor.BLACK){
-                    black_team.add(finder);
+                    blackTeam.add(finder);
                 }
             }
         }
@@ -136,9 +131,9 @@ public class ChessGame {
 //      If full is true, we run the full thing.  Otherwise, we just get the moves.
         ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
-        for(int i = 0; i<white_team.size(); i++){
-            ChessPiece hold = board.getPiece(white_team.get(i));
-            possible_moves.addAll(hold.move_calc(white_team.get(i), board, hold));
+        for(int i = 0; i< whiteTeam.size(); i++){
+            ChessPiece hold = board.getPiece(whiteTeam.get(i));
+            possible_moves.addAll(hold.moveCalc(whiteTeam.get(i), board, hold));
         }
         
         for(int i = 0; i<possible_moves.size(); i++){
@@ -152,9 +147,9 @@ public class ChessGame {
     public Collection<ChessPosition> possible_black_ends(ChessBoard board){
         ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
-        for(int i = 0; i<black_team.size(); i++){
-            ChessPiece hold = board.getPiece(black_team.get(i));
-            possible_moves.addAll(hold.move_calc(black_team.get(i), board, hold));
+        for(int i = 0; i< blackTeam.size(); i++){
+            ChessPiece hold = board.getPiece(blackTeam.get(i));
+            possible_moves.addAll(hold.moveCalc(blackTeam.get(i), board, hold));
         }
         for(int i = 0; i<possible_moves.size(); i++){
             ChessMove current = possible_moves.get(i);
@@ -168,9 +163,9 @@ public class ChessGame {
 //      If full is true, we run the full thing.  Otherwise, we just get the moves.
         ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
-        for(int i = 0; i<white_team.size(); i++){
-            ChessPiece hold = board.getPiece(white_team.get(i));
-            possible_moves.addAll(hold.move_calc(white_team.get(i), board, hold));
+        for(int i = 0; i< whiteTeam.size(); i++){
+            ChessPiece hold = board.getPiece(whiteTeam.get(i));
+            possible_moves.addAll(hold.moveCalc(whiteTeam.get(i), board, hold));
         }
         for(int i = 0; i<possible_moves.size(); i++){
             ChessMove current = possible_moves.get(i);
@@ -184,9 +179,9 @@ public class ChessGame {
         find_black_team(board);
         ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
         ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
-        for(int i = 0; i<black_team.size(); i++){
-            ChessPiece hold = board.getPiece(black_team.get(i));
-            possible_moves.addAll(hold.move_calc(black_team.get(i), board, hold));
+        for(int i = 0; i< blackTeam.size(); i++){
+            ChessPiece hold = board.getPiece(blackTeam.get(i));
+            possible_moves.addAll(hold.moveCalc(blackTeam.get(i), board, hold));
         }
         for(int i = 0; i<possible_moves.size(); i++){
             ChessMove current = possible_moves.get(i);
@@ -198,62 +193,53 @@ public class ChessGame {
 
     public boolean white_in_check(ChessBoard board){
         find_black_team(board);
-        White_check = false;
+        whiteCheck = false;
         ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_black_ends(board));
-        King_W = find_king(board, TeamColor.WHITE);
+        kingW = find_king(board, TeamColor.WHITE);
         for(int x = 0; x<endings.size(); x++){
-            if(endings.get(x).equals(King_W)){
-                White_check = true;
+            if(endings.get(x).equals(kingW)){
+                whiteCheck = true;
             }
         }
-        return White_check;
+        return whiteCheck;
     }
 
     public boolean black_in_check(ChessBoard board){
         find_white_team(board);
-        Black_check = false;
+        blackCheck = false;
         ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>(possible_white_ends(board));
-        King_B = find_king(board, TeamColor.BLACK);
+        kingB = find_king(board, TeamColor.BLACK);
         for(int x = 0; x<endings.size(); x++){
-            Black_check = false;
-            if(endings.get(x).equals(King_B)){
-                Black_check = true;
+            blackCheck = false;
+            if(endings.get(x).equals(kingB)){
+                blackCheck = true;
                 break;
             }
         }
-        return Black_check;
+        return blackCheck;
     }
 
-
-    /**
-     * Set's which teams turn it is
-     *
-     * @param team the team whose turn it is
-     */
+    /* Set's which teams turn it is
+     * @param team the team whose turn it is     */
     public void setTeamTurn(TeamColor team) {
         team_turn = team;
     }
 
-    /**
-     * Enum identifying the 2 possible teams in a chess game
-     */
+// Possible teams
     public enum TeamColor {
         WHITE,
         BLACK
     }
 
-    /**
-     * Gets a valid moves for a piece at the given location
-     *
+    /* Gets a valid moves for a piece at the given location
      * @param startPosition the piece to get valid moves for
      * @return Set of valid moves for requested piece, or null if no piece at
-     * startPosition
-     */
+     * startPosition     */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece piece = board.getPiece(startPosition);
         ArrayList <ChessMove> valid_moves = new ArrayList<ChessMove>();
         ArrayList <ChessMove> moves_to_check = new ArrayList<ChessMove>();
-        moves_to_check.addAll(piece.move_calc(startPosition, board, piece));
+        moves_to_check.addAll(piece.moveCalc(startPosition, board, piece));
         if(piece.getTeamColor() == TeamColor.WHITE){
             for(int x = 0; x<moves_to_check.size(); x++){
                 ChessBoard cloned = new ChessBoard(board);
@@ -288,19 +274,10 @@ public class ChessGame {
             System.out.println("Something has gone wrong to get to this point, check your logic");
             return valid_moves;
         }
-        /*
-        for loop calling make move for all possible moves?
-
-        return all valid moves after adding them to an array.
-        * */
     }
-
-    /**
-     * Makes a move in a chess game
-     *
+    /** Makes a move in a chess game
      * @param move chess move to perform
-     * @throws InvalidMoveException if move is invalid
-     */
+     * @throws InvalidMoveException if move is invalid*/
     public void makeMove(ChessMove move) throws InvalidMoveException {
         InvalidMoveException wrong = new InvalidMoveException();
         ChessPiece has_piece = board.getPiece(move.getStartPosition());
@@ -326,7 +303,7 @@ public class ChessGame {
         }
         else{
             ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
-            possible_moves.addAll(has_piece.move_calc(move.getStartPosition(), board, has_piece));
+            possible_moves.addAll(has_piece.moveCalc(move.getStartPosition(), board, has_piece));
             ArrayList<ChessPosition> possible_ends = new ArrayList<ChessPosition>();
             for (int x = 0; x < possible_moves.size(); x++) {
                 ChessMove current = possible_moves.get(x);
@@ -373,17 +350,11 @@ public class ChessGame {
                 team_turn = TeamColor.BLACK;
             }
         }
-        /*
-        Calls valid moves
-        * */
     }
 
-    /**
-     * Determines if the given team is in check
-     *
+    /** Determines if the given team is in check
      * @param teamColor which team to check for check
-     * @return True if the specified team is in check
-     */
+     * @return True if the specified team is in check     */
     public boolean isInCheck(TeamColor teamColor) {
         if(teamColor == TeamColor.WHITE){
             return white_in_check(board);
@@ -395,19 +366,15 @@ public class ChessGame {
             return false;
         }
     }
-
-    /**
-     * Determines if the given team is in checkmate
-     *
+    /* Determines if the given team is in checkmate
      * @param teamColor which team to check for checkmate
-     * @return True if the specified team is in checkmate
-     */
+ @return True if the specified team is in checkmate */
     public boolean isInCheckmate(TeamColor teamColor) {
 //        Just call valid moves
         if(teamColor==TeamColor.WHITE){
 //          Base case, if we're not in check, we're not in check mate.
-            White_check = white_in_check(board);
-            if(!White_check){
+            whiteCheck = white_in_check(board);
+            if(!whiteCheck){
                 return false;
             }
 //          Last resort, move a piece to interrupt check.
@@ -424,8 +391,8 @@ public class ChessGame {
             }
         }
         if(teamColor==TeamColor.BLACK){
-            Black_check = black_in_check(board);
-            if(!Black_check){
+            blackCheck = black_in_check(board);
+            if(!blackCheck){
                 return false;
             }
             //Last resort, move a piece to interrupt check.
@@ -436,8 +403,7 @@ public class ChessGame {
                 ChessPosition start_point = valid_pass_in.get(y);
                 valid_outs.addAll(validMoves(start_point));
             }
-            if(valid_outs.isEmpty()){
-                //If it is empty there are no outs, we are in checkmate.
+            if(valid_outs.isEmpty()){//If it is empty there are no outs, we are in checkmate.
                 return true;
             }
         }
@@ -447,22 +413,18 @@ public class ChessGame {
         }
         return false;
     }
-
-    /**
-     * Determines if the given team is in stalemate, which here is defined as having
+    /* Determines if the given team is in stalemate, which here is defined as having
      * no valid moves while not in check.
-     *
      * @param teamColor which team to check for stalemate
-     * @return True if the specified team is in stalemate, otherwise false
-     */
+     * @return True if the specified team is in stalemate, otherwise false*/
     public boolean isInStalemate(TeamColor teamColor) {
         if(teamColor==TeamColor.WHITE){
-            White_check = white_in_check(board);
-            if (White_check){
+            whiteCheck = white_in_check(board);
+            if (whiteCheck){
                 return false;
             }
             boolean king_move = king_escape_w(board, teamColor);
-            if(!king_move && White_check==true){
+            if(!king_move && whiteCheck ==true){
                 return false;
             }
 //          Last resort, move a piece to interrupt check.
@@ -473,14 +435,13 @@ public class ChessGame {
                 ChessPosition start_point = valid_pass_in.get(y);
                 valid_outs.addAll(validMoves(start_point));
             }
-            if(valid_outs.isEmpty() && White_check == false){
-                //If it is empty there are no outs, we are in checkmate.
+            if(valid_outs.isEmpty() && whiteCheck == false){ //If it is empty there are no outs, we are in checkmate
                 return true;
             }
         }
         if(teamColor==TeamColor.BLACK){
-            Black_check = black_in_check(board);
-            if(Black_check){
+            blackCheck = black_in_check(board);
+            if(blackCheck){
                 return false;
             }
             ArrayList<ChessMove> valid_out=new ArrayList<ChessMove>();
@@ -498,7 +459,7 @@ public class ChessGame {
                 ChessPosition start_point = valid_pass_in.get(y);
                 valid_outs.addAll(validMoves(start_point));
             }
-            if(valid_outs.isEmpty() && Black_check == false){
+            if(valid_outs.isEmpty() && blackCheck == false){
                 //If it is empty there are no outs, we are in checkmate.
                 return true;
             }
@@ -509,36 +470,28 @@ public class ChessGame {
         }
         return false;
     }
-
-    /**
-     * Sets this game's chessboard with a given board
-     *
+    /* Sets this game's chessboard with a given board
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
         this.board = board;
     }
-
-    /**
-     * Gets the current chessboard
-     *
+    /**Gets the current chessboard
      * @return the chessboard
      */
     public ChessBoard getBoard() {
         return board;
     }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
         ChessGame chessGame = (ChessGame) o;
-        return White_check == chessGame.White_check && Black_check == chessGame.Black_check && Objects.equals(board, chessGame.board) && team_turn == chessGame.team_turn && Objects.equals(King_W, chessGame.King_W) && Objects.equals(King_B, chessGame.King_B) && Objects.equals(white_team, chessGame.white_team) && Objects.equals(black_team, chessGame.black_team);
+        return whiteCheck == chessGame.whiteCheck && blackCheck == chessGame.blackCheck && Objects.equals(board, chessGame.board) && team_turn == chessGame.team_turn && Objects.equals(kingW, chessGame.kingW) && Objects.equals(kingB, chessGame.kingB) && Objects.equals(whiteTeam, chessGame.whiteTeam) && Objects.equals(blackTeam, chessGame.blackTeam);
     }
-
     @Override
     public int hashCode() {
-        return Objects.hash(board, team_turn, White_check, Black_check, King_W, King_B, white_team, black_team);
+        return Objects.hash(board, team_turn, whiteCheck, blackCheck, kingW, kingB, whiteTeam, blackTeam);
     }
 }

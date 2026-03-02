@@ -47,7 +47,7 @@ public class ChessPiece {
     public PieceType getPieceType() {
         return type;
     }
-    public Collection<ChessMove> move_pawn(ChessPosition myposiiton, ChessBoard board, ChessPiece piece){
+    public Collection<ChessMove> movePawn(ChessPosition myposiiton, ChessBoard board, ChessPiece piece){
         int row = myposiiton.getRow();
         int col = myposiiton.getColumn();
         int home_r = 7;
@@ -120,7 +120,7 @@ public class ChessPiece {
         return moves;
     }
 
-    public Collection<ChessMove> move_knight(ChessPosition myPosition, ChessBoard board, ChessPiece piece){
+    public Collection<ChessMove> moveKnight(ChessPosition myPosition, ChessBoard board, ChessPiece piece){
         int row  = myPosition.getRow();
         int col = myPosition.getColumn();
         ArrayList<ChessMove>moves = new ArrayList<ChessMove>();
@@ -187,7 +187,7 @@ public class ChessPiece {
         return moves;
     }
 
-    public Collection<ChessMove> move_calc(ChessPosition myposiiton, ChessBoard board, ChessPiece piece){
+    public Collection<ChessMove> moveCalc(ChessPosition myposiiton, ChessBoard board, ChessPiece piece){
         int row = myposiiton.getRow();
         int col = myposiiton.getColumn();
         int up = 8-row;
@@ -196,8 +196,8 @@ public class ChessPiece {
         int left = col-1;
         boolean king = false;
         if(piece.type == PieceType.KING){king = true;}
-        if(piece.type == PieceType.KNIGHT){return move_knight(myposiiton, board, piece);}
-        if(piece.type == PieceType.PAWN){return move_pawn(myposiiton, board, piece);}
+        if(piece.type == PieceType.KNIGHT){return moveKnight(myposiiton, board, piece);}
+        if(piece.type == PieceType.PAWN){return movePawn(myposiiton, board, piece);}
 
         ArrayList<ChessMove> moves = new ArrayList<ChessMove>();
 
@@ -336,27 +336,27 @@ public class ChessPiece {
         ChessPiece piece = board.getPiece(myPosition);
         if (piece.getPieceType() == PieceType.BISHOP){
             System.out.println(myPosition);
-            return move_calc(myPosition, board, piece);
+            return moveCalc(myPosition, board, piece);
         }
         if (piece.getPieceType() == PieceType.KNIGHT){
             System.out.println(myPosition);
-            return move_calc(myPosition, board, piece);
+            return moveCalc(myPosition, board, piece);
         }
         if (piece.getPieceType() == PieceType.ROOK){
             System.out.println(myPosition);
-            return move_calc(myPosition, board, piece);
+            return moveCalc(myPosition, board, piece);
         }
         if (piece.getPieceType() == PieceType.PAWN){
             System.out.println(myPosition);
-            return move_calc(myPosition, board, piece);
+            return moveCalc(myPosition, board, piece);
         }
         if (piece.getPieceType() == PieceType.QUEEN){
             System.out.println(myPosition);
-            return move_calc(myPosition, board, piece);
+            return moveCalc(myPosition, board, piece);
         }
         if (piece.getPieceType() == PieceType.KING){
             System.out.println(myPosition);
-            return move_calc(myPosition, board, piece);
+            return moveCalc(myPosition, board, piece);
         }
         return List.of();
     }
