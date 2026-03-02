@@ -187,17 +187,17 @@ public class ChessPiece {
         return moves;
     }
 
-    public Collection<ChessMove> moveCalc(ChessPosition myposiiton, ChessBoard board, ChessPiece piece){
-        int row = myposiiton.getRow();
-        int col = myposiiton.getColumn();
+    public Collection<ChessMove>moveCalc(ChessPosition myPositon,ChessBoard board,ChessPiece piece){
+        int row = myPositon.getRow();
+        int col = myPositon.getColumn();
         int up = 8-row;
         int down = row-1;
         int right = 8-col;
         int left = col-1;
         boolean king = false;
         if(piece.type == PieceType.KING){king = true;}
-        if(piece.type == PieceType.KNIGHT){return moveKnight(myposiiton, board, piece);}
-        if(piece.type == PieceType.PAWN){return movePawn(myposiiton, board, piece);}
+        if(piece.type == PieceType.KNIGHT){return moveKnight(myPositon, board, piece);}
+        if(piece.type == PieceType.PAWN){return movePawn(myPositon, board, piece);}
 
         ArrayList<ChessMove> moves = new ArrayList<ChessMove>();
 
@@ -207,10 +207,10 @@ public class ChessPiece {
             ChessPosition check = new ChessPosition(row + x, col);
             ChessPiece check1 = board.getPiece(check);
             if(check1 == null){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
             }
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
                 break;
             }
             else{break;}
@@ -222,10 +222,10 @@ public class ChessPiece {
             ChessPosition check = new ChessPosition(row - x, col);
             ChessPiece check1 = board.getPiece(check);
             if(check1 == null){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
             }
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
                 break;
             }
             else{break;}
@@ -237,10 +237,10 @@ public class ChessPiece {
             ChessPosition check = new ChessPosition(row, col + x);
             ChessPiece check1 = board.getPiece(check);
             if(check1 == null){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
             }
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
                 break;
             }
             else{break;}
@@ -252,10 +252,10 @@ public class ChessPiece {
             ChessPosition check = new ChessPosition(row, col-x);
             ChessPiece check1 = board.getPiece(check);
             if(check1 == null){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
             }
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
                 break;
             }
             else{break;}
@@ -267,10 +267,10 @@ public class ChessPiece {
             ChessPosition check = new ChessPosition(row + x, col+x);
             ChessPiece check1 = board.getPiece(check);
             if(check1 == null){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
             }
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
                 break;
             }
             else{break;}
@@ -282,10 +282,10 @@ public class ChessPiece {
             ChessPosition check = new ChessPosition(row - x, col +x);
             ChessPiece check1 = board.getPiece(check);
             if(check1 == null){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
             }
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
                 break;
             }
             else{break;}
@@ -297,10 +297,10 @@ public class ChessPiece {
             ChessPosition check = new ChessPosition(row - x, col - x);
             ChessPiece check1 = board.getPiece(check);
             if(check1 == null){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
             }
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
                 break;
             }
             else{break;}
@@ -312,10 +312,10 @@ public class ChessPiece {
             ChessPosition check = new ChessPosition(row+x, col-x);
             ChessPiece check1 = board.getPiece(check);
             if(check1 == null){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
             }
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myposiiton, check, null));
+                moves.add(new ChessMove(myPositon, check, null));
                 break;
             }
             else{break;}
