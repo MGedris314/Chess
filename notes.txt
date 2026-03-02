@@ -75,10 +75,11 @@ The service unit tests must directly call the methods on your service classes. T
 with the starter code.
 
 03/02/2026:  Service tests and how to write pass/fail cases
-Get user:  Returns auth token throws 403
-Log User:  Returns auth token throws 401
+change the positive outputs to match the negative style.
+Get user:  Returns auth token throws 403 done
+Log User:  Returns auth token throws 401 done
 Authenticate:  True or false
-Log out: Returns blank throws 401
+Log out: Returns blank throws done
 Link auth:  Returns authorized, unknown
 DB clear:  Returns nothing.
 

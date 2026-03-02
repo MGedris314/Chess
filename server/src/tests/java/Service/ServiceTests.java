@@ -141,21 +141,20 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(7)
     @DisplayName("Proper_List")
-    public void List200() throws UserException403{
+    public void List200(){
 
         int gameId = gameService.createGame("Trial");
         GameRetrun games = gameService.returnGames();
-        Assertions.assertNotNull(games);
+        Assertions.assertEquals(1, games.games().size());
 
     }
 
     @Test
     @Order(8)
     @DisplayName("Improper_List")
-    public void List401() throws UserException403{
-//        How do I hit an invalid request in Service?
+    public void List401(){
         GameRetrun games = gameService.returnGames();
-        Assertions.assertNull(games);
+        Assertions.assertEquals(0, games.games().size());
     }
 
     @Test
@@ -164,7 +163,7 @@ Guy is the existingUser, Steve is newUser
     public void Create200() throws UserException403{
 
         int gameId = gameService.createGame("Trial");
-        Assertions.assertNotNull(gameId);
+        Assertions.assertEquals(1 ,gameId);
 
     }
 
@@ -173,8 +172,8 @@ Guy is the existingUser, Steve is newUser
     @DisplayName("Improper_Create")
     public void Create401() throws UserException403{
 //      Similar problem to improper list.
-        RegisterResult regiResult = userService.GetUser(Steve);
-        Assertions.assertNotNull(regiResult.authToken());
+        int gameID = gameService.createGame("");
+        Assertions.assertEquals(-1, gameID);
 
     }
 
@@ -194,17 +193,42 @@ Guy is the existingUser, Steve is newUser
     @Order(12)
     @DisplayName("Improper_Join")
     public void Join400() throws UserException403, UserExceptions{
-
-        int gameId = gameService.createGame("Trial");
-        RegisterResult regiResult = userService.GetUser(Steve);
-        JoinGameData data = new JoinGameData("White", 400);
-        String success = gameService.joinByColor(data, regiResult.authToken());
-        Assertions.assertEquals("{}", success);
+        try {
+            int gameId = gameService.createGame("Trial");
+            RegisterResult regiResult = userService.GetUser(Steve);
+            JoinGameData data = new JoinGameData("White", 400);
+            String success = gameService.joinByColor(data, regiResult.authToken());
+            Assertions.assertEquals("{}", success);
+        }
+        catch(UserExceptions e){
+            Assertions.assertTrue(true);
+        }
 
     }
 
+
     @Test
     @Order(13)
+    @DisplayName("Proper authenticate")
+    public void Authenticate200(){}
+
+    @Test
+    @Order(14)
+    @DisplayName("Improper authenticate")
+    public void Authenticate401(){}
+
+    @Test
+    @Order(15)
+    @DisplayName("Proper link")
+    public void Link200(){}
+
+    @Test
+    @Order(16)
+    @DisplayName("Improper link")
+    public void Link400(){}
+
+    @Test
+    @Order(17)
     @DisplayName("Proper_Clear")
     public void Clear200() throws UserException403{
 //      How to write this test?

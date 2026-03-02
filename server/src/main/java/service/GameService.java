@@ -19,6 +19,9 @@ public class GameService {
 
     public int createGame(String game_name){
 //        Failsafe double check to make sure the game_name isn't null
+        if(game_name.isEmpty()){
+            return -1;
+        }
         int ID = dataAccess.gameID();
         GameData gameData = new GameData(ID, "","",game_name, new ChessGame());
         PublicGame publicGame = new PublicGame(ID, "", "", game_name);
