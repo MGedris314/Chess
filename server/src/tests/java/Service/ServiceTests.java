@@ -78,11 +78,13 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(2)
     @DisplayName("Register_existing_user")
-    public void Registration403() throws UserException403{
-        Assertions.assertThrows(UserException403.class, () -> {
-            throw new UserException403("");
-        });
-        RegisterResult regiResult = userService.GetUser(Guy);
+    public void Registration403(){
+        try {
+            RegisterResult regiResult = userService.GetUser(Guy);
+            Assertions.assertTrue(false, "Should have failed and didn't.");
+        } catch (UserException403 e) {
+            Assertions.assertTrue(true);
+        }
     }
 
     @Test
