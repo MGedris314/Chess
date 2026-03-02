@@ -73,3 +73,15 @@ which the operation fails (e.g., trying to claim an already claimed spot).
 
 The service unit tests must directly call the methods on your service classes. They should not use the HTTP server pass off test code that is provided
 with the starter code.
+
+03/02/2026:  Service tests and how to write pass/fail cases
+Get user:  Returns auth token throws 403
+Log User:  Returns auth token throws 401
+Authenticate:  True or false
+Log out: Returns blank throws 401
+Link auth:  Returns authorized, unknown
+DB clear:  Returns nothing.
+
+CreateGame:  Returns ID, returns -1
+Return Games:  returns games, returns null
+Join game:  Returns empty string throws 403

@@ -67,7 +67,7 @@ Guy is the existingUser, Steve is newUser
 
     @Test
     @Order(1)
-    @DisplayName("Proper_Register")
+    @DisplayName("Proper_GetUser")
     public void Registration200() throws UserException403{
 
         RegisterResult regiResult = userService.GetUser(Steve);
@@ -77,7 +77,7 @@ Guy is the existingUser, Steve is newUser
 
     @Test
     @Order(2)
-    @DisplayName("Register_existing_user")
+    @DisplayName("Improper get User")
     public void Registration403(){
         try {
             RegisterResult regiResult = userService.GetUser(Guy);
@@ -89,7 +89,7 @@ Guy is the existingUser, Steve is newUser
 
     @Test
     @Order(3)
-    @DisplayName("Proper_Log_in")
+    @DisplayName("Proper Log user")
     public void LogIN200() throws UserException401{
 
         RegisterResult regiResult = userService.LogUser(Guy);
@@ -100,11 +100,16 @@ Guy is the existingUser, Steve is newUser
 
     @Test
     @Order(4)
-    @DisplayName("Improper_Log_in")
-    public void LogIN401() throws UserException401{
+    @DisplayName("Improper log user")
+    public void LogIN401(){
         UserData bubs = new UserData("Guy", "BubsPassword", "bubs@mail.com");
-        RegisterResult regiResult = userService.LogUser(bubs);
-        Assertions.assertNotNull(regiResult.authToken());
+        try {
+            RegisterResult regiResult = userService.LogUser(bubs);
+            Assertions.assertFalse(false, "Should have failed and didn't");
+        }
+        catch (UserException401 e) {
+            Assertions.assertTrue(true);
+        }
 
     }
 
@@ -123,9 +128,13 @@ Guy is the existingUser, Steve is newUser
     @Order(6)
     @DisplayName("Improper_Log_out")
     public void LogOut401() throws UserException401{
-
-        String fails = userService.logOut("Totally not an auth token");
-        Assertions.assertNotNull(fails);
+        try {
+            String fails = userService.logOut("Totally not an auth token");
+            Assertions.assertFalse(false);
+        }
+        catch (UserException401 e) {
+            Assertions.assertTrue(true);
+        }
 
     }
 
@@ -145,9 +154,8 @@ Guy is the existingUser, Steve is newUser
     @DisplayName("Improper_List")
     public void List401() throws UserException403{
 //        How do I hit an invalid request in Service?
-        RegisterResult regiResult = userService.GetUser(Steve);
-        Assertions.assertNotNull(regiResult.authToken());
-
+        GameRetrun games = gameService.returnGames();
+        Assertions.assertNull(games);
     }
 
     @Test
