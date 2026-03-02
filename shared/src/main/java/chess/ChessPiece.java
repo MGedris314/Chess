@@ -47,8 +47,6 @@ public class ChessPiece {
     public PieceType getPieceType() {
         return type;
     }
-//    Use block bellow:
-//    piece.getTeamColor().equals(ChessGame.TeamColor.WHITE
     public Collection<ChessMove> move_pawn(ChessPosition myposiiton, ChessBoard board, ChessPiece piece){
         int row = myposiiton.getRow();
         int col = myposiiton.getColumn();

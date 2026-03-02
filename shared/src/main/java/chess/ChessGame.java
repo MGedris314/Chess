@@ -410,11 +410,6 @@ public class ChessGame {
             if(!White_check){
                 return false;
             }
-//          Second case, if the king can move, it's not check mate.
-//            boolean king_move = king_escape_w(board, teamColor);
-//            if(king_move){
-//                return false;
-//            }
 //          Last resort, move a piece to interrupt check.
             ArrayList <ChessPosition> valid_pass_in = new ArrayList<ChessPosition>();
             ArrayList <ChessMove> valid_outs = new ArrayList<ChessMove>();
@@ -433,10 +428,6 @@ public class ChessGame {
             if(!Black_check){
                 return false;
             }
-//            boolean king_move = king_escape_b(board, teamColor);
-//            if(king_move){
-//                return false;
-//            }
             //Last resort, move a piece to interrupt check.
             ArrayList <ChessPosition> valid_pass_in = new ArrayList<ChessPosition>();
             ArrayList <ChessMove> valid_outs = new ArrayList<ChessMove>();
