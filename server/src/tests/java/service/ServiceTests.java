@@ -1,21 +1,13 @@
-package Service;
+package service;
 
-import chess.ChessGame;
-import dataaccess.DataAccess;
 import dataaccess.MemoryDataAccess;
 import exception.*;
 import exception.UserExceptions;
 import model.*;
-import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.*;
 import passoff.model.*;
 import passoff.server.TestServerFacade;
 import server.Server;
-import service.GameService;
-import service.UserService;
-
-import java.net.HttpURLConnection;
-import java.util.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ServiceTests {

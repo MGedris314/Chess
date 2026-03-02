@@ -86,3 +86,5 @@ DB clear:  Returns nothing.
 CreateGame:  Returns ID, returns -1
 Return Games:  returns games, returns null
 Join game:  Returns empty string throws 403
+
+Thing for a new commit.
