@@ -189,8 +189,7 @@ public class ChessPiece {
 
     public Collection<ChessMove>moveCalc(ChessPosition myPositon,ChessBoard board,ChessPiece piece){
         int row = myPositon.getRow();
-        int col = myPositon.getColumn();
-        int up = 8-row;
+        int col = myPositon.getColumn(); int up = 8-row;
         int down = row-1;
         int right = 8-col;
         int left = col-1;
@@ -198,125 +197,91 @@ public class ChessPiece {
         if(piece.type == PieceType.KING){king = true;}
         if(piece.type == PieceType.KNIGHT){return moveKnight(myPositon, board, piece);}
         if(piece.type == PieceType.PAWN){return movePawn(myPositon, board, piece);}
-
         ArrayList<ChessMove> moves = new ArrayList<ChessMove>();
-
-//      N+ S- E+ W-
-        for(int x = 1; x<8; x++){
+        for(int x = 1; x<8; x++){ //      N+ S- E+ W-
             if(up == 0 || row+x>8|| piece.type == PieceType.BISHOP){break;}
             ChessPosition check = new ChessPosition(row + x, col);
             ChessPiece check1 = board.getPiece(check);
-            if(check1 == null){
-                moves.add(new ChessMove(myPositon, check, null));
-            }
+            if(check1 == null){moves.add(new ChessMove(myPositon, check, null));}
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myPositon, check, null));
-                break;
+                moves.add(new ChessMove(myPositon, check, null));break;
             }
             else{break;}
             if(king == true){break;}
         }
-//      S
-        for(int x = 1; x<8; x++){
+        for(int x = 1; x<8; x++){ //      S
             if(down == 0 || row-x<1|| piece.type == PieceType.BISHOP){break;}
             ChessPosition check = new ChessPosition(row - x, col);
             ChessPiece check1 = board.getPiece(check);
-            if(check1 == null){
-                moves.add(new ChessMove(myPositon, check, null));
-            }
+            if(check1 == null){moves.add(new ChessMove(myPositon, check, null));}
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myPositon, check, null));
-                break;
+                moves.add(new ChessMove(myPositon, check, null));break;
             }
             else{break;}
             if(king == true){break;}
         }
-//      E
-        for(int x = 1; x<8; x++){
+        for(int x = 1; x<8; x++){ //      E
             if(right == 0 || col+x>8 || piece.type == PieceType.BISHOP){break;}
             ChessPosition check = new ChessPosition(row, col + x);
             ChessPiece check1 = board.getPiece(check);
-            if(check1 == null){
-                moves.add(new ChessMove(myPositon, check, null));
-            }
+            if(check1 == null){moves.add(new ChessMove(myPositon, check, null));}
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myPositon, check, null));
-                break;
+                moves.add(new ChessMove(myPositon, check, null));break;
             }
             else{break;}
             if(king == true){break;}
         }
-//      W
-        for(int x = 1; x<8; x++){
+        for(int x = 1; x<8; x++){ //      W
             if(left == 0 || col-x<1 || piece.type == PieceType.BISHOP){break;}
             ChessPosition check = new ChessPosition(row, col-x);
             ChessPiece check1 = board.getPiece(check);
-            if(check1 == null){
-                moves.add(new ChessMove(myPositon, check, null));
-            }
+            if(check1 == null){moves.add(new ChessMove(myPositon, check, null));}
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myPositon, check, null));
-                break;
+                moves.add(new ChessMove(myPositon, check, null));break;
             }
             else{break;}
             if(king == true){break;}
         }
-//      NE ++
-        for(int x = 1; x<8; x++){
+        for(int x = 1; x<8; x++){ //      NE ++
             if(up == 0 || right==0 || col+x>8 || row+x>8 || piece.type == PieceType.ROOK){break;}
             ChessPosition check = new ChessPosition(row + x, col+x);
             ChessPiece check1 = board.getPiece(check);
-            if(check1 == null){
-                moves.add(new ChessMove(myPositon, check, null));
-            }
+            if(check1 == null){moves.add(new ChessMove(myPositon, check, null));}
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myPositon, check, null));
-                break;
+                moves.add(new ChessMove(myPositon, check, null));break;
             }
             else{break;}
             if(king == true){break;}
         }
-//      SE -+
-        for(int x = 1; x<8; x++){
+        for(int x = 1; x<8; x++){ //      SE -+
             if(down == 0 || right==0 || col+x>8 || row-x<1|| piece.type == PieceType.ROOK){break;}
             ChessPosition check = new ChessPosition(row - x, col +x);
             ChessPiece check1 = board.getPiece(check);
-            if(check1 == null){
-                moves.add(new ChessMove(myPositon, check, null));
-            }
+            if(check1 == null){moves.add(new ChessMove(myPositon, check, null));}
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myPositon, check, null));
-                break;
+                moves.add(new ChessMove(myPositon, check, null));break;
             }
             else{break;}
             if(king == true){break;}
         }
-//      SW --
-        for(int x = 1; x<8; x++){
+        for(int x = 1; x<8; x++){ //      SW --
             if(down == 0 || left==0 || row-x<1 || col-x<1 || piece.type == PieceType.ROOK){break;}
             ChessPosition check = new ChessPosition(row - x, col - x);
             ChessPiece check1 = board.getPiece(check);
-            if(check1 == null){
-                moves.add(new ChessMove(myPositon, check, null));
-            }
+            if(check1 == null){moves.add(new ChessMove(myPositon, check, null));}
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myPositon, check, null));
-                break;
+                moves.add(new ChessMove(myPositon, check, null));break;
             }
             else{break;}
             if(king == true){break;}
         }
-//      NW +-
-        for(int x = 1; x<8; x++){
+        for(int x = 1; x<8; x++){ //      NW +-
             if(left == 0 || up==0 || row+x>8 || col-x<1 || piece.type == PieceType.ROOK){break;}
             ChessPosition check = new ChessPosition(row+x, col-x);
             ChessPiece check1 = board.getPiece(check);
-            if(check1 == null){
-                moves.add(new ChessMove(myPositon, check, null));
-            }
+            if(check1 == null){moves.add(new ChessMove(myPositon, check, null));}
             else if(check1 != null && check1.getTeamColor() != piece.getTeamColor()){
-                moves.add(new ChessMove(myPositon, check, null));
-                break;
+                moves.add(new ChessMove(myPositon, check, null));break;
             }
             else{break;}
             if(king == true){break;}
