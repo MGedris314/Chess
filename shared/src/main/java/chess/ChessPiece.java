@@ -286,8 +286,7 @@ public class ChessPiece {
             else{break;}
             if(king == true){break;}
         }
-        return moves;
-    }
+        return moves;}
 
     /**
      * Calculates all the positions a chess piece can move to
