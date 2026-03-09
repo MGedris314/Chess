@@ -90,4 +90,31 @@ public class SQLDataAccess implements DataAccess {
     public void clearGames() {
 
     }
+
+    private final String [] createUserStatements = {
+            """
+            CREATE TABLE IF NOT EXISTS  users(
+            `id` int NOT NULL AUTO_INCREMENT,
+            `name` varchar(256) NOT NULL,
+            `password` varchar(256) NOT NULL,
+            `email` varchar(256) NOT NULL,
+            `token` varchar(128) NOT NULL,
+            PRIMARY KEY (`id`)
+            )
+            """
+    };
+
+    private final String [] createGameStatements = {
+            """
+            CREATE TABLE IF NOT EXISTS  games(
+            `id` int NOT NULL AUTO_INCREMENT,
+            `name` varchar(256) NOT NULL,
+            `whiteTeam` TEXT DEFAULT NULL,
+            `blackTeam` TEXT DEFAULT NULL,
+            `game` nvarchar(max)
+             PRIMARY KEY (`id`)
+            )
+            """
+    };
+
 }
