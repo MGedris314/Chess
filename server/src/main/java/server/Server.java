@@ -1,7 +1,7 @@
 package server;
 
 import dataaccess.DataAccess;
-import dataaccess.MemoryDataAccess;
+import dataaccess.SQLDataAccess;
 import exception.*;
 import handler.UserHandler;
 import io.javalin.*;
@@ -18,7 +18,7 @@ public class Server {
     private final UserHandler handler;
 
     public Server() {
-        this(new UserHandler(new MemoryDataAccess()));
+        this(new UserHandler(new SQLDataAccess()));
 
         // Register your endpoints and exception handlers here.
     }
