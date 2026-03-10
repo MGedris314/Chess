@@ -20,27 +20,31 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public UserData findUser(String username) {
+        var statement = "SELECT * FROM users WHERE name = username";
         return null;
     }
 
     @Override
     public UserData addUser(String username, UserData password) {
+        var statement = "INSERT INTO users (id, name, password) VALUES (autoInc, username, hashed)";
         return null;
     }
 
     @Override
     public AuthData addAuthToken(AuthData authToken) {
+        var statement = "INSERT INTO users (token) VALUES (authToken)";
         return null;
     }
 
     @Override
     public AuthData findAuth(String authData) {
+        var statement = "SELECT * FROM users WHERE token = authData";
         return null;
     }
 
     @Override
     public void removeAuth(String authData) {
-        var statement = "";
+        var statement = "UPDATE users SET token = NULL WHERE token = authData";
     }
 
     @Override
@@ -104,8 +108,7 @@ public class SQLDataAccess implements DataAccess {
             `id` int NOT NULL AUTO_INCREMENT,
             `name` varchar(256) NOT NULL,
             `password` varchar(256) NOT NULL,
-            `email` varchar(256) NOT NULL,
-            `token` varchar(128) NOT NULL,
+            `token` varchar(128),
             PRIMARY KEY (`id`)
             )
             """
