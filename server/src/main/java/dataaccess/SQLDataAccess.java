@@ -10,6 +10,8 @@ import static java.sql.Types.NULL;;
 
 public class SQLDataAccess implements DataAccess {
 
+
+
     public SQLDataAccess() {
         try {
             DatabaseManager.createDatabase();
@@ -19,14 +21,35 @@ public class SQLDataAccess implements DataAccess {
     }
 
     @Override
-    public UserData findUser(String username) {
-        var statement = "SELECT * FROM users WHERE name = username";
-        return null;
+    public UserData findUser(String username) throws DataAccessException{
+        try(var con = DatabaseManager.getConnection()) {
+            try (var statement = con.prepareStatement( "SELECT * FROM users WHERE name = username")) {
+                try(var rs = statement.executeQuery()){
+                    rs.next();
+                    var name = rs.getString("name");
+                    if(name.isEmpty()){
+                        return null;
+                    }
+                    else {
+                        UserData user = new UserData(name, null, null);
+                        return user;
+                    }
+                }
+
+            }
+        }
+        catch (DataAccessException e){
+            throw new DataAccessException("e");
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public UserData addUser(String username, UserData password) {
         var statement = "INSERT INTO users (id, name, password) VALUES (?, ?, ?)";
+//        statement.setString()
         return null;
     }
 
