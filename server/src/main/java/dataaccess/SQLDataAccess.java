@@ -26,7 +26,7 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public UserData addUser(String username, UserData password) {
-        var statement = "INSERT INTO users (id, name, password) VALUES (autoInc, username, hashed)";
+        var statement = "INSERT INTO users (id, name, password) VALUES (?, ?, ?)";
         return null;
     }
 
@@ -49,13 +49,13 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public int createGame(GameData gameName) {
-        var statement = "INSERT INTO public (id, name, whiteTeam, blackTeam) VALUES(autoInc, pub.name, null, null, gameName.game";
+        var statement = "INSERT INTO public (id, name, whiteTeam, blackTeam) VALUES(?, ?, null, null, ?";
         return 0;
     }
 
     @Override
     public void createPublic(PublicGame pub) {
-        var statement = "INSERT INTO public (id, name, whiteTeam, blackTeam) VALUES(autoInc, pub.name, null, null";
+        var statement = "INSERT INTO public (id, name, whiteTeam, blackTeam) VALUES(?, ?, null, null, ?";
     }
 
     @Override
@@ -83,8 +83,8 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void updateGames(GameData game, PublicGame pub, int gameID) {
-        var statement1 = "UPDATE games SET whiteTeam = game.whiteUsername() blackTeam = game.blackUsername() WHERE id = gameID";
-        var statement2 = "UPDATE public SET whiteTeam = pub.whiteUsername() blackTeam = pub.blackUsername() WHERE id = gameID";
+        var statement1 = "UPDATE games SET whiteTeam = ? blackTeam = ? WHERE id = gameID";
+        var statement2 = "UPDATE public SET whiteTeam = ? blackTeam = ? WHERE id = gameID";
     }
 
     @Override
