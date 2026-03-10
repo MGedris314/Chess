@@ -4,7 +4,9 @@ import exception.UserException403;
 import model.*;
 
 import javax.xml.crypto.Data;
-import java.sql.SQLData;
+import java.sql.*;
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+import static java.sql.Types.NULL;;
 
 public class SQLDataAccess implements DataAccess {
 
@@ -73,22 +75,23 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void updateGames(GameData game, PublicGame pub, int gameID) {
-
+        var statement1 = "UPDATE games SET whiteTeam = game.whiteUsername() blackTeam = game.blackUsername() WHERE id = gameID";
+        var statement2 = "UPDATE public SET whiteTeam = pub.whiteUsername() blackTeam = pub.blackUsername() WHERE id = gameID";
     }
 
     @Override
     public void clearAuth() {
-
+        var statement = "DROP COLUMN token";
     }
 
     @Override
     public void clearUsers() {
-
+        var statement = "DELETE FROM users WHERE id=?";
     }
 
     @Override
     public void clearGames() {
-
+        var statement = "DELETE FROM games WHERE id=?";
     }
 
     private final String [] createUserStatements = {
@@ -112,6 +115,18 @@ public class SQLDataAccess implements DataAccess {
             `whiteTeam` TEXT DEFAULT NULL,
             `blackTeam` TEXT DEFAULT NULL,
             `game` nvarchar(max)
+             PRIMARY KEY (`id`)
+            )
+            """
+    };
+
+    private final String [] createPublicStatements = {
+            """
+            CREATE TABLE IF NOT EXISTS  public(
+            `id` int NOT NULL AUTO_INCREMENT,
+            `name` varchar(256) NOT NULL,
+            `whiteTeam` TEXT DEFAULT NULL,
+            `blackTeam` TEXT DEFAULT NULL,
              PRIMARY KEY (`id`)
             )
             """
