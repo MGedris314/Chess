@@ -40,17 +40,18 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void removeAuth(String authData) {
-
+        var statement = "";
     }
 
     @Override
     public int createGame(GameData gameName) {
+        var statement = "INSERT INTO public (id, name, whiteTeam, blackTeam) VALUES(autoInc, pub.name, null, null, gameName.game";
         return 0;
     }
 
     @Override
     public void createPublic(PublicGame pub) {
-
+        var statement = "INSERT INTO public (id, name, whiteTeam, blackTeam) VALUES(autoInc, pub.name, null, null";
     }
 
     @Override
@@ -60,16 +61,19 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public GameRetrun gameReturn() {
+        var statement = "SELECT * FROM public";
         return null;
     }
 
     @Override
     public GameData returnSingleGame(int gameID) throws UserException403 {
+        var statement = "SELECT * FROM games WHERE id = gameID";
         return null;
     }
 
     @Override
     public PublicGame editPublic(int gameID) {
+        var statement = "SELECT * FROM public WHERE id = gameID";
         return null;
     }
 
