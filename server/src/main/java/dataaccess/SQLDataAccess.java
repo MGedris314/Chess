@@ -48,15 +48,37 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public UserData addUser(String username, UserData password) {
-        var statement = "INSERT INTO users (id, name, password) VALUES (?, ?, ?)";
-//        statement.setString()
-        return null;
+        try(var con = DatabaseManager.getConnection()) {
+            try (var statement = con.prepareStatement( "INSERT INTO users (name, password) VALUES (?, ?)")) {
+                try(var rs = statement.executeQuery()){
+                    statement.setString(1, username);
+                    statement.setString(2, password.password());
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public AuthData addAuthToken(AuthData authToken) {
-        var statement = "INSERT INTO users (token) VALUES (authToken)";
-        return null;
+        try(var con = DatabaseManager.getConnection()) {
+            try (var statement = con.prepareStatement( "INSERT INTO users (token) VALUES (authToken) WHERE (name = username)")){
+                try(var rs = statement.executeQuery()){
+                    String username = authToken.userName();
+                    statement.setString(2, username);
+                    statement.setString(1, authToken.authToken());
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
