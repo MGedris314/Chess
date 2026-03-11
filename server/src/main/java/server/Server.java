@@ -1,6 +1,7 @@
 package server;
 
 import dataaccess.DataAccess;
+import dataaccess.DataAccessException;
 import dataaccess.SQLDataAccess;
 import exception.*;
 import handler.UserHandler;
@@ -47,6 +48,8 @@ public class Server {
         catch(UserException403 e ){
             ctx.status(403);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 403)));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -64,6 +67,8 @@ public class Server {
         catch (UserException401 e){
             ctx.status(401);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 

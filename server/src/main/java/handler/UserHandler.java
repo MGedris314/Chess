@@ -2,6 +2,7 @@ package handler;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccess;
+import dataaccess.DataAccessException;
 import exception.*;
 import model.*;
 import service.UserService;
@@ -16,7 +17,7 @@ public class UserHandler {
         this.dataAccess = dataAccess;
     }
 
-    public String register(String data_asJSON) throws UserExceptions, UserException403{
+    public String register(String data_asJSON) throws UserExceptions, UserException403, DataAccessException {
         UserService userService = new UserService(dataAccess);
         UserData userdata = new Gson().fromJson(data_asJSON, UserData.class);
         if(userdata.username() == null || userdata.password() == null || userdata.email() == null){
@@ -26,7 +27,7 @@ public class UserHandler {
         return new Gson().toJson(regi);
     }
 
-    public String log_in (String data_asJson) throws UserExceptions, UserException401{
+    public String log_in (String data_asJson) throws UserExceptions, UserException401, DataAccessException {
         UserService userService = new UserService(dataAccess);
         UserData userdata = new Gson().fromJson(data_asJson, UserData.class);
         if(userdata.username() == null || userdata.password() == null){

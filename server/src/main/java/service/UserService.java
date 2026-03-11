@@ -1,6 +1,7 @@
 package service;
 
 import dataaccess.DataAccess;
+import dataaccess.DataAccessException;
 import model.AuthData;
 import model.RegisterResult;
 import model.UserData;
@@ -18,7 +19,7 @@ public class UserService {
         this.dataAccess = dataAccess;
     }
 
-    public RegisterResult GetUser(UserData user_info) throws UserException403{
+    public RegisterResult GetUser(UserData user_info) throws UserException403, DataAccessException {
         UserData return_val = dataAccess.findUser(user_info.username());
         if(return_val == null) {
             dataAccess.addUser(user_info.username(), user_info);
@@ -31,7 +32,7 @@ public class UserService {
         }
     }
 
-    public RegisterResult LogUser(UserData user_info) throws UserException401 {
+    public RegisterResult LogUser(UserData user_info) throws UserException401, DataAccessException {
         UserData return_val = dataAccess.findUser((user_info.username()));
         if(return_val!= null){
             if(return_val.password().equals(user_info.password())){

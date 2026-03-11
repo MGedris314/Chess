@@ -1,5 +1,6 @@
 package service;
 
+import dataaccess.DataAccessException;
 import dataaccess.MemoryDataAccess;
 import exception.*;
 import exception.UserExceptions;
@@ -38,7 +39,7 @@ Guy is the existingUser, Steve is newUser
     }
 
     @BeforeEach
-    public void setup()  throws UserException403{
+    public void setup() throws UserException403, DataAccessException {
         userService.DBClear();
         //one user already logged in
 
@@ -49,7 +50,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(1)
     @DisplayName("Proper_GetUser")
-    public void Registration200() throws UserException403{
+    public void Registration200() throws UserException403, DataAccessException {
 
         RegisterResult regiResult = userService.GetUser(Steve);
         Assertions.assertNotNull(regiResult.authToken());
@@ -63,7 +64,7 @@ Guy is the existingUser, Steve is newUser
         try {
             RegisterResult regiResult = userService.GetUser(Guy);
             Assertions.assertTrue(false, "Should have failed and didn't.");
-        } catch (UserException403 e) {
+        } catch (UserException403 | DataAccessException e) {
             Assertions.assertTrue(true);
         }
     }
@@ -71,7 +72,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(3)
     @DisplayName("Proper Log user")
-    public void LogIN200() throws UserException401{
+    public void LogIN200() throws UserException401, DataAccessException {
 
         RegisterResult regiResult = userService.LogUser(Guy);
         Assertions.assertNotNull(regiResult.authToken());
@@ -88,7 +89,7 @@ Guy is the existingUser, Steve is newUser
             RegisterResult regiResult = userService.LogUser(bubs);
             Assertions.assertFalse(false, "Should have failed and didn't");
         }
-        catch (UserException401 e) {
+        catch (UserException401 | DataAccessException e) {
             Assertions.assertTrue(true);
         }
 
@@ -97,7 +98,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(5)
     @DisplayName("Proper_Log_out")
-    public void LogOut200() throws UserException401{
+    public void LogOut200() throws UserException401, DataAccessException {
 
         RegisterResult regiResult = userService.LogUser(Guy);
         String success = userService.logOut(regiResult.authToken());
@@ -162,7 +163,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(11)
     @DisplayName("Proper_Join")
-    public void Join200() throws UserException403, UserExceptions{
+    public void Join200() throws UserException403, UserExceptions, DataAccessException {
         int gameId = gameService.createGame("Trial");
         RegisterResult regiResult = userService.GetUser(Steve);
         JoinGameData data = new JoinGameData("White", gameId);
@@ -182,7 +183,7 @@ Guy is the existingUser, Steve is newUser
             String success = gameService.joinByColor(data, regiResult.authToken());
             Assertions.assertEquals("{}", success);
         }
-        catch(UserExceptions e){
+        catch(UserExceptions | DataAccessException e){
             Assertions.assertTrue(true);
         }
 
@@ -200,6 +201,8 @@ Guy is the existingUser, Steve is newUser
         }
         catch (UserException403 e){
             Assertions.assertTrue(false, "Something went wrong.");
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -212,7 +215,7 @@ Guy is the existingUser, Steve is newUser
             boolean authentic = userService.authenticate("Totally an auth token");
             Assertions.assertEquals(false, authentic);
         }
-        catch (UserException403 e){
+        catch (UserException403 | DataAccessException e){
             Assertions.assertTrue(true, "Something went wrong.");
         }
     }
@@ -240,7 +243,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(17)
     @DisplayName("Proper_Clear")
-    public void Clear200() throws UserException403{
+    public void Clear200() throws UserException403, DataAccessException {
 //      How to write this test?
         RegisterResult regiResult = userService.GetUser(Steve);
         Assertions.assertNotNull(regiResult.authToken());
