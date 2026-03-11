@@ -6,6 +6,7 @@ import model.AuthData;
 import model.RegisterResult;
 import model.UserData;
 import exception.*;
+import org.mindrot.jbcrypt.BCrypt;
 import org.eclipse.jetty.server.Authentication;
 
 import java.util.UUID;
@@ -35,7 +36,8 @@ public class UserService {
     public RegisterResult LogUser(UserData user_info) throws UserException401, DataAccessException {
         UserData return_val = dataAccess.findUser((user_info.username()));
         if(return_val!= null){
-            if(return_val.password().equals(user_info.password())){
+            String hashed = BCrypt.hashpw(user_info.password(), BCrypt.gensalt());
+            if(return_val.password().equals(hashed)){
                 AuthData authorize = linkAuth(user_info);
                 RegisterResult regResult = new RegisterResult(authorize.authToken(), authorize.userName());
                 return regResult;

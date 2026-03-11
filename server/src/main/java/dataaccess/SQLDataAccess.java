@@ -4,6 +4,7 @@ import chess.ChessGame;
 import com.google.gson.Gson;
 import exception.UserException403;
 import model.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.xml.crypto.Data;
 import java.sql.*;
@@ -31,11 +32,12 @@ public class SQLDataAccess implements DataAccess {
                 try(var rs = statement.executeQuery()){
                     rs.next();
                     var name = rs.getString("name");
+                    var pass = rs.getString("password");
                     if(name.isEmpty()){
                         return null;
                     }
                     else {
-                        UserData user = new UserData(name, null, null);
+                        UserData user = new UserData(name, pass, null);
                         return user;
                     }
                 }
@@ -55,8 +57,9 @@ public class SQLDataAccess implements DataAccess {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "INSERT INTO users (name, password) VALUES (?, ?)")) {
                 try(var rs = statement.executeQuery()){
+                    String pass = BCrypt.hashpw(password.password(), BCrypt.gensalt());
                     statement.setString(1, username);
-                    statement.setString(2, password.password());
+                    statement.setString(2, pass);
                     return null;
                 }
             }
