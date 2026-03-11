@@ -294,7 +294,7 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public void clearAuth() {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "DROP COLUMN token;")){
+            try (var statement = con.prepareStatement( "ALTER TABLE users DROP COLUMN token;")){
                 int rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
