@@ -116,12 +116,14 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public AuthData findAuth(String authData) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "SELECT name FROM users WHERE token = ?")){
+            try (var statement = con.prepareStatement( "SELECT * FROM users WHERE token = ? ")){
+                statement.setString(1, authData);
                 try(var rs = statement.executeQuery()){
-                    statement.setString(1, authData);
-                    var authenticated = rs.getString("name");
-                    AuthData auth = new AuthData(authenticated, authData);
-                    return null;
+                    System.out.println(rs);
+                    String authenticated = rs.getString("name");
+                    System.out.println("Get's there.");
+                    AuthData auth = new AuthData(authenticated, authData);;
+                    return auth;
                 }
             }
         } catch (SQLException e) {
@@ -135,9 +137,8 @@ public class SQLDataAccess implements DataAccess {
     public void removeAuth(String authData) {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "UPDATE users SET token = 0 WHERE token = authData")){
-                try(var rs = statement.executeQuery()){
-                    statement.setString(1, authData);
-                }
+                statement.setString(1, authData);
+                var rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -150,12 +151,12 @@ public class SQLDataAccess implements DataAccess {
     public int createGame(GameData gameName) {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "INSERT INTO games (id, name, whiteTeam, blackTeam, game) VALUES(?, ?, null, null, ?")){
+                var state = gameName.game();
+                var serializer = new Gson();
+                var json = serializer.toJson(state);
+                statement.setString(2, gameName.gameName());
+                statement.setString(5, json);
                 try(var rs = statement.executeQuery()){
-                    var state = gameName.game();
-                    var serializer = new Gson();
-                    var json = serializer.toJson(state);
-                    statement.setString(2, gameName.gameName());
-                    statement.setString(5, json);
                     var ID = rs.getInt("id");
                     return ID;
                 }
@@ -171,9 +172,8 @@ public class SQLDataAccess implements DataAccess {
     public void createPublic(PublicGame pub) {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "INSERT INTO public (id, name, whiteTeam, blackTeam) VALUES(?, ?, null, null, ?")){
-                try(var rs = statement.executeQuery()){
-                    statement.setString(2, pub.gameName());
-                }
+                statement.setString(2, pub.gameName());
+                var rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -271,26 +271,22 @@ public class SQLDataAccess implements DataAccess {
     public void updateGames(GameData game, PublicGame pub, int gameID) {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "UPDATE games SET whiteTeam = ? blackTeam = ? WHERE id = gameID")){
-                try(var rs = statement.executeQuery()){
-                    statement.setInt(3, gameID);
-                    statement.setString(2, game.blackUsername());
-                    statement.setString(1, game.whiteUsername());
-                }
+                statement.setInt(3, gameID);
+                statement.setString(2, game.blackUsername());
+                statement.setString(1, game.whiteUsername());
+                var rs = statement.executeUpdate();
             }
             try (var statement = con.prepareStatement( "UPDATE public SET whiteTeam = ? blackTeam = ? WHERE id = gameID")){
-                try(var rs = statement.executeQuery()){
-                    statement.setInt(3, gameID);
-                    statement.setString(2, game.blackUsername());
-                    statement.setString(1, game.whiteUsername());
-                }
+                statement.setInt(3, gameID);
+                statement.setString(2, game.blackUsername());
+                statement.setString(1, game.whiteUsername());
+                var rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
-        var statement1 = "UPDATE games SET whiteTeam = ? blackTeam = ? WHERE id = gameID";
-        var statement2 = "UPDATE public SET whiteTeam = ? blackTeam = ? WHERE id = gameID";
     }
 
     @Override
