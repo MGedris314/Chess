@@ -120,6 +120,7 @@ public class SQLDataAccess implements DataAccess {
                 statement.setString(1, authData);
                 try(var rs = statement.executeQuery()){
                     System.out.println(rs);
+                    rs.next();
                     String authenticated = rs.getString("name");
                     System.out.println("Get's there.");
                     AuthData auth = new AuthData(authenticated, authData);;
