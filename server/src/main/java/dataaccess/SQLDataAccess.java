@@ -137,7 +137,7 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public void removeAuth(String authData) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "UPDATE users SET token = 0 WHERE token = authData")){
+            try (var statement = con.prepareStatement( "UPDATE users SET token = 0 WHERE token = ? ")){
                 statement.setString(1, authData);
                 var rs = statement.executeUpdate();
             }
