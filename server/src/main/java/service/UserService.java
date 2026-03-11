@@ -36,8 +36,7 @@ public class UserService {
     public RegisterResult LogUser(UserData user_info) throws UserException401, DataAccessException {
         UserData return_val = dataAccess.findUser((user_info.username()));
         if(return_val!= null){
-            String hashed = BCrypt.hashpw(user_info.password(), BCrypt.gensalt());
-            if(return_val.password().equals(hashed)){
+            if(BCrypt.checkpw(user_info.password(), return_val.password())){
                 AuthData authorize = linkAuth(user_info);
                 RegisterResult regResult = new RegisterResult(authorize.authToken(), authorize.userName());
                 return regResult;
