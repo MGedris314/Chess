@@ -51,9 +51,12 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public UserData findUser(String username) throws DataAccessException{
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "SELECT * FROM users WHERE name = username;")) {
+            try (var statement = con.prepareStatement( "SELECT * FROM users WHERE name = ?")) {
+                statement.setString(1, username);
                 try(var rs = statement.executeQuery()){
-                    rs.next();
+                    if(rs.next() == false){
+                        return null;
+                    }
                     var name = rs.getString("name");
                     var pass = rs.getString("password");
                     if(name.isEmpty()){
@@ -78,13 +81,13 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public UserData addUser(String username, UserData password) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "INSERT INTO users (name, password) VALUES (?, ?);")) {
-                try(var rs = statement.executeQuery()){
-                    String pass = BCrypt.hashpw(password.password(), BCrypt.gensalt());
-                    statement.setString(1, username);
-                    statement.setString(2, pass);
-                    return null;
-                }
+            try (var statement = con.prepareStatement( "INSERT INTO users (name, password, token) VALUES (?, ?, ?)")) {
+                String pass = BCrypt.hashpw(password.password(), BCrypt.gensalt());
+                statement.setString(1, username);
+                statement.setString(2, pass);
+                statement.setString(3, "0");
+                var rs = statement.executeUpdate();
+                return null;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -96,13 +99,12 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public AuthData addAuthToken(AuthData authToken) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "INSERT INTO users (token) VALUES (authToken) WHERE (name = username);")){
-                try(var rs = statement.executeQuery()){
-                    String username = authToken.userName();
-                    statement.setString(2, username);
-                    statement.setString(1, authToken.authToken());
-                    return null;
-                }
+            try (var statement = con.prepareStatement( "UPDATE users SET token = ? WHERE name = ?")){
+                String username = authToken.authToken();
+                statement.setString(2, username);
+                statement.setString(1, authToken.userName());
+                var rs = statement.executeUpdate();
+                return authToken;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -114,7 +116,7 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public AuthData findAuth(String authData) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "SELECT name FROM users WHERE token = authData;")){
+            try (var statement = con.prepareStatement( "SELECT name FROM users WHERE token = ?")){
                 try(var rs = statement.executeQuery()){
                     statement.setString(1, authData);
                     var authenticated = rs.getString("name");
@@ -132,7 +134,7 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public void removeAuth(String authData) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "UPDATE users SET token = 0 WHERE token = authData;")){
+            try (var statement = con.prepareStatement( "UPDATE users SET token = 0 WHERE token = authData")){
                 try(var rs = statement.executeQuery()){
                     statement.setString(1, authData);
                 }
@@ -147,7 +149,7 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public int createGame(GameData gameName) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "INSERT INTO games (id, name, whiteTeam, blackTeam, game) VALUES(?, ?, null, null, ?;")){
+            try (var statement = con.prepareStatement( "INSERT INTO games (id, name, whiteTeam, blackTeam, game) VALUES(?, ?, null, null, ?")){
                 try(var rs = statement.executeQuery()){
                     var state = gameName.game();
                     var serializer = new Gson();
@@ -168,7 +170,7 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public void createPublic(PublicGame pub) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "INSERT INTO public (id, name, whiteTeam, blackTeam) VALUES(?, ?, null, null, ?;")){
+            try (var statement = con.prepareStatement( "INSERT INTO public (id, name, whiteTeam, blackTeam) VALUES(?, ?, null, null, ?")){
                 try(var rs = statement.executeQuery()){
                     statement.setString(2, pub.gameName());
                 }
@@ -183,7 +185,7 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public int gameID() {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "SELECT * FROM games WHERE id = (SELECT MAX (id) FROM games);")){
+            try (var statement = con.prepareStatement( "SELECT * FROM games WHERE id = (SELECT MAX (id) FROM games)")){
                 try(var rs = statement.executeQuery()){
                     var id = rs.getInt("id");
                     return id;
@@ -200,7 +202,7 @@ public class SQLDataAccess implements DataAccess {
     public GameRetrun gameReturn() {
         ArrayList<PublicGame> returnable = new ArrayList<PublicGame>();
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "SELECT * FROM public;")){
+            try (var statement = con.prepareStatement( "SELECT * FROM public")){
                 try(var rs = statement.executeQuery()){
                     while(rs.next()) {
                         var name = rs.getString("name");
@@ -224,7 +226,7 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public GameData returnSingleGame(int gameID) throws UserException403 {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "SELECT * FROM games WHERE id = gameID;")){
+            try (var statement = con.prepareStatement( "SELECT * FROM games WHERE id = gameID")){
                 try(var rs = statement.executeQuery()){
                     var name = rs.getString("name");
                     var wTeam = rs.getString("whiteTeam");
@@ -247,7 +249,7 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public PublicGame editPublic(int gameID) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "SELECT * FROM public WHERE id = gameID;")){
+            try (var statement = con.prepareStatement( "SELECT * FROM public WHERE id = gameID")){
                 try(var rs = statement.executeQuery()){
                     statement.setInt(1, gameID);
                     var name = rs.getString("name");
@@ -268,14 +270,14 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public void updateGames(GameData game, PublicGame pub, int gameID) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "UPDATE games SET whiteTeam = ? blackTeam = ? WHERE id = gameID;")){
+            try (var statement = con.prepareStatement( "UPDATE games SET whiteTeam = ? blackTeam = ? WHERE id = gameID")){
                 try(var rs = statement.executeQuery()){
                     statement.setInt(3, gameID);
                     statement.setString(2, game.blackUsername());
                     statement.setString(1, game.whiteUsername());
                 }
             }
-            try (var statement = con.prepareStatement( "UPDATE public SET whiteTeam = ? blackTeam = ? WHERE id = gameID;")){
+            try (var statement = con.prepareStatement( "UPDATE public SET whiteTeam = ? blackTeam = ? WHERE id = gameID")){
                 try(var rs = statement.executeQuery()){
                     statement.setInt(3, gameID);
                     statement.setString(2, game.blackUsername());
@@ -293,21 +295,22 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void clearAuth() {
-        try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "ALTER TABLE users DROP COLUMN token;")){
-                int rs = statement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
-        }
+        return;
+//        try(var con = DatabaseManager.getConnection()) {
+//            try (var statement = con.prepareStatement( "ALTER users TRUNCATE COLUMN token")){
+//                int rs = statement.executeUpdate();
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        } catch (DataAccessException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @Override
     public void clearUsers() {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "DROP TABLE users;")){
+            try (var statement = con.prepareStatement( "TRUNCATE users")){
                 int rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -320,10 +323,10 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public void clearGames() {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement1 = con.prepareStatement( "DROP TABLE games;")){
+            try (var statement1 = con.prepareStatement( "TRUNCATE public")){
                 int rs = statement1.executeUpdate();
             }
-            try (var statement2 = con.prepareStatement( "DROP TABLE public;")){
+            try (var statement2 = con.prepareStatement( "TRUNCATE games")){
                 int rs = statement2.executeUpdate();
             }
         } catch (SQLException e) {
@@ -339,7 +342,7 @@ public class SQLDataAccess implements DataAccess {
             `id` int NOT NULL AUTO_INCREMENT,
             `name` varchar(256) NOT NULL,
             `password` varchar(256) NOT NULL,
-            `token` varchar(128),
+            `token` varchar(128) NOT NULL,
             PRIMARY KEY (`id`)
             )
             """
