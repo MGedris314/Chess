@@ -101,6 +101,9 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public AuthData addAuthToken(AuthData authToken) throws DataAccessException {
+        if(authToken == null){
+            throw new DataAccessException("Error: 500");
+        }
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "UPDATE users SET token = ? WHERE name = ?")) {
                 String username = authToken.authToken();
@@ -144,6 +147,9 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void removeAuth(String authData) throws DataAccessException {
+        if(authData == null){
+            throw new DataAccessException("Error: 500");
+        }
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "UPDATE auth SET auth = 0 WHERE auth = ? ")){
                 statement.setString(1, authData);
