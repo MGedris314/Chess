@@ -42,4 +42,25 @@ public class SQLTest {
             Assertions.assertTrue(true);
         }
     }
+
+    @Test
+    @Order(3)
+    @DisplayName("Proper find")
+    public void find200() throws DataAccessException {
+        UserData userData = new UserData("Steve", "red", "mail@.mail");
+        UserData check = dataAccess.addUser("Steve", userData);
+        UserData found = dataAccess.findUser("Steve");
+        Assertions.assertEquals("Steve", found.username());
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("Improper find")
+    public void find500() throws DataAccessException {
+        UserData userData = new UserData("Steve", "red", "mail@.mail");
+        UserData check = dataAccess.addUser("Steve", userData);
+            UserData found = dataAccess.findUser("Gary");
+            Assertions.assertNull(found);
+    }
+
 }
