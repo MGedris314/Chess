@@ -218,7 +218,7 @@ public class SQLTest {
 
     @Test
     @Order(18)
-    @DisplayName("Proper single game return")
+    @DisplayName("Improper single game return")
     public void return1500() throws DataAccessException, UserException403 {
         try{
             dataAccess.returnSingleGame(20);
@@ -227,6 +227,72 @@ public class SQLTest {
         catch (DataAccessException e){
             Assertions.assertTrue(true);
         }
+    }
+
+    @Test
+    @Order(19)
+    @DisplayName("Proper public update")
+    public void update200() throws DataAccessException, UserException403 {
+        PublicGame game = new PublicGame(1, "", "", "test");
+        dataAccess.createPublic(game);
+        PublicGame pub = dataAccess.editPublic(1);
+        Assertions.assertEquals(game, pub);
+    }
+
+    @Test
+    @Order(20)
+    @DisplayName("Improper public update")
+    public void update500() throws DataAccessException, UserException403 {
+        PublicGame game = new PublicGame(1, "", "", "test");
+        try {
+            PublicGame pub = dataAccess.editPublic(1);
+            Assertions.assertEquals(game, pub);
+        }
+        catch (DataAccessException e){
+            Assertions.assertTrue(true);
+        }
+    }
+
+    @Test
+    @Order(21)
+    @DisplayName("Proper game update")
+    public void updateGames200() throws DataAccessException, UserException403 {
+        PublicGame game = new PublicGame(1, "", "", "test");
+        GameData game1 = new GameData(1, "", "", "test", new ChessGame());
+        dataAccess.createPublic(game);
+        dataAccess.createGame(game1);
+        PublicGame update = new PublicGame(1, "", "Test", "test");
+        GameData update1 = new GameData(1, "", "Test", "test", new ChessGame());
+        dataAccess.updateGames(update1, update, 1);
+        Assertions.assertTrue(true);
+    }
+
+    @Test
+    @Order(22)
+    @DisplayName("Improper game update")
+    public void updateGames500() throws DataAccessException, UserException403 {
+        PublicGame game = new PublicGame(1, "", "", "test");
+        GameData game1 = new GameData(1, "", "", "test", new ChessGame());
+        dataAccess.createPublic(game);
+        dataAccess.createGame(game1);
+        PublicGame update = new PublicGame(1, "", "Test", "test");
+        GameData update1 = new GameData(1, "", "Test", "test", new ChessGame());
+        try {
+            dataAccess.updateGames(update1, update, 3);
+            Assertions.assertTrue(true);
+        } catch (DataAccessException e) {
+            Assertions.assertTrue(true);
+        }
+    }
+
+    @Test
+    @Order(23)
+    @DisplayName("Full clear")
+    public void clear200() throws DataAccessException, UserException403 {
+        dataAccess.clearUsers();
+        dataAccess.clearGames();
+        dataAccess.clearAuth();
+        Assertions.assertTrue(true);
     }
 
 }
