@@ -162,6 +162,9 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public int createGame(GameData gameName) throws DataAccessException {
+        if (gameName == null){
+            throw new DataAccessException("Error 500");
+        }
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "INSERT INTO games (name, whiteTeam, blackTeam, game) VALUES(?, ?, ?, ?)")){
                 var state = gameName.game();
@@ -182,6 +185,9 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void createPublic(PublicGame pub) throws DataAccessException {
+        if (pub == null){
+            throw new DataAccessException("Error 500");
+        }
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "INSERT INTO public (name, whiteTeam, blackTeam) VALUES(?, ?, ?)")){
                 statement.setString(1, pub.gameName());

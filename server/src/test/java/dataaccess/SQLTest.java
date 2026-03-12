@@ -1,4 +1,5 @@
 package dataaccess;
+import chess.ChessGame;
 import model.*;
 import org.junit.jupiter.api.*;
 
@@ -131,4 +132,51 @@ public class SQLTest {
             Assertions.assertTrue(true);
         }
     }
+
+    @Test
+    @Order(11)
+    @DisplayName("proper Create")
+    public void create200() throws DataAccessException {
+        GameData game = new GameData(1, "test", "test", "test", new ChessGame());
+        int id = dataAccess.createGame(game);
+        Assertions.assertEquals(1, id);
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("Improper Create")
+    public void create500() throws DataAccessException {
+        GameData game = null;
+        try {
+            int id = dataAccess.createGame(game);
+            Assertions.assertNull(id);
+        }
+        catch (DataAccessException e){
+            Assertions.assertTrue(true);
+        }
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("proper Create")
+    public void createPub200() throws DataAccessException {
+        PublicGame game = new PublicGame(1, "test", "test", "test");
+        dataAccess.createPublic(game);
+        Assertions.assertTrue(true);
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("Improper Create")
+    public void createPub500() throws DataAccessException {
+        PublicGame game = null;
+        try {
+            dataAccess.createPublic(game);
+            Assertions.assertFalse(false);
+        }
+        catch (DataAccessException e){
+            Assertions.assertTrue(true);
+        }
+    }
+
 }
