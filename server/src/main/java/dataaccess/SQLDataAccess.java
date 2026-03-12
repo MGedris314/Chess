@@ -34,13 +34,13 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
             for (String statement : createGameStatements) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
+                try (var preparedStatement1 = conn.prepareStatement(statement)) {
+                    preparedStatement1.executeUpdate();
                 }
             }
             for (String statement : createPublicStatements) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
+                try (var preparedStatement2 = conn.prepareStatement(statement)) {
+                    preparedStatement2.executeUpdate();
                 }
             }
         } catch (SQLException | DataAccessException ex) {
@@ -320,10 +320,10 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public void clearGames() {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement1 = con.prepareStatement( "TRUNCATE public")){
+            try (var statement1 = con.prepareStatement( "TRUNCATE games")){
                 int rs = statement1.executeUpdate();
             }
-            try (var statement2 = con.prepareStatement( "TRUNCATE games")){
+            try (var statement2 = con.prepareStatement( "TRUNCATE public")){
                 int rs = statement2.executeUpdate();
             }
         } catch (SQLException e) {
@@ -350,9 +350,9 @@ public class SQLDataAccess implements DataAccess {
             CREATE TABLE IF NOT EXISTS  games(
             `id` int NOT NULL AUTO_INCREMENT,
             `name` varchar(256) NOT NULL,
-            `whiteTeam` TEXT DEFAULT NULL,
-            `blackTeam` TEXT DEFAULT NULL,
-            `game` nvarchar(max)
+            `whiteTeam` varchar(256) NOT NULL,
+            `blackTeam` varchar(256) NOT NULL,
+            `game` text NOT NULL,
              PRIMARY KEY (`id`)
             )
             """
@@ -363,8 +363,8 @@ public class SQLDataAccess implements DataAccess {
             CREATE TABLE IF NOT EXISTS  public(
             `id` int NOT NULL AUTO_INCREMENT,
             `name` varchar(256) NOT NULL,
-            `whiteTeam` TEXT DEFAULT NULL,
-            `blackTeam` TEXT DEFAULT NULL,
+            `whiteTeam` varchar(256) ,
+            `blackTeam` varchar(256) ,
              PRIMARY KEY (`id`)
             )
             """
