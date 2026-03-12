@@ -10,18 +10,18 @@ import java.util.List;
 public interface DataAccess {
 
     UserData findUser(String username) throws DataAccessException;
-    UserData addUser(String username, UserData password);
-    AuthData addAuthToken(AuthData authToken);
-    AuthData findAuth(String authData);
-    void removeAuth(String authData);
-    int createGame(GameData gameName);
-    void createPublic(PublicGame pub);
-    int gameID();
-    GameRetrun gameReturn();
-    GameData returnSingleGame(int gameID) throws UserException403;
-    PublicGame editPublic(int gameID);
-    void updateGames(GameData game, PublicGame pub, int gameID);
-    void clearAuth();
-    void clearUsers();
-    void clearGames();
+    UserData addUser(String username, UserData password) throws DataAccessException;
+    AuthData addAuthToken(AuthData authToken) throws DataAccessException;
+    AuthData findAuth(String authData) throws DataAccessException;
+    void removeAuth(String authData) throws DataAccessException;
+    int createGame(GameData gameName) throws DataAccessException;
+    void createPublic(PublicGame pub) throws DataAccessException;
+    int gameID() throws DataAccessException;
+    GameRetrun gameReturn() throws DataAccessException;
+    GameData returnSingleGame(int gameID) throws UserException403, DataAccessException;
+    PublicGame editPublic(int gameID) throws DataAccessException;
+    void updateGames(GameData game, PublicGame pub, int gameID) throws DataAccessException;
+    void clearAuth() throws DataAccessException;
+    void clearUsers() throws DataAccessException;
+    void clearGames() throws DataAccessException;
 }

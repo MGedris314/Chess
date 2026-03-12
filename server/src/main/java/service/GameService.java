@@ -2,6 +2,7 @@ package service;
 
 import chess.ChessGame;
 import dataaccess.DataAccess;
+import dataaccess.DataAccessException;
 import exception.UserException403;
 import exception.UserExceptions;
 import model.*;
@@ -17,7 +18,7 @@ public class GameService {
         this.dataAccess = dataAccess;
     }
 
-    public int createGame(String game_name){
+    public int createGame(String game_name) throws DataAccessException {
 //        Failsafe double check to make sure the game_name isn't null
         if(game_name.isEmpty()){
             return -1;
@@ -30,7 +31,7 @@ public class GameService {
         return ID;
     }
 
-    public GameRetrun returnGames() {
+    public GameRetrun returnGames()  throws DataAccessException {
         GameRetrun games = dataAccess.gameReturn();
         if(games!= null) {
             return games;
@@ -40,7 +41,7 @@ public class GameService {
         }
     }
 
-    public String joinByColor(JoinGameData colorJoin, String authData) throws UserExceptions, UserException403 {
+    public String joinByColor(JoinGameData colorJoin, String authData) throws UserExceptions, UserException403, DataAccessException {
         String desiredColor = colorJoin.playerColor();
         if(!desiredColor.equalsIgnoreCase("White")){
             if(!desiredColor.equalsIgnoreCase("Black")) {

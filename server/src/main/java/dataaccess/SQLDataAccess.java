@@ -26,7 +26,7 @@ public class SQLDataAccess implements DataAccess {
         }
     }
 
-    private void configureDatabase()  {
+    private void configureDatabase() throws DataAccessException {
         try (Connection conn = DatabaseManager.getConnection()) {
             for (String statement : createUserStatements) {
                 try (var preparedStatement = conn.prepareStatement(statement)) {
@@ -48,9 +48,9 @@ public class SQLDataAccess implements DataAccess {
                     preparedStatement3.executeUpdate();
                 }
             }
-        } catch (SQLException | DataAccessException ex) {
+        } catch (SQLException e) {
             System.out.print("Problem");
-            throw new RuntimeException();
+            throw new DataAccessException("Error: 500");
         }
     }
 
@@ -76,14 +76,12 @@ public class SQLDataAccess implements DataAccess {
 
             }
         }catch (SQLException e) {
-        throw new RuntimeException();
-    } catch (DataAccessException e) {
-        throw new RuntimeException();
-    }
+            throw new DataAccessException("Error 500.");
+        }
     }
 
     @Override
-    public UserData addUser(String username, UserData password) {
+    public UserData addUser(String username, UserData password) throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "INSERT INTO users (name, password, token) VALUES (?, ?, ?)")) {
                 String pass = BCrypt.hashpw(password.password(), BCrypt.gensalt());
@@ -94,14 +92,12 @@ public class SQLDataAccess implements DataAccess {
                 return null;
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException();
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public AuthData addAuthToken(AuthData authToken) {
+    public AuthData addAuthToken(AuthData authToken) throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "UPDATE users SET token = ? WHERE name = ?")) {
                 String username = authToken.authToken();
@@ -117,14 +113,12 @@ public class SQLDataAccess implements DataAccess {
                 return authToken;
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException();
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public AuthData findAuth(String authData) {
+    public AuthData findAuth(String authData) throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "SELECT * FROM auth WHERE auth = ? ")){
                 statement.setString(1, authData);
@@ -141,28 +135,24 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException();
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public void removeAuth(String authData) {
+    public void removeAuth(String authData) throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "UPDATE auth SET auth = 0 WHERE auth = ? ")){
                 statement.setString(1, authData);
                 var rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException();
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public int createGame(GameData gameName) {
+    public int createGame(GameData gameName) throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "INSERT INTO games (name, whiteTeam, blackTeam, game) VALUES(?, ?, ?, ?)")){
                 var state = gameName.game();
@@ -177,14 +167,12 @@ public class SQLDataAccess implements DataAccess {
                     return rs;
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException();
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public void createPublic(PublicGame pub) {
+    public void createPublic(PublicGame pub) throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "INSERT INTO public (name, whiteTeam, blackTeam) VALUES(?, ?, ?)")){
                 statement.setString(1, pub.gameName());
@@ -193,14 +181,12 @@ public class SQLDataAccess implements DataAccess {
                 var rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException();
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public int gameID() {
+    public int gameID() throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "SELECT id FROM games ORDER BY id DESC ")){
                 try(var rs = statement.executeQuery()){
@@ -213,14 +199,12 @@ public class SQLDataAccess implements DataAccess {
                 return 1;
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException();
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public GameRetrun gameReturn() {
+    public GameRetrun gameReturn() throws DataAccessException {
         ArrayList<PublicGame> returnable = new ArrayList<PublicGame>();
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "SELECT * FROM public")){
@@ -238,14 +222,12 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException();
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public GameData returnSingleGame(int gameID) throws UserException403 {
+    public GameData returnSingleGame(int gameID) throws UserException403, DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "SELECT * FROM games WHERE id = ?")){
                 statement.setInt(1, gameID);
@@ -267,14 +249,12 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException();
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public PublicGame editPublic(int gameID) {
+    public PublicGame editPublic(int gameID) throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "SELECT * FROM public WHERE id = ?")){
                 statement.setInt(1, gameID);
@@ -290,14 +270,12 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException();
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public void updateGames(GameData game, PublicGame pub, int gameID) {
+    public void updateGames(GameData game, PublicGame pub, int gameID) throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "UPDATE games SET whiteTeam = ?, blackTeam = ? WHERE id = ?")){
                 statement.setInt(3, gameID);
@@ -327,40 +305,34 @@ public class SQLDataAccess implements DataAccess {
                 var rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException();
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public void clearAuth() {
+    public void clearAuth() throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "TRUNCATE auth")){
                 int rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException();
-        } catch (DataAccessException e) {
-            throw new RuntimeException();
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public void clearUsers() {
+    public void clearUsers() throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "TRUNCATE users")){
                 int rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException("Error 500.");
         }
     }
 
     @Override
-    public void clearGames() {
+    public void clearGames() throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement1 = con.prepareStatement( "TRUNCATE games")){
                 int rs = statement1.executeUpdate();
@@ -369,9 +341,7 @@ public class SQLDataAccess implements DataAccess {
                 int rs = statement2.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException("Error 500.");
         }
     }
 

@@ -132,7 +132,8 @@ public class DatabaseTests {
                         "Server response code was not 500 Internal Error for " + operationName);
                 Assertions.assertNotNull(result.getMessage(), "Invalid Request didn't return an error message for " + operationName);
                 Assertions.assertTrue(result.getMessage().toLowerCase(Locale.ROOT).contains("error"),
-                        "Error message didn't contain the word \"Error\" for " + operationName);
+                        "Error message didn't contain the word \"Error\" for " + operationName +
+                                "\n Error Message:" +result.getMessage());
             }
         } finally {
             Method loadFromResources = databaseManagerClass.getDeclaredMethod("loadPropertiesFromResources");

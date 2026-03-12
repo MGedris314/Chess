@@ -48,7 +48,7 @@ public class UserService {
         throw new UserException401("401: Error: unauthorized");
     }
 
-    public boolean authenticate(String authData){
+    public boolean authenticate(String authData) throws DataAccessException {
         AuthData allowed = dataAccess.findAuth(authData);
         if(allowed != null) {
             return true;
@@ -56,7 +56,7 @@ public class UserService {
         else {return false;}
     }
 
-    public String logOut(String authData) throws UserException401{
+    public String logOut(String authData) throws UserException401, DataAccessException {
         boolean is_valid = authenticate(authData);
         if (is_valid){
             dataAccess.removeAuth(authData);
@@ -69,7 +69,7 @@ public class UserService {
         return return_message;
     }
 
-    public AuthData linkAuth(UserData user_info){
+    public AuthData linkAuth(UserData user_info) throws DataAccessException {
         if(user_info.username().isEmpty()){
             return null;
         }
@@ -79,7 +79,7 @@ public class UserService {
         return authorized;
     }
 
-    public void DBClear(){
+    public void DBClear() throws DataAccessException {
         dataAccess.clearUsers();
         dataAccess.clearAuth();
         dataAccess.clearGames();

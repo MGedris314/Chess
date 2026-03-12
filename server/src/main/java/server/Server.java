@@ -49,7 +49,8 @@ public class Server {
             ctx.status(403);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 403)));
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            ctx.status(500);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 500)));
         }
 
     }
@@ -68,7 +69,8 @@ public class Server {
             ctx.status(401);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            ctx.status(500);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 500)));
         }
     }
 
@@ -90,6 +92,10 @@ public class Server {
         catch (UserException401 e){
             ctx.status(401);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 400)));
+        } catch (DataAccessException e) {
+            ctx.status(500);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 400)));
+
         }
 
     }
@@ -117,6 +123,9 @@ public class Server {
         catch (UserException401 e){
             ctx.status(401);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
+        } catch (DataAccessException e) {
+            ctx.status(500);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         }
 
     }
@@ -133,6 +142,10 @@ public class Server {
                 ctx.status(401);
                 ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         }
+        catch (DataAccessException e){
+        ctx.status(500);
+        ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 500)));
+        }
     }
 
     private void logOut(Context ctx){
@@ -143,12 +156,21 @@ public class Server {
         catch(UserException401 e){
             ctx.status(401);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
+        } catch (DataAccessException e) {
+            ctx.status(500);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         }
     }
 
-    private void fullClear(Context ctx){
-        String clear_out = handler.ClearDB();
-        ctx.result(clear_out);
+    private void fullClear(Context ctx) throws DataAccessException {
+        try {
+            String clear_out = handler.ClearDB();
+            ctx.result(clear_out);
+        }
+        catch (DataAccessException e) {
+            ctx.status(500);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 500)));
+        }
     }
 
     public int run(int desiredPort) {

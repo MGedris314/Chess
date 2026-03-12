@@ -37,13 +37,13 @@ public class UserHandler {
         return new Gson().toJson(regi);
     }
 
-    public String log_out (String data_string) throws UserException401{
+    public String log_out (String data_string) throws UserException401, DataAccessException {
         UserService userService = new UserService(dataAccess);
         String authorized = userService.logOut(data_string);
         return authorized;
     }
 
-    public Boolean authenticate (String auth_token) throws UserException401{
+    public Boolean authenticate (String auth_token) throws UserException401, DataAccessException {
         UserService userService = new UserService((dataAccess));
         Boolean authentic = userService.authenticate(auth_token);
         if(authentic) {
@@ -54,7 +54,7 @@ public class UserHandler {
         }
     }
 
-    public String addGame (String gameName) throws UserExceptions, UserException401{
+    public String addGame (String gameName) throws UserExceptions, UserException401, DataAccessException {
         GameService gameService = new GameService((dataAccess));
         if(gameName.equals("{}")){
             throw new UserExceptions("400: Error: bad request");
@@ -67,7 +67,7 @@ public class UserHandler {
         return new Gson().toJson(ID);
     }
 
-    public String getGames(){
+    public String getGames()  throws DataAccessException{
         GameService gameService = new GameService((dataAccess));
         GameRetrun games = gameService.returnGames();
 
@@ -75,14 +75,14 @@ public class UserHandler {
 
     }
 
-    public String ClearDB(){
+    public String ClearDB() throws DataAccessException {
         UserService userService = new UserService(dataAccess);
         userService.DBClear();
         String blank = "{}";
         return blank;
     }
 
-    public String JoinGame(String data_asJSON, String authToken) throws UserExceptions, UserException403{
+    public String JoinGame(String data_asJSON, String authToken) throws UserExceptions, UserException403, DataAccessException {
         GameService gameService = new GameService(dataAccess);
         JoinGameData joinData = new Gson().fromJson(data_asJSON, JoinGameData.class);
         if(joinData.playerColor() == null){

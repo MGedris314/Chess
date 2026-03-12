@@ -114,7 +114,7 @@ Guy is the existingUser, Steve is newUser
             String fails = userService.logOut("Totally not an auth token");
             Assertions.assertFalse(false);
         }
-        catch (UserException401 e) {
+        catch (UserException401 | DataAccessException e) {
             Assertions.assertTrue(true);
         }
 
@@ -123,7 +123,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(7)
     @DisplayName("Proper_List")
-    public void List200(){
+    public void List200() throws DataAccessException {
 
         int gameId = gameService.createGame("Trial");
         GameRetrun games = gameService.returnGames();
@@ -134,7 +134,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(8)
     @DisplayName("Improper_List")
-    public void List400(){
+    public void List400() throws DataAccessException {
         userService.DBClear();
         GameRetrun games = gameService.returnGames();
         Assertions.assertEquals(0, games.games().size());
@@ -143,7 +143,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(9)
     @DisplayName("Proper_Create")
-    public void Create200() throws UserException403{
+    public void Create200() throws UserException403, DataAccessException {
 
         int gameId = gameService.createGame("Trial");
         Assertions.assertEquals(1 ,gameId);
@@ -153,7 +153,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(10)
     @DisplayName("Improper_Create")
-    public void Create403() throws UserException403{
+    public void Create403() throws UserException403, DataAccessException {
 //      Similar problem to improper list.
         int gameID = gameService.createGame("");
         Assertions.assertEquals(-1, gameID);
@@ -223,7 +223,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(15)
     @DisplayName("Proper link")
-    public void Link200(){
+    public void Link200() throws DataAccessException {
         UserData bubs = new UserData("Bubs", "bub's password", "bubs@mail.com");
         AuthData authData = userService.linkAuth(bubs);
         Assertions.assertNotNull(authData);
@@ -232,7 +232,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(16)
     @DisplayName("Improper link")
-    public void Link400(){
+    public void Link400() throws DataAccessException {
 
         UserData bubs = new UserData("", "bub's password", "bubs@mail.com");
         AuthData authData = userService.linkAuth(bubs);
