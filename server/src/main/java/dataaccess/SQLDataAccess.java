@@ -127,7 +127,7 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public AuthData findAuth(String authData) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "SELECT * FROM users WHERE token = ? ")){
+            try (var statement = con.prepareStatement( "SELECT * FROM auth WHERE auth = ? ")){
                 statement.setString(1, authData);
                 try(var rs = statement.executeQuery()){
                     if(rs.next()){
@@ -151,7 +151,7 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public void removeAuth(String authData) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "UPDATE users SET token = 0 WHERE token = ? ")){
+            try (var statement = con.prepareStatement( "UPDATE auth SET auth = 0 WHERE auth = ? ")){
                 statement.setString(1, authData);
                 var rs = statement.executeUpdate();
             }
