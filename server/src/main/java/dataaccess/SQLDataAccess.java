@@ -82,6 +82,9 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public UserData addUser(String username, UserData password) throws DataAccessException {
+        if (password == null){
+            throw new DataAccessException("Error 500");
+        }
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "INSERT INTO users (name, password, token) VALUES (?, ?, ?)")) {
                 String pass = BCrypt.hashpw(password.password(), BCrypt.gensalt());

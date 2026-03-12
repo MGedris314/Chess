@@ -27,4 +27,19 @@ public class SQLTest {
         UserData check = dataAccess.addUser("Steve", userData);
         Assertions.assertNull(check);
     }
+
+    @Test
+    @Order(2)
+    @DisplayName("Improper add")
+    public void add500() throws DataAccessException {
+        UserData userData = new UserData("Steve", "", "Mail@mail");
+        UserData nulled = null;
+        try{
+            dataAccess.addUser("Gary", nulled);
+            Assertions.assertTrue(false, "Shouldn't get here.");
+        }
+        catch (DataAccessException e){
+            Assertions.assertTrue(true);
+        }
+    }
 }
