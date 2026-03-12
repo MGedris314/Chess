@@ -1,5 +1,6 @@
 package dataaccess;
 import chess.ChessGame;
+import exception.UserException403;
 import model.*;
 import org.junit.jupiter.api.*;
 
@@ -173,6 +174,55 @@ public class SQLTest {
         try {
             dataAccess.createPublic(game);
             Assertions.assertFalse(false);
+        }
+        catch (DataAccessException e){
+            Assertions.assertTrue(true);
+        }
+    }
+
+    @Test
+    @Order(15)
+    @DisplayName("Proper ID")
+    public void id200() throws DataAccessException{
+        int id = dataAccess.gameID();
+        Assertions.assertEquals(1, id);
+    }
+
+    @Test
+    @Order(16)
+    @DisplayName("Proper return")
+    public void return200() throws DataAccessException{
+        PublicGame game = new PublicGame(1, "test", "test", "test");
+        dataAccess.createPublic(game);
+        GameRetrun games = dataAccess.gameReturn();
+        Assertions.assertNotNull(games);
+    }
+
+    @Test
+    @Order(16)
+    @DisplayName("Improper return")
+    public void return500() throws DataAccessException{
+        GameRetrun game = dataAccess.gameReturn();
+        Assertions.assertEquals(0, game.games().size());
+    }
+
+    @Test
+    @Order(17)
+    @DisplayName("Proper single game return")
+    public void return1200() throws DataAccessException, UserException403 {
+        GameData game = new GameData(1, "", "", "test", new ChessGame());
+        int id = dataAccess.createGame(game);
+        GameData same = dataAccess.returnSingleGame(id);
+        Assertions.assertEquals(game, same);
+    }
+
+    @Test
+    @Order(18)
+    @DisplayName("Proper single game return")
+    public void return1500() throws DataAccessException, UserException403 {
+        try{
+            dataAccess.returnSingleGame(20);
+            Assertions.assertFalse(false, "How we got here, I don't know.");
         }
         catch (DataAccessException e){
             Assertions.assertTrue(true);
