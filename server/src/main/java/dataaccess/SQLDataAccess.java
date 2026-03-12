@@ -49,7 +49,8 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException | DataAccessException ex) {
-            System.out.print("Something went wrong");
+            System.out.print("Problem");
+            throw new RuntimeException();
         }
     }
 
@@ -74,13 +75,11 @@ public class SQLDataAccess implements DataAccess {
                 }
 
             }
-        }
-        catch (DataAccessException e){
-            throw new DataAccessException("e");
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        }catch (SQLException e) {
+        throw new RuntimeException();
+    } catch (DataAccessException e) {
+        throw new RuntimeException();
+    }
     }
 
     @Override
@@ -95,9 +94,9 @@ public class SQLDataAccess implements DataAccess {
                 return null;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 
@@ -118,9 +117,9 @@ public class SQLDataAccess implements DataAccess {
                 return authToken;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 
@@ -142,9 +141,9 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 
@@ -156,9 +155,9 @@ public class SQLDataAccess implements DataAccess {
                 var rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 
@@ -178,9 +177,9 @@ public class SQLDataAccess implements DataAccess {
                     return rs;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 
@@ -194,9 +193,9 @@ public class SQLDataAccess implements DataAccess {
                 var rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 
@@ -214,9 +213,9 @@ public class SQLDataAccess implements DataAccess {
                 return 1;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 
@@ -239,9 +238,9 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 
@@ -268,9 +267,9 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 
@@ -291,9 +290,9 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 
@@ -328,9 +327,9 @@ public class SQLDataAccess implements DataAccess {
                 var rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 
@@ -341,9 +340,9 @@ public class SQLDataAccess implements DataAccess {
                 int rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException();
         }
     }
 
