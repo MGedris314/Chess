@@ -57,13 +57,13 @@ public class GameService {
         if(desiredColor.equalsIgnoreCase("White")){
             if(game.whiteUsername().isEmpty()){
                 if(game.blackUsername().isEmpty()) {
-                    game = new GameData(game.gameID(), allowed.authToken(), game.blackUsername(), game.gameName(), game.game());
-                    game1 = new PublicGame(game1.gameID(), allowed.authToken(), null, game1.gameName());
+                    game = new GameData(game.gameID(), allowed.userName(), game.blackUsername(), game.gameName(), game.game());
+                    game1 = new PublicGame(game1.gameID(), allowed.userName(), null, game1.gameName());
                     dataAccess.updateGames(game, game1, gameID);
                 }
                 else{
-                    game = new GameData(game.gameID(), allowed.authToken(), game.blackUsername(), game.gameName(), game.game());
-                    game1 = new PublicGame(game1.gameID(), allowed.authToken(), game1.blackUsername(), game1.gameName());
+                    game = new GameData(game.gameID(), allowed.userName(), game.blackUsername(), game.gameName(), game.game());
+                    game1 = new PublicGame(game1.gameID(), allowed.userName(), game1.blackUsername(), game1.gameName());
                     dataAccess.updateGames(game, game1, gameID);
                 }
             }
@@ -76,13 +76,13 @@ public class GameService {
         else if(desiredColor.equalsIgnoreCase("Black")){
             if(game.blackUsername().isEmpty()){
                 if(game.whiteUsername().isEmpty()) {
-                    game = new GameData(game.gameID(), game.whiteUsername(), allowed.authToken(), game.gameName(), game.game());
-                    game1 = new PublicGame(game.gameID(), null, allowed.authToken(), game.gameName());
+                    game = new GameData(game.gameID(), game.whiteUsername(), allowed.userName(), game.gameName(), game.game());
+                    game1 = new PublicGame(game.gameID(), null, allowed.userName(), game.gameName());
                     dataAccess.updateGames(game, game1, gameID);
                 }
                 else{
-                    game = new GameData(game.gameID(), game.whiteUsername(), allowed.authToken(), game.gameName(), game.game());
-                    game1 = new PublicGame(game.gameID(), game.whiteUsername(), allowed.authToken(), game.gameName());
+                    game = new GameData(game.gameID(), game.whiteUsername(), allowed.userName(), game.gameName(), game.game());
+                    game1 = new PublicGame(game.gameID(), game.whiteUsername(), allowed.userName(), game.gameName());
                     dataAccess.updateGames(game, game1, gameID);
                 }
             }
