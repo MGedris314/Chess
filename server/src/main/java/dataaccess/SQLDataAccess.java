@@ -43,6 +43,11 @@ public class SQLDataAccess implements DataAccess {
                     preparedStatement2.executeUpdate();
                 }
             }
+            for (String statement : createAuthStatements) {
+                try (var preparedStatement3 = conn.prepareStatement(statement)) {
+                    preparedStatement3.executeUpdate();
+                }
+            }
         } catch (SQLException | DataAccessException ex) {
             System.out.print("Something went wrong");
         }
@@ -191,19 +196,22 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public int gameID() {
-        return 1;
-//        try(var con = DatabaseManager.getConnection()) {
-//            try (var statement = con.prepareStatement( "SELECT * FROM games WHERE id = (SELECT MAX (id) FROM games)")){
-//                try(var rs = statement.executeQuery()){
-//                    var id = rs.getInt("id");
-//                    return id;
-//                }
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        } catch (DataAccessException e) {
-//            throw new RuntimeException(e);
-//        }
+        try(var con = DatabaseManager.getConnection()) {
+            try (var statement = con.prepareStatement( "SELECT id FROM games ORDER BY id DESC ")){
+                try(var rs = statement.executeQuery()){
+                    rs.next();
+                    var id = rs.getInt("id");
+                    return id +1;
+                }
+            }
+            catch (SQLException e){
+                return 1;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -396,6 +404,15 @@ public class SQLDataAccess implements DataAccess {
             `whiteTeam` varchar(256) ,
             `blackTeam` varchar(256) ,
              PRIMARY KEY (`id`)
+            )
+            """
+    };
+
+    private final String [] createAuthStatements = {
+            """
+            CREATE TABLE IF NOT EXISTS  public(
+            `auth` varchar(128) NOT NULL,
+             PRIMARY KEY (`auth`)
             )
             """
     };
