@@ -104,7 +104,13 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public AuthData addAuthToken(AuthData authToken) {
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "UPDATE users SET token = ? WHERE name = ?")){
+            try (var statement = con.prepareStatement( "UPDATE users SET token = ? WHERE name = ?")) {
+                String username = authToken.authToken();
+                statement.setString(2, username);
+                statement.setString(1, authToken.userName());
+                var rs = statement.executeUpdate();
+            }
+            try (var statement = con.prepareStatement( "INSERT INTO auth (auth, name) VALUES (?, ?) ")){
                 String username = authToken.authToken();
                 statement.setString(2, username);
                 statement.setString(1, authToken.userName());
@@ -330,16 +336,15 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void clearAuth() {
-        return;
-//        try(var con = DatabaseManager.getConnection()) {
-//            try (var statement = con.prepareStatement( "ALTER users TRUNCATE COLUMN token")){
-//                int rs = statement.executeUpdate();
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        } catch (DataAccessException e) {
-//            throw new RuntimeException(e);
-//        }
+        try(var con = DatabaseManager.getConnection()) {
+            try (var statement = con.prepareStatement( "TRUNCATE auth")){
+                int rs = statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -410,8 +415,9 @@ public class SQLDataAccess implements DataAccess {
 
     private final String [] createAuthStatements = {
             """
-            CREATE TABLE IF NOT EXISTS  public(
+            CREATE TABLE IF NOT EXISTS  auth(
             `auth` varchar(128) NOT NULL,
+            `name` varchar(256) NOT NULL,
              PRIMARY KEY (`auth`)
             )
             """
