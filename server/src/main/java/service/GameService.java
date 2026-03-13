@@ -18,17 +18,17 @@ public class GameService {
         this.dataAccess = dataAccess;
     }
 
-    public int createGame(String game_name) throws DataAccessException {
+    public int createGame(String gameName) throws DataAccessException {
 //        Failsafe double check to make sure the game_name isn't null
-        if(game_name.isEmpty()){
+        if(gameName.isEmpty()){
             return -1;
         }
-        int ID = dataAccess.gameID();
-        GameData gameData = new GameData(ID, "","",game_name, new ChessGame());
-        PublicGame publicGame = new PublicGame(ID, "", "", game_name);
+        int id = dataAccess.gameID();
+        GameData gameData = new GameData(id, "","",gameName, new ChessGame());
+        PublicGame publicGame = new PublicGame(id, "", "", gameName);
         dataAccess.createGame(gameData);
         dataAccess.createPublic(publicGame);
-        return ID;
+        return id;
     }
 
     public GameRetrun returnGames()  throws DataAccessException {

@@ -97,3 +97,6 @@ Service Tests
 Chess Game
 Chess Piece
 Chess Board
+Game Service
+Server.java
+Memory Data Access

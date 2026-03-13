@@ -77,8 +77,8 @@ public class Server {
             boolean authentic = handler.authenticate(ctx.header("authorization"));
             if (authentic) {
                 try {
-                    String ID = handler.addGame(ctx.body());
-                    ctx.result(ID);
+                    String id = handler.addGame(ctx.body());
+                    ctx.result(id);
                 }
                 catch (UserExceptions e){
                     ctx.status(400);
@@ -161,8 +161,8 @@ public class Server {
 
     private void fullClear(Context ctx) throws DataAccessException {
         try {
-            String clear_out = handler.clearDB();
-            ctx.result(clear_out);
+            String clearOut = handler.clearDB();
+            ctx.result(clearOut);
         }
         catch (DataAccessException e) {
             ctx.status(500);
