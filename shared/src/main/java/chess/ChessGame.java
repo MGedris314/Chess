@@ -55,17 +55,17 @@ public class ChessGame {
         kingW = findKing(board, color);
         ChessPiece king = board.getPiece(kingW);
         ArrayList<ChessMove> escape = new ArrayList<ChessMove>();
-        ArrayList<ChessPosition> possible_moves = new ArrayList<ChessPosition>();
+        ArrayList<ChessPosition> possibleMoves = new ArrayList<ChessPosition>();
         escape.addAll(king.moveCalc(kingW, board, king));
         ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>();
         endings.addAll(possibleBlackEnds(board));
         for(int i = 0; i< escape.size(); i++){
             ChessMove current = escape.get(i);
-            ChessPosition end_point = current.getEndPosition();
-            possible_moves.add(end_point);
+            ChessPosition endPosition = current.getEndPosition();
+            possibleMoves.add(endPosition);
         }
-        for(int x = 0; x<possible_moves.size(); x++){
-            boolean open = Arrays.asList(endings).contains(possible_moves.get(x));
+        for(int x = 0; x<possibleMoves.size(); x++){
+            boolean open = Arrays.asList(endings).contains(possibleMoves.get(x));
             if(open){
                 return true;
 //              This means the king has at least one escape option by moving it's self.
@@ -106,66 +106,66 @@ public class ChessGame {
 
     public Collection<ChessPosition> possibleWhiteEnds(ChessBoard board){
 //      If full is true, we run the full thing.  Otherwise, we just get the moves.
-        ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
-        ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
+        ArrayList<ChessMove> possibleMoves = new ArrayList<ChessMove>();
+        ArrayList<ChessPosition> endPoints = new ArrayList<ChessPosition>();
         for(int i = 0; i< whiteTeam.size(); i++){
             ChessPiece hold = board.getPiece(whiteTeam.get(i));
-            possible_moves.addAll(hold.moveCalc(whiteTeam.get(i), board, hold));
+            possibleMoves.addAll(hold.moveCalc(whiteTeam.get(i), board, hold));
         }
         
-        for(int i = 0; i<possible_moves.size(); i++){
-            ChessMove current = possible_moves.get(i);
+        for(int i = 0; i<possibleMoves.size(); i++){
+            ChessMove current = possibleMoves.get(i);
             ChessPosition end = current.getEndPosition();
-            end_points.add(end);
+            endPoints.add(end);
         }
-        return end_points;
+        return endPoints;
     }
 
     public Collection<ChessPosition> possibleBlackEnds(ChessBoard board){
-        ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
-        ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
+        ArrayList<ChessMove> possibleMoves = new ArrayList<ChessMove>();
+        ArrayList<ChessPosition> endPoints = new ArrayList<ChessPosition>();
         for(int i = 0; i< blackTeam.size(); i++){
             ChessPiece hold = board.getPiece(blackTeam.get(i));
-            possible_moves.addAll(hold.moveCalc(blackTeam.get(i), board, hold));
+            possibleMoves.addAll(hold.moveCalc(blackTeam.get(i), board, hold));
         }
-        for(int i = 0; i<possible_moves.size(); i++){
-            ChessMove current = possible_moves.get(i);
+        for(int i = 0; i<possibleMoves.size(); i++){
+            ChessMove current = possibleMoves.get(i);
             ChessPosition end = current.getEndPosition();
-            end_points.add(end);
+            endPoints.add(end);
         }
-        return end_points;
+        return endPoints;
     }
 
     public Collection<ChessPosition> possibleWhiteStart(ChessBoard board){
 //      If full is true, we run the full thing.  Otherwise, we just get the moves.
-        ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
-        ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
+        ArrayList<ChessMove> possibleMoves = new ArrayList<ChessMove>();
+        ArrayList<ChessPosition> endPoints = new ArrayList<ChessPosition>();
         for(int i = 0; i< whiteTeam.size(); i++){
             ChessPiece hold = board.getPiece(whiteTeam.get(i));
-            possible_moves.addAll(hold.moveCalc(whiteTeam.get(i), board, hold));
+            possibleMoves.addAll(hold.moveCalc(whiteTeam.get(i), board, hold));
         }
-        for(int i = 0; i<possible_moves.size(); i++){
-            ChessMove current = possible_moves.get(i);
+        for(int i = 0; i<possibleMoves.size(); i++){
+            ChessMove current = possibleMoves.get(i);
             ChessPosition start = current.getStartPosition();
-            end_points.add(start);
+            endPoints.add(start);
         }
-        return end_points;
+        return endPoints;
     }
 
     public Collection<ChessPosition> possibleBlackStart(ChessBoard board){
         findBlackTeam(board);
-        ArrayList<ChessMove> possible_moves = new ArrayList<ChessMove>();
-        ArrayList<ChessPosition> end_points = new ArrayList<ChessPosition>();
+        ArrayList<ChessMove> possibleMoves = new ArrayList<ChessMove>();
+        ArrayList<ChessPosition> endPoints = new ArrayList<ChessPosition>();
         for(int i = 0; i< blackTeam.size(); i++){
             ChessPiece hold = board.getPiece(blackTeam.get(i));
-            possible_moves.addAll(hold.moveCalc(blackTeam.get(i), board, hold));
+            possibleMoves.addAll(hold.moveCalc(blackTeam.get(i), board, hold));
         }
-        for(int i = 0; i<possible_moves.size(); i++){
-            ChessMove current = possible_moves.get(i);
+        for(int i = 0; i<possibleMoves.size(); i++){
+            ChessMove current = possibleMoves.get(i);
             ChessPosition start = current.getStartPosition();
-            end_points.add(start);
+            endPoints.add(start);
         }
-        return end_points;
+        return endPoints;
     }
 
     public boolean whiteInCheck(ChessBoard board){
@@ -214,42 +214,42 @@ public class ChessGame {
      * startPosition     */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece piece = board.getPiece(startPosition);
-        ArrayList <ChessMove> valid_moves = new ArrayList<ChessMove>();
-        ArrayList <ChessMove> moves_to_check = new ArrayList<ChessMove>();
-        moves_to_check.addAll(piece.moveCalc(startPosition, board, piece));
+        ArrayList <ChessMove> validMoves = new ArrayList<ChessMove>();
+        ArrayList <ChessMove> movesToCheck = new ArrayList<ChessMove>();
+        movesToCheck.addAll(piece.moveCalc(startPosition, board, piece));
         if(piece.getTeamColor() == TeamColor.WHITE){
-            for(int x = 0; x<moves_to_check.size(); x++){
+            for(int x = 0; x<movesToCheck.size(); x++){
                 ChessBoard cloned = new ChessBoard(board);
-                ChessPosition start_point = moves_to_check.get(x).getStartPosition();
-                ChessPosition end_point = moves_to_check.get(x).getEndPosition();
+                ChessPosition startPoint = movesToCheck.get(x).getStartPosition();
+                ChessPosition endPoint = movesToCheck.get(x).getEndPosition();
                 //Clone board here
-                cloned.addPiece(end_point, board.getPiece(startPosition));
-                cloned.addPiece(start_point, null);
+                cloned.addPiece(endPoint, board.getPiece(startPosition));
+                cloned.addPiece(startPoint, null);
                 boolean validated = whiteInCheck(cloned);
                 if(!validated){
-                    valid_moves.add(moves_to_check.get(x));
+                    validMoves.add(movesToCheck.get(x));
                 }
             }
-            return valid_moves;
+            return validMoves;
         }
         else if(piece.getTeamColor() == TeamColor.BLACK){
-            for(int x = 0; x<moves_to_check.size(); x++){
+            for(int x = 0; x<movesToCheck.size(); x++){
                 ChessBoard cloned = new ChessBoard(board);
-                ChessPosition start_point = moves_to_check.get(x).getStartPosition();
-                ChessPosition end_point = moves_to_check.get(x).getEndPosition();
+                ChessPosition startPoint = movesToCheck.get(x).getStartPosition();
+                ChessPosition endPoint = movesToCheck.get(x).getEndPosition();
                 //Clone board here
-                cloned.addPiece(end_point, board.getPiece(startPosition));
-                cloned.addPiece(start_point, null);
+                cloned.addPiece(endPoint, board.getPiece(startPosition));
+                cloned.addPiece(startPoint, null);
                 boolean validated = blackInCheck(cloned);
                 if(!validated){
-                    valid_moves.add(moves_to_check.get(x));
+                    validMoves.add(movesToCheck.get(x));
                 }
             }
-           return valid_moves;
+           return validMoves;
         }
         else{
             System.out.println("Something has gone wrong to get to this point, check your logic");
-            return valid_moves;
+            return validMoves;
         }
     }
     /** Makes a move in a chess game
@@ -257,11 +257,11 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid*/
     public void makeMove(ChessMove move) throws InvalidMoveException {
         InvalidMoveException wrong = new InvalidMoveException();
-        ChessPiece has_piece = board.getPiece(move.getStartPosition());
-        if(has_piece == null){
+        ChessPiece hasPiece = board.getPiece(move.getStartPosition());
+        if(hasPiece == null){
             throw wrong;
         }
-        if(has_piece.getTeamColor() != teamTurn){
+        if(hasPiece.getTeamColor() != teamTurn){
             throw wrong;
         }
         ChessPosition mover = move.getStartPosition();
@@ -270,8 +270,8 @@ public class ChessGame {
         ArrayList <ChessPosition> endings = new ArrayList<ChessPosition>();
         for(int x = 0; x<isValid.size(); x++){
             ChessMove current = isValid.get(x);
-            ChessPosition current_end = current.getEndPosition();
-            endings.add(current_end);
+            ChessPosition currentEnd = current.getEndPosition();
+            endings.add(currentEnd);
         }
 
         if(isValid.isEmpty()){
@@ -280,21 +280,21 @@ public class ChessGame {
         }
         else{
             ArrayList<ChessMove> possibleMoves = new ArrayList<ChessMove>();
-            possibleMoves.addAll(has_piece.moveCalc(move.getStartPosition(), board, has_piece));
-            ArrayList<ChessPosition> possible_ends = new ArrayList<ChessPosition>();
+            possibleMoves.addAll(hasPiece.moveCalc(move.getStartPosition(), board, hasPiece));
+            ArrayList<ChessPosition> possibleEnds = new ArrayList<ChessPosition>();
             for (int x = 0; x < possibleMoves.size(); x++) {
                 ChessMove current = possibleMoves.get(x);
-                ChessPosition end_point = current.getEndPosition();
-                possible_ends.add(end_point);
+                ChessPosition endPoint = current.getEndPosition();
+                possibleEnds.add(endPoint);
             }
-            boolean can_move = false;
+            boolean canMove = false;
             for (int x = 0; x < possibleMoves.size(); x++) {
-                if(possible_ends.get(x).equals(move.getEndPosition())){
-                    can_move = true;
+                if(possibleEnds.get(x).equals(move.getEndPosition())){
+                    canMove = true;
                     break;
                 }
             }
-            if(!can_move){
+            if(!canMove){
                 throw wrong;
             }
             ChessPosition startPoint = move.getStartPosition();
@@ -359,8 +359,8 @@ public class ChessGame {
             ArrayList <ChessMove> validOuts = new ArrayList<ChessMove>();
             validPassIn.addAll(possibleWhiteStart(board)); //This gives us all possible moves that the white team can make.
             for(int y = 0; y<validPassIn.size(); y++){
-                ChessPosition start_point = validPassIn.get(y);
-                validOuts.addAll(validMoves(start_point));
+                ChessPosition startPoint = validPassIn.get(y);
+                validOuts.addAll(validMoves(startPoint));
             }
             if(validOuts.isEmpty()){
                 //If it is empty there are no outs, we are in checkmate.
@@ -377,8 +377,8 @@ public class ChessGame {
             ArrayList <ChessMove> validOuts = new ArrayList<ChessMove>();
             validPassIn.addAll(possibleBlackStart(board)); //This gives us all possible moves that the white team can make.
             for(int y = 0; y<validPassIn.size(); y++){
-                ChessPosition start_point = validPassIn.get(y);
-                validOuts.addAll(validMoves(start_point));
+                ChessPosition startPoint = validPassIn.get(y);
+                validOuts.addAll(validMoves(startPoint));
             }
             if(validOuts.isEmpty()){//If it is empty there are no outs, we are in checkmate.
                 return true;
@@ -422,21 +422,21 @@ public class ChessGame {
                 return false;
             }
             ArrayList<ChessMove> validOut=new ArrayList<ChessMove>();
-            ChessPosition king_position = findKing(board, TeamColor.BLACK);
-            validOut.addAll(validMoves(king_position));
+            ChessPosition kingPosition = findKing(board, TeamColor.BLACK);
+            validOut.addAll(validMoves(kingPosition));
 
             if(validOut.size()>0){
                 return false;
             }
 //          Last resort, move a piece to interrupt check.
-            ArrayList <ChessPosition> valid_pass_in = new ArrayList<ChessPosition>();
-            ArrayList <ChessMove> valid_outs = new ArrayList<ChessMove>();
-            valid_pass_in.addAll(possibleBlackStart(board)); //This gives us all possible moves that the black team can make.
-            for(int y = 0; y<valid_pass_in.size(); y++){
-                ChessPosition start_point = valid_pass_in.get(y);
-                valid_outs.addAll(validMoves(start_point));
+            ArrayList <ChessPosition> validPassIn = new ArrayList<ChessPosition>();
+            ArrayList <ChessMove> validOuts = new ArrayList<ChessMove>();
+            validPassIn.addAll(possibleBlackStart(board)); //This gives us all possible moves that the black team can make.
+            for(int y = 0; y<validPassIn.size(); y++){
+                ChessPosition startPoint = validPassIn.get(y);
+                validOuts.addAll(validMoves(startPoint));
             }
-            if(valid_outs.isEmpty() && blackCheck == false){
+            if(validOuts.isEmpty() && blackCheck == false){
                 //If it is empty there are no outs, we are in checkmate.
                 return true;
             }

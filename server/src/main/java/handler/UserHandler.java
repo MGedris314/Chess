@@ -8,8 +8,6 @@ import model.*;
 import service.UserService;
 import service.GameService;
 
-import java.util.Collection;
-
 
 public class UserHandler {
     private DataAccess dataAccess;
@@ -17,35 +15,35 @@ public class UserHandler {
         this.dataAccess = dataAccess;
     }
 
-    public String register(String data_asJSON) throws UserExceptions, UserException403, DataAccessException {
+    public String register(String dataAsJSON) throws UserExceptions, UserException403, DataAccessException {
         UserService userService = new UserService(dataAccess);
-        UserData userdata = new Gson().fromJson(data_asJSON, UserData.class);
+        UserData userdata = new Gson().fromJson(dataAsJSON, UserData.class);
         if(userdata.username() == null || userdata.password() == null || userdata.email() == null){
             throw new UserExceptions("400: Error: bad request");
         }
-        RegisterResult regi = userService.GetUser(userdata);
+        RegisterResult regi = userService.getUser(userdata);
         return new Gson().toJson(regi);
     }
 
-    public String log_in (String data_asJson) throws UserExceptions, UserException401, DataAccessException {
+    public String logIn(String dataAsJson) throws UserExceptions, UserException401, DataAccessException {
         UserService userService = new UserService(dataAccess);
-        UserData userdata = new Gson().fromJson(data_asJson, UserData.class);
+        UserData userdata = new Gson().fromJson(dataAsJson, UserData.class);
         if(userdata.username() == null || userdata.password() == null){
             throw new UserExceptions("400: Error: bad request");
         }
-        RegisterResult regi = userService.LogUser(userdata);
+        RegisterResult regi = userService.logUser(userdata);
         return new Gson().toJson(regi);
     }
 
-    public String log_out (String data_string) throws UserException401, DataAccessException {
+    public String logOut(String dataString) throws UserException401, DataAccessException {
         UserService userService = new UserService(dataAccess);
-        String authorized = userService.logOut(data_string);
+        String authorized = userService.logOut(dataString);
         return authorized;
     }
 
-    public Boolean authenticate (String auth_token) throws UserException401, DataAccessException {
+    public Boolean authenticate (String authToken) throws UserException401, DataAccessException {
         UserService userService = new UserService((dataAccess));
-        Boolean authentic = userService.authenticate(auth_token);
+        Boolean authentic = userService.authenticate(authToken);
         if(authentic) {
             return authentic;
         }
@@ -62,9 +60,9 @@ public class UserHandler {
         GameName name = new Gson().fromJson(gameName, GameName.class);
         int gameID = gameService.createGame(name.gameName());
         String words = "{game ID: ";
-        String return_val = words + gameID +"}";
-        GameResult ID = new GameResult(gameID);
-        return new Gson().toJson(ID);
+        String returnVal = words + gameID +"}";
+        GameResult id = new GameResult(gameID);
+        return new Gson().toJson(id);
     }
 
     public String getGames()  throws DataAccessException{
@@ -75,16 +73,16 @@ public class UserHandler {
 
     }
 
-    public String ClearDB() throws DataAccessException {
+    public String clearDB() throws DataAccessException {
         UserService userService = new UserService(dataAccess);
-        userService.DBClear();
+        userService.dbclear();
         String blank = "{}";
         return blank;
     }
 
-    public String JoinGame(String data_asJSON, String authToken) throws UserExceptions, UserException403, DataAccessException {
+    public String joinGame(String dataAsJSON, String authToken) throws UserExceptions, UserException403, DataAccessException {
         GameService gameService = new GameService(dataAccess);
-        JoinGameData joinData = new Gson().fromJson(data_asJSON, JoinGameData.class);
+        JoinGameData joinData = new Gson().fromJson(dataAsJSON, JoinGameData.class);
         if(joinData.playerColor() == null){
             throw new UserExceptions("400: Error: bad request");
         }

@@ -7,7 +7,6 @@ import model.RegisterResult;
 import model.UserData;
 import exception.*;
 import org.mindrot.jbcrypt.BCrypt;
-import org.eclipse.jetty.server.Authentication;
 
 import java.util.UUID;
 
@@ -20,11 +19,11 @@ public class UserService {
         this.dataAccess = dataAccess;
     }
 
-    public RegisterResult GetUser(UserData user_info) throws UserException403, DataAccessException {
-        UserData return_val = dataAccess.findUser(user_info.username());
-        if(return_val == null) {
-            dataAccess.addUser(user_info.username(), user_info);
-            AuthData authorize = linkAuth(user_info);
+    public RegisterResult getUser(UserData userInfo) throws UserException403, DataAccessException {
+        UserData returnVal = dataAccess.findUser(userInfo.username());
+        if(returnVal == null) {
+            dataAccess.addUser(userInfo.username(), userInfo);
+            AuthData authorize = linkAuth(userInfo);
             RegisterResult regResult = new RegisterResult(authorize.authToken(), authorize.userName());
             return regResult;
         }
@@ -33,11 +32,11 @@ public class UserService {
         }
     }
 
-    public RegisterResult LogUser(UserData user_info) throws UserException401, DataAccessException {
-        UserData return_val = dataAccess.findUser((user_info.username()));
-        if(return_val!= null){
-            if(BCrypt.checkpw(user_info.password(), return_val.password())){
-                AuthData authorize = linkAuth(user_info);
+    public RegisterResult logUser(UserData userInfo) throws UserException401, DataAccessException {
+        UserData returnVal = dataAccess.findUser((userInfo.username()));
+        if(returnVal!= null){
+            if(BCrypt.checkpw(userInfo.password(), returnVal.password())){
+                AuthData authorize = linkAuth(userInfo);
                 RegisterResult regResult = new RegisterResult(authorize.authToken(), authorize.userName());
                 return regResult;
             }
@@ -57,29 +56,29 @@ public class UserService {
     }
 
     public String logOut(String authData) throws UserException401, DataAccessException {
-        boolean is_valid = authenticate(authData);
-        if (is_valid){
+        boolean isValid = authenticate(authData);
+        if (isValid){
             dataAccess.removeAuth(authData);
         }
-        if(!is_valid){
+        if(!isValid){
             throw new UserException401("401: Error: unauthorized");
         }
         System.out.println("We're in.");
-        String return_message = "{}";
-        return return_message;
+        String returnMessage = "{}";
+        return returnMessage;
     }
 
-    public AuthData linkAuth(UserData user_info) throws DataAccessException {
-        if(user_info.username().isEmpty()){
+    public AuthData linkAuth(UserData userInfo) throws DataAccessException {
+        if(userInfo.username().isEmpty()){
             return null;
         }
         String authToken = UUID.randomUUID().toString();
-        AuthData authorized = new AuthData(authToken, user_info.username());
+        AuthData authorized = new AuthData(authToken, userInfo.username());
         dataAccess.addAuthToken(authorized);
         return authorized;
     }
 
-    public void DBClear() throws DataAccessException {
+    public void dbclear() throws DataAccessException {
         dataAccess.clearUsers();
         dataAccess.clearAuth();
         dataAccess.clearGames();

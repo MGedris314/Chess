@@ -1,15 +1,12 @@
 package server;
 
-import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import dataaccess.SQLDataAccess;
 import exception.*;
 import handler.UserHandler;
-import io.javalin.*;
 import com.google.gson.Gson;
 import io.javalin.http.Context;
 import io.javalin.Javalin;
-import org.eclipse.jetty.server.Authentication;
 
 import java.util.Map;
 
@@ -58,7 +55,7 @@ public class Server {
     private void logIn(Context ctx){
 //        400 and 401
         try {
-            String logged = handler.log_in(ctx.body());
+            String logged = handler.logIn(ctx.body());
             ctx.result(logged);
         }
         catch (UserExceptions e){
@@ -107,7 +104,7 @@ public class Server {
             if (authentic) {
                 try {
                     String token = ctx.header("authorization");
-                    String joined = handler.JoinGame(ctx.body(), token);
+                    String joined = handler.joinGame(ctx.body(), token);
                     ctx.result(joined);
                 }
                 catch (UserExceptions e){
@@ -150,7 +147,7 @@ public class Server {
 
     private void logOut(Context ctx){
         try {
-            String logout = handler.log_out(ctx.header("authorization"));
+            String logout = handler.logOut(ctx.header("authorization"));
             ctx.result(logout);
         }
         catch(UserException401 e){
@@ -164,7 +161,7 @@ public class Server {
 
     private void fullClear(Context ctx) throws DataAccessException {
         try {
-            String clear_out = handler.ClearDB();
+            String clear_out = handler.clearDB();
             ctx.result(clear_out);
         }
         catch (DataAccessException e) {

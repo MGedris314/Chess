@@ -88,3 +88,9 @@ Return Games:  returns games, returns null
 Join game:  Returns empty string throws 403
 
 Thing for a new commit.
+
+3/12/2026:
+Files I have edited to make the autograder happy.
+User Service
+User Handler
+Service Tests

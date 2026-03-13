@@ -18,8 +18,8 @@ but, I think that's probably not the best solution.
 Guy is the existingUser, Steve is newUser
 */
 
-    private static UserData Guy;
-    private static UserData Steve;
+    private static UserData guy;
+    private static UserData steve;
     private static TestCreateRequest createRequest;
     private static TestServerFacade serverFacade;
     private static Server server;
@@ -34,25 +34,25 @@ Guy is the existingUser, Steve is newUser
         MemoryDataAccess memory = new MemoryDataAccess();
         gameService = new GameService(memory);
         userService = new UserService(memory);
-        Guy = new UserData("Guy", "GuysPassword", "guy@mail.com");
-        Steve = new UserData("Steve", "StevesPassword", "Steve@mail.com");
+        guy = new UserData("Guy", "GuysPassword", "guy@mail.com");
+        steve = new UserData("Steve", "StevesPassword", "Steve@mail.com");
     }
 
     @BeforeEach
     public void setup() throws UserException403, DataAccessException {
-        userService.DBClear();
+        userService.dbclear();
         //one user already logged in
 
-        RegisterResult regiResult = userService.GetUser(Guy);
+        RegisterResult regiResult = userService.getUser(guy);
         Assertions.assertNotNull(regiResult.authToken());
     }
 
     @Test
     @Order(1)
     @DisplayName("Proper_GetUser")
-    public void Registration200() throws UserException403, DataAccessException {
+    public void registration200() throws UserException403, DataAccessException {
 
-        RegisterResult regiResult = userService.GetUser(Steve);
+        RegisterResult regiResult = userService.getUser(steve);
         Assertions.assertNotNull(regiResult.authToken());
 
     }
@@ -60,9 +60,9 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(2)
     @DisplayName("Improper get User")
-    public void Registration403(){
+    public void registration403(){
         try {
-            RegisterResult regiResult = userService.GetUser(Guy);
+            RegisterResult regiResult = userService.getUser(guy);
             Assertions.assertTrue(false, "Should have failed and didn't.");
         } catch (UserException403 | DataAccessException e) {
             Assertions.assertTrue(true);
@@ -72,9 +72,9 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(3)
     @DisplayName("Proper Log user")
-    public void LogIN200() throws UserException401, DataAccessException {
+    public void logIn200() throws UserException401, DataAccessException {
 
-        RegisterResult regiResult = userService.LogUser(Guy);
+        RegisterResult regiResult = userService.logUser(guy);
         Assertions.assertNotNull(regiResult.authToken());
 
     }
@@ -83,10 +83,10 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(4)
     @DisplayName("Improper log user")
-    public void LogIN401(){
+    public void logIn401(){
         UserData bubs = new UserData("Guy", "BubsPassword", "bubs@mail.com");
         try {
-            RegisterResult regiResult = userService.LogUser(bubs);
+            RegisterResult regiResult = userService.logUser(bubs);
             Assertions.assertFalse(false, "Should have failed and didn't");
         }
         catch (UserException401 | DataAccessException e) {
@@ -98,9 +98,9 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(5)
     @DisplayName("Proper_Log_out")
-    public void LogOut200() throws UserException401, DataAccessException {
+    public void logOut200() throws UserException401, DataAccessException {
 
-        RegisterResult regiResult = userService.LogUser(Guy);
+        RegisterResult regiResult = userService.logUser(guy);
         String success = userService.logOut(regiResult.authToken());
         Assertions.assertEquals("{}", success);
 
@@ -109,7 +109,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(6)
     @DisplayName("Improper_Log_out")
-    public void LogOut401() throws UserException401{
+    public void logOut401() throws UserException401{
         try {
             String fails = userService.logOut("Totally not an auth token");
             Assertions.assertFalse(false);
@@ -123,7 +123,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(7)
     @DisplayName("Proper_List")
-    public void List200() throws DataAccessException {
+    public void list200() throws DataAccessException {
 
         int gameId = gameService.createGame("Trial");
         GameRetrun games = gameService.returnGames();
@@ -134,8 +134,8 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(8)
     @DisplayName("Improper_List")
-    public void List400() throws DataAccessException {
-        userService.DBClear();
+    public void list400() throws DataAccessException {
+        userService.dbclear();
         GameRetrun games = gameService.returnGames();
         Assertions.assertEquals(0, games.games().size());
     }
@@ -143,7 +143,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(9)
     @DisplayName("Proper_Create")
-    public void Create200() throws UserException403, DataAccessException {
+    public void create200() throws UserException403, DataAccessException {
 
         int gameId = gameService.createGame("Trial");
         Assertions.assertEquals(1 ,gameId);
@@ -153,7 +153,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(10)
     @DisplayName("Improper_Create")
-    public void Create403() throws UserException403, DataAccessException {
+    public void create403() throws UserException403, DataAccessException {
 //      Similar problem to improper list.
         int gameID = gameService.createGame("");
         Assertions.assertEquals(-1, gameID);
@@ -163,9 +163,9 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(11)
     @DisplayName("Proper_Join")
-    public void Join200() throws UserException403, UserExceptions, DataAccessException {
+    public void join200() throws UserException403, UserExceptions, DataAccessException {
         int gameId = gameService.createGame("Trial");
-        RegisterResult regiResult = userService.GetUser(Steve);
+        RegisterResult regiResult = userService.getUser(steve);
         JoinGameData data = new JoinGameData("White", gameId);
         String success = gameService.joinByColor(data, regiResult.authToken());
         Assertions.assertEquals("{}", success);
@@ -175,10 +175,10 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(12)
     @DisplayName("Improper_Join")
-    public void Join400() throws UserException403, UserExceptions{
+    public void join400() throws UserException403, UserExceptions{
         try {
             int gameId = gameService.createGame("Trial");
-            RegisterResult regiResult = userService.GetUser(Steve);
+            RegisterResult regiResult = userService.getUser(steve);
             JoinGameData data = new JoinGameData("White", 400);
             String success = gameService.joinByColor(data, regiResult.authToken());
             Assertions.assertEquals("{}", success);
@@ -193,9 +193,9 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(13)
     @DisplayName("Proper authenticate")
-    public void Authenticate200(){
+    public void authenticate200(){
         try {
-            RegisterResult regiResult = userService.GetUser(Steve);
+            RegisterResult regiResult = userService.getUser(steve);
             boolean authentic = userService.authenticate(regiResult.authToken());
             Assertions.assertEquals(true, authentic);
         }
@@ -209,9 +209,9 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(14)
     @DisplayName("Improper authenticate")
-    public void Authenticate401(){
+    public void authenticate401(){
         try {
-            RegisterResult regiResult = userService.GetUser(Steve);
+            RegisterResult regiResult = userService.getUser(steve);
             boolean authentic = userService.authenticate("Totally an auth token");
             Assertions.assertEquals(false, authentic);
         }
@@ -223,7 +223,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(15)
     @DisplayName("Proper link")
-    public void Link200() throws DataAccessException {
+    public void link200() throws DataAccessException {
         UserData bubs = new UserData("Bubs", "bub's password", "bubs@mail.com");
         AuthData authData = userService.linkAuth(bubs);
         Assertions.assertNotNull(authData);
@@ -232,7 +232,7 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(16)
     @DisplayName("Improper link")
-    public void Link400() throws DataAccessException {
+    public void link400() throws DataAccessException {
 
         UserData bubs = new UserData("", "bub's password", "bubs@mail.com");
         AuthData authData = userService.linkAuth(bubs);
@@ -243,9 +243,9 @@ Guy is the existingUser, Steve is newUser
     @Test
     @Order(17)
     @DisplayName("Proper_Clear")
-    public void Clear200() throws UserException403, DataAccessException {
+    public void clear200() throws UserException403, DataAccessException {
 //      How to write this test?
-        RegisterResult regiResult = userService.GetUser(Steve);
+        RegisterResult regiResult = userService.getUser(steve);
         Assertions.assertNotNull(regiResult.authToken());
 
     }
