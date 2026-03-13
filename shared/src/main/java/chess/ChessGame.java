@@ -465,7 +465,10 @@ public class ChessGame {
             return false;
         }
         ChessGame chessGame = (ChessGame) o;
-        return whiteCheck == chessGame.whiteCheck && blackCheck == chessGame.blackCheck && Objects.equals(board, chessGame.board) && teamTurn == chessGame.teamTurn && Objects.equals(kingW, chessGame.kingW) && Objects.equals(kingB, chessGame.kingB) && Objects.equals(whiteTeam, chessGame.whiteTeam) && Objects.equals(blackTeam, chessGame.blackTeam);
+        return whiteCheck == chessGame.whiteCheck && blackCheck == chessGame.blackCheck &&
+                Objects.equals(board, chessGame.board) && teamTurn == chessGame.teamTurn &&
+                Objects.equals(kingW, chessGame.kingW) && Objects.equals(kingB, chessGame.kingB) &&
+                Objects.equals(whiteTeam, chessGame.whiteTeam) && Objects.equals(blackTeam, chessGame.blackTeam);
     }
     @Override
     public int hashCode() {
