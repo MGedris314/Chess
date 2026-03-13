@@ -96,13 +96,13 @@ public class ChessBoard {
 
     @Override
     public String toString() {
-        StringBuilder write_out = new StringBuilder();
+        StringBuilder writeOut = new StringBuilder();
         for (int x = 1; x < squares.length +1; x++) {
             for (int y = 1; y < squares.length +1; y++) {
-                write_out.append(getPiece(new ChessPosition(x, y)));
+                writeOut.append(getPiece(new ChessPosition(x, y)));
             }
-            write_out.append("\n");
+            writeOut.append("\n");
         }
-        return write_out.toString();
+        return writeOut.toString();
     }
 }

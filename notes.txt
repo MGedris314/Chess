@@ -94,3 +94,6 @@ Files I have edited to make the autograder happy.
 User Service
 User Handler
 Service Tests
+Chess Game
+Chess Piece
+Chess Board
