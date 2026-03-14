@@ -92,7 +92,10 @@ public class boardDraw {
                 else if(boardCol == 0 || boardCol == 9){
                     setGreen(out);
                 }
-                else if(boardCol % 2 == 0) {
+                else if(boardCol % 2 == 0 && rowVal %2 == 0) {
+                    setWhite(out);
+                }
+                else if((boardCol & 1) == 1 && (rowVal & 1) == 1) {
                     setWhite(out);
                 }
                 else{
