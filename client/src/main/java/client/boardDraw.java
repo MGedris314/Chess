@@ -10,7 +10,7 @@ public class boardDraw {
 
     // Board dimensions.
     private static final int BOARD_SIZE_IN_SQUARES = 10;
-    private static final int SQUARE_SIZE_IN_PADDED_CHARS = 1;
+    private static final int SQUARE_SIZE_IN_PADDED_CHARS = 3;
     private static final int LINE_WIDTH_IN_PADDED_CHARS = 1;
 
     // Padded characters.
@@ -76,7 +76,7 @@ public class boardDraw {
 
             if (boardRow < BOARD_SIZE_IN_SQUARES - 1) {
                 // Draw horizontal row separator.
-                drawHorizontalLine(out);
+//                drawHorizontalLine(out);
                 setBlack(out);
             }
         }
@@ -100,11 +100,11 @@ public class boardDraw {
                     out.print(EMPTY.repeat(SQUARE_SIZE_IN_PADDED_CHARS));
                 }
 
-                if (boardCol < BOARD_SIZE_IN_SQUARES - 1) {
-                    // Draw vertical column separator.
-                    setRed(out);
-                    out.print(EMPTY.repeat(LINE_WIDTH_IN_PADDED_CHARS));
-                }
+//                if (boardCol < BOARD_SIZE_IN_SQUARES - 1) {
+//                    // Draw vertical column separator.
+//                    setRed(out);
+//                    out.print(EMPTY.repeat(LINE_WIDTH_IN_PADDED_CHARS));
+//                }
 
                 setBlack(out);
             }
@@ -115,8 +115,7 @@ public class boardDraw {
 
     private static void drawHorizontalLine(PrintStream out) {
 
-        int boardSizeInSpaces = BOARD_SIZE_IN_SQUARES * SQUARE_SIZE_IN_PADDED_CHARS +
-                (BOARD_SIZE_IN_SQUARES - 1) * LINE_WIDTH_IN_PADDED_CHARS;
+        int boardSizeInSpaces = 1;
 
         for (int lineRow = 0; lineRow < LINE_WIDTH_IN_PADDED_CHARS; ++lineRow) {
             setRed(out);
