@@ -72,7 +72,7 @@ public class boardDraw {
 
         for (int boardRow = 0; boardRow < BOARD_SIZE_IN_SQUARES; ++boardRow) {
 
-            drawRowOfSquares(out);
+            drawRowOfSquares(out, boardRow);
 
             if (boardRow < BOARD_SIZE_IN_SQUARES - 1) {
                 // Draw horizontal row separator.
@@ -82,11 +82,22 @@ public class boardDraw {
         }
     }
 
-    private static void drawRowOfSquares(PrintStream out) {
+    private static void drawRowOfSquares(PrintStream out, int rowVal) {
 
         for (int squareRow = 0; squareRow < SQUARE_SIZE_IN_PADDED_CHARS; ++squareRow) {
             for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
-                setWhite(out);
+                if(rowVal == 0 || rowVal == 9){
+                    setGreen(out);
+                }
+                else if(boardCol == 0 || boardCol == 9){
+                    setGreen(out);
+                }
+                else if(boardCol % 2 == 0) {
+                    setWhite(out);
+                }
+                else{
+                    setYellow(out);
+                }
 
                 if (squareRow == SQUARE_SIZE_IN_PADDED_CHARS / 2) {
                     int prefixLength = SQUARE_SIZE_IN_PADDED_CHARS / 2;
@@ -100,12 +111,6 @@ public class boardDraw {
                     out.print(EMPTY.repeat(SQUARE_SIZE_IN_PADDED_CHARS));
                 }
 
-//                if (boardCol < BOARD_SIZE_IN_SQUARES - 1) {
-//                    // Draw vertical column separator.
-//                    setRed(out);
-//                    out.print(EMPTY.repeat(LINE_WIDTH_IN_PADDED_CHARS));
-//                }
-
                 setBlack(out);
             }
 
@@ -118,7 +123,7 @@ public class boardDraw {
         int boardSizeInSpaces = 1;
 
         for (int lineRow = 0; lineRow < LINE_WIDTH_IN_PADDED_CHARS; ++lineRow) {
-            setRed(out);
+            setYellow(out);
             out.print(EMPTY.repeat(boardSizeInSpaces));
 
             setBlack(out);
@@ -131,9 +136,14 @@ public class boardDraw {
         out.print(SET_TEXT_COLOR_WHITE);
     }
 
-    private static void setRed(PrintStream out) {
-        out.print(SET_BG_COLOR_GREEN);
-        out.print(SET_TEXT_COLOR_RED);
+    private static void setYellow(PrintStream out) {
+        out.print(SET_BG_COLOR_YELLOW);
+        out.print(SET_TEXT_COLOR_BLACK);
+    }
+
+    private static void setGreen(PrintStream out){
+        out.print(SET_BG_COLOR_DARK_GREEN);
+        out.print(SET_TEXT_COLOR_YELLOW);
     }
 
     private static void setBlack(PrintStream out) {
@@ -142,7 +152,7 @@ public class boardDraw {
     }
 
     private static void printPlayer(PrintStream out, String player) {
-        out.print(SET_BG_COLOR_WHITE);
+        out.print(SET_BG_COLOR_YELLOW);
         out.print(SET_TEXT_COLOR_BLACK);
 
         out.print(player);
