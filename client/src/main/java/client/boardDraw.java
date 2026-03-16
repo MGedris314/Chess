@@ -86,20 +86,26 @@ public class boardDraw {
 
         for (int squareRow = 0; squareRow < SQUARE_SIZE_IN_PADDED_CHARS; ++squareRow) {
             for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
+                int color_val = 0;
                 if(rowVal == 0 || rowVal == 9){
                     setGreen(out);
+                    color_val = 0;
                 }
                 else if(boardCol == 0 || boardCol == 9){
                     setGreen(out);
+                    color_val = 0;
                 }
                 else if(boardCol % 2 == 0 && rowVal %2 == 0) {
                     setWhite(out);
+                    color_val =1;
                 }
                 else if((boardCol & 1) == 1 && (rowVal & 1) == 1) {
                     setWhite(out);
+                    color_val = 1;
                 }
                 else{
                     setYellow(out);
+                    color_val = 2;
                 }
 
                 if (squareRow == SQUARE_SIZE_IN_PADDED_CHARS / 2) {
@@ -108,6 +114,19 @@ public class boardDraw {
 
                     out.print(EMPTY.repeat(prefixLength));
                     printPlayer(out, rand.nextBoolean() ? X : O);
+                    switch (color_val){
+                        case 0:
+                            setGreen(out);
+                            break;
+                        case 1:
+                            setWhite(out);
+                            break;
+                        case 2:
+                            setYellow(out);
+                            break;
+                        default:
+                            setBlack(out);
+                    }
                     out.print(EMPTY.repeat(suffixLength));
                 }
                 else {
@@ -160,6 +179,6 @@ public class boardDraw {
 
         out.print(player);
 
-        setWhite(out);
+//        setWhite(out);
     }
 }
