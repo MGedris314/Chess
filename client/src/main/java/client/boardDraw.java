@@ -17,6 +17,7 @@ public class boardDraw {
     private static final String EMPTY = "   ";
     private static final String X = " X ";
     private static final String O = " O ";
+    private static String [] letters = {"   "," a "," b "," c "," d "," e "," f "," g "," h ","   ",};
 
     private static Random rand = new Random();
 
@@ -113,7 +114,8 @@ public class boardDraw {
                     int suffixLength = SQUARE_SIZE_IN_PADDED_CHARS - prefixLength - 1;
 
                     out.print(EMPTY.repeat(prefixLength));
-                    printPlayer(out, rand.nextBoolean() ? X : O, rowVal, boardCol);
+                    String let = letters[boardCol];
+                    printPlayer(out, let, rowVal, boardCol);
                     switch (color_val) {
                         case 0:
                             setGreen(out);
@@ -174,6 +176,7 @@ public class boardDraw {
     }
 
     private static void printPlayer(PrintStream out, String player, int row, int col) {
+        String hold = player;
         switch (row){
             case 9:
             case 0:
@@ -263,6 +266,9 @@ public class boardDraw {
                         player = "   ";
                 }
                 out.print(player);
+            }
+            else if(row == 0 || row == 9){
+                out.print(hold);
             }
             else {
                 player = "   ";
