@@ -15,12 +15,7 @@ public class boardDraw {
 
     // Padded characters.
     private static final String EMPTY = "   ";
-    private static final String X = " X ";
-    private static final String O = " O ";
     private static String [] letters = {"   "," a "," b "," c "," d "," e "," f "," g "," h ","   ",};
-
-    private static Random rand = new Random();
-
 
     public static void main(String[] args) {
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
@@ -73,7 +68,7 @@ public class boardDraw {
 
         for (int boardRow = 0; boardRow < BOARD_SIZE_IN_SQUARES; ++boardRow) {
 
-            drawRowOfSquares(out, boardRow);
+            drawRowOfSquares(out, boardRow, "b");
 
             if (boardRow < BOARD_SIZE_IN_SQUARES - 1) {
                 // Draw horizontal row separator.
@@ -83,7 +78,7 @@ public class boardDraw {
         }
     }
 
-    private static void drawRowOfSquares(PrintStream out, int rowVal) {
+    private static void drawRowOfSquares(PrintStream out, int rowVal, String per) {
 
         for (int squareRow = 0; squareRow < SQUARE_SIZE_IN_PADDED_CHARS; ++squareRow) {
             for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
@@ -115,7 +110,7 @@ public class boardDraw {
 
                     out.print(EMPTY.repeat(prefixLength));
                     String let = letters[boardCol];
-                    printPlayer(out, let, rowVal, boardCol);
+                    printPlayer(out, let, rowVal, boardCol,per);
                     switch (color_val) {
                         case 0:
                             setGreen(out);
@@ -142,19 +137,6 @@ public class boardDraw {
         }
     }
 
-    private static void drawHorizontalLine(PrintStream out) {
-
-        int boardSizeInSpaces = 1;
-
-        for (int lineRow = 0; lineRow < LINE_WIDTH_IN_PADDED_CHARS; ++lineRow) {
-            setYellow(out);
-            out.print(EMPTY.repeat(boardSizeInSpaces));
-
-            setBlack(out);
-            out.println();
-        }
-    }
-
     private static void setWhite(PrintStream out) {
         out.print(SET_BG_COLOR_WHITE);
         out.print(SET_TEXT_COLOR_BLACK);
@@ -175,23 +157,43 @@ public class boardDraw {
         out.print(SET_TEXT_COLOR_BLACK);
     }
 
-    private static void printPlayer(PrintStream out, String player, int row, int col) {
+    private static void printPlayer(PrintStream out, String player, int row, int col, String per) {
         String hold = player;
-        switch (row){
-            case 9:
-            case 0:
-                setGreen(out);
-                break;
-            case 1:
-                setWhite(out);
-                break;
-            default:
-                setYellow(out);
+        if(per == "w") {
+            switch (row) {
+                case 9:
+                case 0:
+                    setGreen(out);
+                    break;
+                case 2:
+                case 1:
+                    setWhite(out);
+                    break;
+                case 7:
+                case 8:
+                    setYellow(out);
+            }
+        }
+        else{
+            switch (row) {
+                case 9:
+                case 0:
+                    setGreen(out);
+                    break;
+                case 2:
+                case 1:
+                    setYellow(out);
+                    break;
+                case 7:
+                case 8:
+                    setWhite(out);
+            }
         }
 
         if(col == 0 || col == 9){
             setGreen(out);
         }
+
         if(row == 1 || row == 8){
             switch (col) {
                 case 8:
@@ -275,6 +277,5 @@ public class boardDraw {
                 out.print(player);
             }
         }
-//        setWhite(out);
     }
 }
