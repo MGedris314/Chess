@@ -155,7 +155,7 @@ public class boardDraw {
 
     private static void setWhite(PrintStream out) {
         out.print(SET_BG_COLOR_WHITE);
-        out.print(SET_TEXT_COLOR_WHITE);
+        out.print(SET_TEXT_COLOR_BLACK);
     }
 
     private static void setYellow(PrintStream out) {
@@ -174,8 +174,21 @@ public class boardDraw {
     }
 
     private static void printPlayer(PrintStream out, String player, int row, int col) {
-        out.print(SET_BG_COLOR_YELLOW);
-        out.print(SET_TEXT_COLOR_BLACK);
+        switch (row){
+            case 9:
+            case 0:
+                setGreen(out);
+                break;
+            case 1:
+                setWhite(out);
+                break;
+            default:
+                setYellow(out);
+        }
+
+        if(col == 0 || col == 9){
+            setGreen(out);
+        }
         if(row == 1 || row == 8){
             switch (col) {
                 case 8:
@@ -199,6 +212,18 @@ public class boardDraw {
                 default:
                     player = "   ";
             }
+            if(col == 0 && row == 1){
+                player = " 8 ";
+            }
+            else if (col == 9 && row == 1){
+                player = " 8 ";
+            }
+            else if(col == 0 && row == 8){
+                player = " 1 ";
+            }
+            else if (col == 9 && row == 8){
+                player = " 1 ";
+            }
             out.print(player);
         }
         else if (row == 2 || row == 7) {
@@ -220,8 +245,29 @@ public class boardDraw {
             out.print(player);
         }
         else {
-            player = "   ";
-            out.print(player);
+            if(col == 0 || col == 9){
+                switch(row){
+                    case 3:
+                        player = " 6 ";
+                        break;
+                    case 4:
+                        player = " 5 ";
+                        break;
+                    case 5:
+                        player = " 4 ";
+                        break;
+                    case 6:
+                        player = " 3 ";
+                        break;
+                    default:
+                        player = "   ";
+                }
+                out.print(player);
+            }
+            else {
+                player = "   ";
+                out.print(player);
+            }
         }
 //        setWhite(out);
     }
