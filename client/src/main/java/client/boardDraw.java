@@ -113,8 +113,8 @@ public class boardDraw {
                     int suffixLength = SQUARE_SIZE_IN_PADDED_CHARS - prefixLength - 1;
 
                     out.print(EMPTY.repeat(prefixLength));
-                    printPlayer(out, rand.nextBoolean() ? X : O);
-                    switch (color_val){
+                    printPlayer(out, rand.nextBoolean() ? X : O, rowVal, boardCol);
+                    switch (color_val) {
                         case 0:
                             setGreen(out);
                             break;
@@ -173,12 +173,56 @@ public class boardDraw {
         out.print(SET_TEXT_COLOR_BLACK);
     }
 
-    private static void printPlayer(PrintStream out, String player) {
+    private static void printPlayer(PrintStream out, String player, int row, int col) {
         out.print(SET_BG_COLOR_YELLOW);
         out.print(SET_TEXT_COLOR_BLACK);
-
-        out.print(player);
-
+        if(row == 1 || row == 8){
+            switch (col) {
+                case 8:
+                case 1:
+                    player = " R ";
+                    break;
+                case 7:
+                case 2:
+                    player = " N ";
+                    break;
+                case 6:
+                case 3:
+                    player = " B ";
+                    break;
+                case 4:
+                    player = " Q ";
+                    break;
+                case 5:
+                    player = " K ";
+                    break;
+                default:
+                    player = "   ";
+            }
+            out.print(player);
+        }
+        else if (row == 2 || row == 7) {
+            if(col == 0 && row == 2){
+                player = " 7 ";
+            }
+            else if (col == 9 && row == 2){
+                player = " 7 ";
+            }
+            else if(col == 0 && row == 7){
+                player = " 2 ";
+            }
+            else if (col == 9 && row == 7){
+                player = " 2 ";
+            }
+            else {
+                player = " p ";
+            }
+            out.print(player);
+        }
+        else {
+            player = "   ";
+            out.print(player);
+        }
 //        setWhite(out);
     }
 }
