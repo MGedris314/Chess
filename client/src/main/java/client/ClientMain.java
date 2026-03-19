@@ -1,7 +1,7 @@
 package client;
 
 import chess.*;
-
+import ui.boardDraw;
 
 import java.util.Scanner;
 
@@ -14,7 +14,6 @@ public class ClientMain {
     }
 
     public static void runDefault(){
-//        System.out.println("Hey this works");
         Scanner scanner = new Scanner(System.in);
         String responce = "";
         System.out.println(help1());
@@ -36,6 +35,21 @@ public class ClientMain {
         }
     }
 
+    public static void input2(String req){
+        String check = req.toLowerCase();
+        switch (check){
+            case "log out" -> logIn();
+            case "quit" -> escape();
+            case "help" -> help2();
+            case "create game" -> register();
+            case "list games" -> register();
+            case "join game" -> register();
+            case "observe" -> register();
+            case "burnt chicken" -> secrets();
+            default-> zeroedOut();
+        }
+    }
+
     private static void secrets(){
         System.out.println("Ahh, I see you are trying to discover secrets.  Come back at a later time.....");
     }
@@ -52,6 +66,13 @@ public class ClientMain {
     public static void runLevel2(){
         System.out.println("Inside level 2");
         System.out.println(help2());
+        Scanner scanner = new Scanner(System.in);
+        String responce = "";
+        while(!responce.equals("quit")){
+            responce = scanner.nextLine();
+            input2(responce);
+        }
+        System.out.println(help1());
     }
 
     private static String logIn(){
