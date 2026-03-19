@@ -51,6 +51,7 @@ public class ClientMain {
 
     public static void runLevel2(){
         System.out.println("Inside level 2");
+        System.out.println(help2());
     }
 
     private static String logIn(){
@@ -95,4 +96,16 @@ public class ClientMain {
             What would you like to do?
             """;
         }
+    public static String help2(){
+        return """
+            Optional commands for this window:
+            Help: Returns this menu.
+            Log out: Log out and return to previous menu.
+            Create game:  Create a new game of chess.
+            List game:  Returns all games on the system.
+            Join game:  Join an available game.
+            Observe:  Watch a game (board orientation will be from white players perspective).
+            What would you like to do?
+            """;
+    }
     }
