@@ -8,6 +8,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import model.UserData;
+import model.GameData;
+
 public class ServerFacade {
     private final HttpClient client = HttpClient.newHttpClient();
     private final String serverUrl;
@@ -15,23 +18,28 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-    public void addUser(Context ctx){
+    public UserData addUser(UserData ctx){
         var request = buildRequest("POST", "/user", ctx);
+        var result =sendRequest(request);
+        return handleResponse(result, UserData.class);
+//        returns auth data
     }
 
     public void logI(Context ctx){
         var request = buildRequest("POST", "/session", ctx);
+        //        returns auth data
     }
 
-    public void logO(Context ctx){
-        var request = buildRequest("DELETE", "/session", ctx);
+    public void logO(){
+        var request = buildRequest("DELETE", "/session", null);
     }
 
-    public void list(Context ctx){
-        var request = buildRequest("GET", "/game", ctx);
+    public void listGame(){
+        var request = buildRequest("GET", "/game", null);
+//        returns Public game
     }
 
-    public void create(Context ctx){
+    public void createGame(Context ctx){
         var request = buildRequest("POST", "/game", ctx);
     }
 
@@ -47,6 +55,14 @@ public class ServerFacade {
             request.setHeader("Content-Type", "application/json");
         }
         return request.build();
+    }
+
+    private HttpResponse<String> sendRequest(HttpRequest request) throws ResponseException {
+        try {
+            return client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception ex) {
+            throw new ResponseException(ex.getMessage());
+        }
     }
 
     private HttpRequest.BodyPublisher makeRequestBody(Object request) {
