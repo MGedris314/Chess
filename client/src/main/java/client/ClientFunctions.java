@@ -64,12 +64,11 @@ public class ClientFunctions {
     }
 
     private String zeroedOut(){
-        System.out.println("Hmmm..... It looks like you entered a value that isn't there.");
-        return "a";
+        return "Hmmm..... It looks like you entered a value that isn't there.";
     }
 
     private String escape(){
-        return "0";
+        return "\n";
     }
 
     private String list(){
@@ -122,18 +121,6 @@ public class ClientFunctions {
         return "A";
     }
 
-    public void runLevel2(){
-        System.out.println("Inside level 2");
-        System.out.println(help2());
-        Scanner scanner = new Scanner(System.in);
-        String responce = "";
-        while(!responce.equals("quit")){
-            responce = scanner.nextLine();
-            input2(responce);
-        }
-        System.out.println(help1());
-    }
-
     private String logIn(){
         Scanner log = new Scanner(System.in);
         String user = "";
@@ -142,14 +129,14 @@ public class ClientFunctions {
         user = log.nextLine();
         System.out.println("Enter your password: ");
         pass = log.nextLine();
-        if(user.equals("Steve") && pass.equals("a")){
-            System.out.println("Logged in");
-            runLevel2();
-            return "Logged in";
-        }
-        else{
-            System.out.println("Incorrect log in credentials.");
-            return "Invalid log inn credentials";
+        UserData passIn = new UserData(user, pass, null);
+        try {
+            facade.logI(passIn);
+            loggedIn = true;
+            System.out.println(help2());
+            return "Log in successful.";
+        } catch (Exception e) {
+            return "log in failed";
         }
     }
 
@@ -165,9 +152,14 @@ public class ClientFunctions {
         System.out.println("Enter your email");
         email = log.nextLine();
         UserData passIn = new UserData(user, pass, email);
-        facade.addUser(passIn);
-        loggedIn = true;
-        return "Registered";
+        try {
+            facade.addUser(passIn);
+            loggedIn = true;
+            System.out.println(help2());
+            return "Registered";
+        } catch (Exception e) {
+            return "Registration failed.";
+        }
     }
 
     public String help1(){

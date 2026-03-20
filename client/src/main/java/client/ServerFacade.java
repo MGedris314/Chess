@@ -8,6 +8,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import model.AuthData;
 import model.UserData;
 import model.GameData;
 
@@ -18,15 +19,17 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-    public UserData addUser(UserData ctx){
+    public AuthData addUser(UserData ctx){
         var request = buildRequest("POST", "/user", ctx);
         var result =sendRequest(request);
-        return handleResponse(result, UserData.class);
+        return handleResponse(result, AuthData.class);
 //        returns auth data
     }
 
-    public void logI(Context ctx){
+    public AuthData logI(UserData ctx){
         var request = buildRequest("POST", "/session", ctx);
+        var result = sendRequest(request);
+        return handleResponse(result, AuthData.class);
         //        returns auth data
     }
 

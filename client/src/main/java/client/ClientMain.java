@@ -16,6 +16,4 @@ public class ClientMain {
         runner.runDefault();
         System.out.println("Goodbye");
     }
-
-
     }
