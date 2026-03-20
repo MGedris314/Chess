@@ -3,6 +3,8 @@ package client;
 import chess.*;
 import ui.boardDraw;
 
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class ClientMain {
@@ -94,6 +96,8 @@ public class ClientMain {
         id = log.nextLine();
         if(id.equals("1")){
             boardDraw artist = new boardDraw();
+            var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+            artist.drawTicTacToeBoard(out);
         }
         else{
             System.out.println("Invalid game id passed in");

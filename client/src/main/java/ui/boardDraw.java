@@ -16,7 +16,7 @@ public class boardDraw {
     private static final String EMPTY = "   ";
     private static String [] letters = {"   "," a "," b "," c "," d "," e "," f "," g "," h ","   ",};
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
         out.print(ERASE_SCREEN);
@@ -63,7 +63,7 @@ public class boardDraw {
         setBlack(out);
     }
 
-    private static void drawTicTacToeBoard(PrintStream out) {
+    public void drawTicTacToeBoard(PrintStream out) {
 
         for (int boardRow = 0; boardRow < BOARD_SIZE_IN_SQUARES; ++boardRow) {
 
