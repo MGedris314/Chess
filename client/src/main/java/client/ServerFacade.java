@@ -8,9 +8,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import model.AuthData;
-import model.UserData;
-import model.GameData;
+import model.*;
 
 public class ServerFacade {
     private final HttpClient client = HttpClient.newHttpClient();
@@ -20,42 +18,52 @@ public class ServerFacade {
     }
 
     public AuthData addUser(UserData ctx){
-        var request = buildRequest("POST", "/user", ctx);
+        var request = buildRequest("POST", "/user", ctx, null);
         var result =sendRequest(request);
         return handleResponse(result, AuthData.class);
 //        returns auth data
     }
 
     public AuthData logI(UserData ctx){
-        var request = buildRequest("POST", "/session", ctx);
+        var request = buildRequest("POST", "/session", ctx, null);
         var result = sendRequest(request);
         return handleResponse(result, AuthData.class);
         //        returns auth data
     }
 
-    public void logO(){
-        var request = buildRequest("DELETE", "/session", null);
+    public String logO(String token){
+        var request = buildRequest("DELETE", "/session", null, token);
+        var result = sendRequest(request);
+        return handleResponse(result, String.class);
     }
 
-    public void listGame(){
-        var request = buildRequest("GET", "/game", null);
-//        returns Public game
+    public GameRetrun listGame(String token){
+        var request = buildRequest("GET", "/game", null, token);
+        var result = sendRequest(request);
+        return handleResponse(result, GameRetrun.class);
     }
 
-    public void createGame(Context ctx){
-        var request = buildRequest("POST", "/game", ctx);
+    public String createGame(Context ctx, String token){
+        var request = buildRequest("POST", "/game", ctx, token);
+        var result = sendRequest(request);
+        return handleResponse(result, String.class);
     }
 
-    public void joinGame(Context ctx){
-        var request = buildRequest("PUT", "/game", ctx);
+    public String joinGame(Context ctx, String token){
+        var request = buildRequest("PUT", "/game", ctx, token);
+        var result = sendRequest(request);
+        return handleResponse(result, String.class);
     }
 
-    private HttpRequest buildRequest(String method, String path, Object body) {
+    private HttpRequest buildRequest(String method, String path, Object body, String header) {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + path))
                 .method(method, makeRequestBody(body));
         if (body != null) {
             request.setHeader("Content-Type", "application/json");
+        }
+        if (header != null){
+            request.setHeader("Authorization", header);
         }
         return request.build();
     }

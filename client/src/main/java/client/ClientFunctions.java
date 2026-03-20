@@ -1,6 +1,6 @@
 package client;
 
-import model.UserData;
+import model.*;
 import ui.boardDraw;
 
 import java.io.PrintStream;
@@ -47,7 +47,7 @@ public class ClientFunctions {
     public String input2(String req){
         String check = req.toLowerCase();
         return switch (check){
-            case "log out" -> logIn();
+            case "log out" -> logOut();
             case "quit" -> escape();
             case "help" -> help2();
             case "create game" -> create();
@@ -131,10 +131,11 @@ public class ClientFunctions {
         pass = log.nextLine();
         UserData passIn = new UserData(user, pass, null);
         try {
-            facade.logI(passIn);
+            AuthData authorized = facade.logI(passIn);
+            String token = authorized.authToken();
             loggedIn = true;
             System.out.println(help2());
-            return "Log in successful.";
+            return "Log in successful.  You'll want this later: "+ token;
         } catch (Exception e) {
             return "log in failed";
         }
@@ -153,12 +154,27 @@ public class ClientFunctions {
         email = log.nextLine();
         UserData passIn = new UserData(user, pass, email);
         try {
-            facade.addUser(passIn);
+            AuthData authorized = facade.addUser(passIn);
+            String token = authorized.authToken();
             loggedIn = true;
             System.out.println(help2());
-            return "Registered";
+            return "Registered.  You'll want this later: "+token;
         } catch (Exception e) {
             return "Registration failed.";
+        }
+    }
+
+    private String logOut(){
+        Scanner log = new Scanner(System.in);
+        String token = "";
+        System.out.println("What is your authtoken?  (The very long string you got when you logged in today.)");
+        token = log.nextLine();
+        try {
+            facade.logO(token);
+            return "logged out, you may quit the program now.";
+        }
+        catch (Exception e){
+            return e.getMessage();
         }
     }
 

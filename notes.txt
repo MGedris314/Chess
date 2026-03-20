@@ -100,3 +100,9 @@ Chess Board
 Game Service
 Server.java
 Memory Data Access
+
+
+3/20/2026
+create auth, ctx
+join auth, ctx
+list auth
