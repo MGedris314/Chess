@@ -151,7 +151,7 @@ public class SQLDataAccess implements DataAccess {
             throw new DataAccessException("Error: 500");
         }
         try(var con = DatabaseManager.getConnection()) {
-            try (var statement = con.prepareStatement( "UPDATE auth SET auth = 0 WHERE auth = ? ")){
+            try (var statement = con.prepareStatement( "DELETE FROM auth WHERE auth = ? ")){
                 statement.setString(1, authData);
                 var rs = statement.executeUpdate();
             }

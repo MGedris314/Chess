@@ -34,7 +34,7 @@ public class ServerFacade {
     public String logO(String token){
         var request = buildRequest("DELETE", "/session", null, token);
         var result = sendRequest(request);
-        return handleResponse(result, String.class);
+        return handleResponse(result, null);
     }
 
     public GameRetrun listGame(String token){
