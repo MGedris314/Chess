@@ -11,6 +11,7 @@ public class ClientFunctions {
     private final ServerFacade facade;
     private final String url= "http://localhost:8080";
     private boolean loggedIn = false;
+    public String aToken = "";
 
     ClientFunctions(){facade = new ServerFacade(url);}
 
@@ -132,10 +133,10 @@ public class ClientFunctions {
         UserData passIn = new UserData(user, pass, null);
         try {
             AuthData authorized = facade.logI(passIn);
-            String token = authorized.authToken();
+            aToken = authorized.authToken();
             loggedIn = true;
             System.out.println(help2());
-            return "Log in successful.  You'll want this later: "+ token;
+            return "Log in successful.  You'll want this later: "+ aToken;
         } catch (Exception e) {
             return "log in failed";
         }
@@ -155,10 +156,10 @@ public class ClientFunctions {
         UserData passIn = new UserData(user, pass, email);
         try {
             AuthData authorized = facade.addUser(passIn);
-            String token = authorized.authToken();
+            aToken = authorized.authToken();
             loggedIn = true;
             System.out.println(help2());
-            return "Registered.  You'll want this later: "+token;
+            return "Registered.  You'll want this later: "+aToken;
         } catch (Exception e) {
             return "Registration failed.";
         }
@@ -166,11 +167,11 @@ public class ClientFunctions {
 
     private String logOut(){
         Scanner log = new Scanner(System.in);
-        String token = "";
-        System.out.println("What is your authtoken?  (The very long string you got when you logged in today.)");
-        token = log.nextLine();
+        String test = "";
+        System.out.println("Are you sure you want to log out?");
+        test = log.nextLine();
         try {
-            facade.logO(token);
+            facade.logO(aToken);
             return "logged out, you may quit the program now.";
         }
         catch (Exception e){
