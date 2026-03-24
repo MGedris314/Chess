@@ -1,8 +1,6 @@
 package client;
 
 import com.google.gson.Gson;
-import io.javalin.Javalin;
-import io.javalin.http.Context;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
