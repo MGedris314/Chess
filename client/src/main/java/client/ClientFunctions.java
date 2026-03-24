@@ -115,11 +115,18 @@ public class ClientFunctions {
 
     private String create(){
         Scanner log = new Scanner(System.in);
-        String id = "";
+        String val = "";
         System.out.println("Game name: ");
-        id = log.nextLine();
+        val = log.nextLine();
+        GameName name = new GameName(val);
 //        Create the game here.
-        return "A";
+        try {
+            facade.createGame(name, aToken);
+            return "Game successfully created.  Use command list games to see available games.";
+        }
+        catch (Exception e){
+            return e.getMessage();
+        }
     }
 
     private String logIn(){

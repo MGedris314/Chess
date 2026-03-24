@@ -43,10 +43,10 @@ public class ServerFacade {
         return handleResponse(result, GameRetrun.class);
     }
 
-    public String createGame(Context ctx, String token){
+    public GameData createGame(GameName ctx, String token){
         var request = buildRequest("POST", "/game", ctx, token);
         var result = sendRequest(request);
-        return handleResponse(result, String.class);
+        return handleResponse(result, null);
     }
 
     public String joinGame(Context ctx, String token){
