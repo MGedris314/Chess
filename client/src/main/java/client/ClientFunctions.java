@@ -138,18 +138,26 @@ public class ClientFunctions {
 
     private String observe(){
         Scanner log = new Scanner(System.in);
-        String id = "";
+        String hold = "";
         System.out.println("What game do you want to watch? ");
-        id = log.nextLine();
-        if(id.equals("1")){
-            boardDraw artist = new boardDraw();
-            var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-            artist.drawTicTacToeBoard(out, "w");
-            return("success");
+        hold = log.nextLine();
+        int id;
+        try {
+            id = Integer.parseInt(hold);
+        } catch (NumberFormatException e) {
+            return "Pleas pass the id in as number not a string.";
+        }
+        GameRetrun games = facade.listGame(aToken);
+        int targetRange = games.games().size();
+        if(id < targetRange && id > 0){
+            joined = true;
+            isWhite = true;
         }
         else{
-            return"Invalid game id passed in";
+            System.out.println(targetRange);
+            return "That game doesn't exist";
         }
+        return "";
     }
 
     private String create(){

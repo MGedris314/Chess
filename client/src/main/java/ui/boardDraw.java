@@ -208,10 +208,20 @@ public class boardDraw {
                     player = " B ";
                     break;
                 case 4:
-                    player = " Q ";
+                    if(per == "w"){
+                        player = " K ";
+                    }
+                    else {
+                        player = " Q ";
+                    }
                     break;
                 case 5:
-                    player = " K ";
+                    if(per == "w"){
+                        player = " Q ";
+                    }
+                    else {
+                        player = " K ";
+                    }
                     break;
                 default:
                     player = "   ";
