@@ -47,7 +47,7 @@ public class ClientFunctions {
 
     public String input2(String req){
         String check = req.toLowerCase();
-        return switch (check){
+        return String.valueOf(switch (check){
             case "log out" -> logOut();
             case "quit" -> escape();
             case "help" -> help2();
@@ -57,7 +57,7 @@ public class ClientFunctions {
             case "observe" -> observe();
             case "burnt chicken" -> secrets();
             default-> zeroedOut();
-        };
+        });
     }
 
     private String secrets(){
@@ -72,9 +72,14 @@ public class ClientFunctions {
         return "\n";
     }
 
-    private String list(){
-        System.out.println("Don't know how this is going to work yet, but we'll print a list of games here.");
-        return "a";
+    private GameRetrun list(){
+        try{
+            GameRetrun check = facade.listGame(aToken);
+            return check;
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     private String join(){
@@ -143,7 +148,7 @@ public class ClientFunctions {
             aToken = authorized.authToken();
             loggedIn = true;
             System.out.println(help2());
-            return "Log in successful.  You'll want this later: "+ aToken;
+            return "Log in successful.";
         } catch (Exception e) {
             return "log in failed";
         }
