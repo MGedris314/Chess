@@ -41,6 +41,17 @@ public class GameService {
         }
     }
 
+    public GameData observe (int gameId) throws UserExceptions{
+        try {
+            GameData game = dataAccess.returnSingleGame(gameId);
+            return game;
+        } catch (DataAccessException e) {
+            throw new UserExceptions("400: Error bad request.");
+        } catch (UserException403 e) {
+            throw new UserExceptions("403: Error bad request.");
+        }
+    }
+
     public String joinByColor(JoinGameData colorJoin, String authData) throws UserExceptions, UserException403, DataAccessException {
         String desiredColor = colorJoin.playerColor();
         if(!desiredColor.equalsIgnoreCase("White")){

@@ -35,11 +35,14 @@ public class ClientFunctions {
                 boardDraw artist = new boardDraw();
                 var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
                 if(isWhite){
-                    artist.drawTicTacToeBoard(out, "w");
+                    artist.drawTicTacToeBoard(out, "b");
+                    artist.setWhite(out);
                 }
                 else{
-                    artist.drawTicTacToeBoard(out, "b");
+                    artist.drawTicTacToeBoard(out, "w");
+                    artist.setWhite(out);
                 }
+                joined = false;
             }
         }
     }
@@ -201,6 +204,7 @@ public class ClientFunctions {
         test = log.nextLine();
         try {
             facade.logO(aToken);
+            loggedIn = false;
             return "logged out, you may quit the program now.";
         }
         catch (Exception e){

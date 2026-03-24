@@ -2,6 +2,7 @@ package service;
 
 import dataaccess.DataAccessException;
 import dataaccess.MemoryDataAccess;
+import dataaccess.SQLDataAccess;
 import exception.*;
 import exception.UserExceptions;
 import model.*;
@@ -31,7 +32,7 @@ Guy is the existingUser, Steve is newUser
 
     @BeforeAll
     public static void init() {
-        MemoryDataAccess memory = new MemoryDataAccess();
+        SQLDataAccess memory = new SQLDataAccess();
         gameService = new GameService(memory);
         userService = new UserService(memory);
         guy = new UserData("Guy", "GuysPassword", "guy@mail.com");

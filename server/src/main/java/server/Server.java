@@ -124,7 +124,36 @@ public class Server {
             ctx.status(500);
             ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
         }
+    }
 
+
+    private void ObserveGame(Context ctx){
+//        400, 401, and 403
+        try{
+            boolean authentic = handler.authenticate(ctx.header("authorization"));
+            if (authentic) {
+                try {
+                    String token = ctx.header("authorization");
+                    String joined = handler.joinGame(ctx.body(), token);
+                    ctx.result(joined);
+                }
+                catch (UserExceptions e){
+                    ctx.status(400);
+                    ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 400)));
+                }
+                catch (UserException403 e){
+                    ctx.status(403);
+                    ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 403)));
+                }
+            }
+        }
+        catch (UserException401 e){
+            ctx.status(401);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
+        } catch (DataAccessException e) {
+            ctx.status(500);
+            ctx.result(new Gson().toJson(Map.of("message", e.getMessage(), "status", 401)));
+        }
     }
 
     private void listGames(Context ctx){

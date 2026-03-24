@@ -106,3 +106,13 @@ Memory Data Access
 create auth, ctx
 join auth, ctx
 list auth
+
+03/24/2026
+In order to draw a nobserved game we need to write one more function return single game.  The good news is that we have
+the function set up in side of data access.  We just need to write the line to get there.  Use Game service to get there.
+
+
+return back to the main screen after log out.
+Reset back to level 1
+stop drawing the chess board so much
+More detailed fail statements.
