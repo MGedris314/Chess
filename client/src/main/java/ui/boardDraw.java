@@ -23,7 +23,7 @@ public class boardDraw {
 
         drawHeaders(out);
 
-        drawTicTacToeBoard(out);
+        drawTicTacToeBoard(out, "b");
 
         out.print(SET_BG_COLOR_MAGENTA);
         out.print(SET_TEXT_COLOR_WHITE);
@@ -63,11 +63,11 @@ public class boardDraw {
         setBlack(out);
     }
 
-    public void drawTicTacToeBoard(PrintStream out) {
+    public void drawTicTacToeBoard(PrintStream out, String per) {
 
         for (int boardRow = 0; boardRow < BOARD_SIZE_IN_SQUARES; ++boardRow) {
 
-            drawRowOfSquares(out, boardRow, "b");
+            drawRowOfSquares(out, boardRow, per);
 
             if (boardRow < BOARD_SIZE_IN_SQUARES - 1) {
                 // Draw horizontal row separator.

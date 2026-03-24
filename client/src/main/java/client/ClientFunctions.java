@@ -12,6 +12,8 @@ public class ClientFunctions {
     private final String url= "http://localhost:8080";
     private boolean loggedIn = false;
     public String aToken = "";
+    private boolean joined = false;
+    private boolean isWhite = false;
 
     ClientFunctions(){facade = new ServerFacade(url);}
 
@@ -29,7 +31,16 @@ public class ClientFunctions {
                 String output = input2(responce);
                 System.out.println(output);
             }
-
+            if(joined){
+                boardDraw artist = new boardDraw();
+                var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+                if(isWhite){
+                    artist.drawTicTacToeBoard(out, "w");
+                }
+                else{
+                    artist.drawTicTacToeBoard(out, "b");
+                }
+            }
         }
     }
 
@@ -84,33 +95,39 @@ public class ClientFunctions {
 
     private String join(){
         Scanner log = new Scanner(System.in);
-        String id = "";
+        String hold = "";
         String color = "";
         System.out.println("What game do you want to join? ");
-        id = log.nextLine();
+        hold = log.nextLine();
         System.out.println("Which color would you like to play as? ");
         color = log.nextLine();
-        if(id.equals("1") && color.equals("white")){
-            System.out.println("Joining as the white team");
-            boardDraw artist = new boardDraw();
-//            Talk to the TA's about this one.
-            return "A";
-        }
-        else{
-            return "Check the values you are passing in.";
+        int id;
+        id = Integer.parseInt(hold);
+        JoinGameData joiner = new JoinGameData(color, id);
+        try{
+            facade.joinGame(joiner, aToken);
+            joined = true;
+            if(color.equalsIgnoreCase("white")){
+                isWhite = true;
+            }
+            else{
+                isWhite = false;
+            }
+            return "Joined game";
+        } catch (Exception e) {
+            return "Something went wrong";
         }
     }
 
     private String observe(){
         Scanner log = new Scanner(System.in);
         String id = "";
-        String color = "";
         System.out.println("What game do you want to watch? ");
         id = log.nextLine();
         if(id.equals("1")){
             boardDraw artist = new boardDraw();
             var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-            artist.drawTicTacToeBoard(out);
+            artist.drawTicTacToeBoard(out, "w");
             return("success");
         }
         else{
