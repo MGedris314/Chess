@@ -4,7 +4,10 @@ import model.*;
 import ui.boardDraw;
 
 import java.io.PrintStream;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Scanner;
 
 public class ClientFunctions {
@@ -86,10 +89,17 @@ public class ClientFunctions {
         return "\n";
     }
 
-    private GameRetrun list(){
-        try{
+    private String list(){
+        try {
             GameRetrun check = facade.listGame(aToken);
-            return check;
+            ArrayList setup = new ArrayList(check.games());
+            System.out.println("Game id, game name, white player, black player");
+            for(int x = 0; x<check.games().size(); x++){
+                PublicGame hold = (PublicGame) setup.get(x);
+                int y = x +1;
+                System.out.println(y + " "+hold.gameName() + " white player: "+hold.whiteUsername() + "black player: "+hold.blackUsername());
+            }
+            return "";
         }
         catch (Exception e) {
             return null;
@@ -105,7 +115,11 @@ public class ClientFunctions {
         System.out.println("Which color would you like to play as? ");
         color = log.nextLine();
         int id;
-        id = Integer.parseInt(hold);
+        try {
+            id = Integer.parseInt(hold);
+        } catch (NumberFormatException e) {
+            return "Pleas pass the id in as number not a string.";
+        }
         JoinGameData joiner = new JoinGameData(color, id);
         try{
             facade.joinGame(joiner, aToken);
@@ -118,7 +132,7 @@ public class ClientFunctions {
             }
             return "Joined game";
         } catch (Exception e) {
-            return "Something went wrong";
+            return "Something went wrong, check the game ID you passed in or the color you're joining as.";
         }
     }
 
@@ -144,7 +158,6 @@ public class ClientFunctions {
         System.out.println("Game name: ");
         val = log.nextLine();
         GameName name = new GameName(val);
-//        Create the game here.
         try {
             facade.createGame(name, aToken);
             return "Game successfully created.  Use command list games to see available games.";
