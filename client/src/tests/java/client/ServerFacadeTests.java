@@ -8,13 +8,15 @@ import model.*;
 public class ServerFacadeTests {
 
     private static Server server;
-    private ServerFacade facade;
+    private final String url= "http://localhost:8080";
+    private final ServerFacade facade = new ServerFacade(url);
 
     @BeforeAll
     public static void init() {
         server = new Server();
         var port = server.run(0);
         System.out.println("Started test HTTP server on " + port);
+
     }
 
     @AfterAll
@@ -32,7 +34,7 @@ public class ServerFacadeTests {
             AuthData correct = facade.addUser(user);
             Assertions.assertNotNull(correct);
         } catch (Exception e) {
-            Assertions.assertFalse(false, "Got here and we shouldn't have.");
+            Assertions.assertFalse(true, "Don't panic this one keeps failing because he's already there.");
         }
     }
 
@@ -43,7 +45,7 @@ public class ServerFacadeTests {
         UserData user = new UserData(null, null, "totally an email.");
         try {
             AuthData correct = facade.addUser(user);
-            Assertions.assertNotNull(correct, "Got here and we shouldn't have.");
+            Assertions.assertNull(correct, "Got here and we shouldn't have.");
         } catch (Exception e) {
             Assertions.assertTrue(true);
         }
@@ -53,14 +55,26 @@ public class ServerFacadeTests {
     @Order(3)
     @DisplayName("Log in correctly")
     public void logIn200() {
-        Assertions.assertTrue(true);
+        UserData user = new UserData("Steve", "Steve's secure password", "totally an email.");
+        try {
+            AuthData correct = facade.logI(user);
+            Assertions.assertNotNull(correct);
+        } catch (Exception e) {
+            Assertions.assertTrue(false, "Got here and we shouldn't have.");
+        }
     }
 
     @Test
     @Order(4)
     @DisplayName("Log in incorrectly")
     public void logIn400() {
-        Assertions.assertTrue(true);
+        UserData user = new UserData("Steve", "Not Steve's password", "totally an email.");
+        try {
+            AuthData correct = facade.logI(user);
+            Assertions.assertNull(correct,"Got here and we shouldn't have.");
+        } catch (Exception e) {
+            Assertions.assertTrue(true);
+        }
     }
 
     @Test

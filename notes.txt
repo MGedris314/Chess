@@ -116,3 +116,6 @@ return back to the main screen after log out.
 Reset back to level 1
 stop drawing the chess board so much
 More detailed fail statements.
+
+03/25/2026
+Okay note to self we have to have the server running if we're wanting to run the tests.
