@@ -8,8 +8,7 @@ import model.*;
 public class ServerFacadeTests {
 
     private static Server server;
-    private final String url= "http://localhost:8080";
-    private final ServerFacade facade = new ServerFacade(url);
+    private final ServerFacade facade = new ServerFacade(8080);
 
     @BeforeAll
     public static void init() {

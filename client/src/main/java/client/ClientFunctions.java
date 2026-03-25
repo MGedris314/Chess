@@ -12,13 +12,12 @@ import java.util.Scanner;
 
 public class ClientFunctions {
     private final ServerFacade facade;
-    private final String url= "http://localhost:8080";
     private boolean loggedIn = false;
     public String aToken = "";
     private boolean joined = false;
     private boolean isWhite = false;
 
-    ClientFunctions(){facade = new ServerFacade(url);}
+    ClientFunctions(){facade = new ServerFacade(8080);}
 
     public void runDefault(){
         Scanner scanner = new Scanner(System.in);
