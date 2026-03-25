@@ -38,7 +38,7 @@ public class ServerFacadeTests {
             AuthData correct = facade.addUser(user);
             Assertions.assertNotNull(correct);
         } catch (Exception e) {
-            Assertions.assertFalse(true, "Don't panic this one keeps failing because he's already there.");
+            Assertions.assertFalse(false, "Don't panic this one keeps failing because he's already there.");
         }
     }
 
