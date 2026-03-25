@@ -1,7 +1,6 @@
 package client;
 
 import model.*;
-import server.Server;
 import ui.boardDraw;
 
 import java.io.PrintStream;
@@ -12,7 +11,6 @@ import java.util.Collection;
 import java.util.Scanner;
 
 public class ClientFunctions {
-    private static Server server = new Server();
     private final ServerFacade facade;
     private boolean loggedIn = false;
     public String aToken = "";
@@ -20,8 +18,7 @@ public class ClientFunctions {
     private boolean isWhite = false;
 
     ClientFunctions(){
-        int port = server.run(0);
-        facade = new ServerFacade(port);
+        facade = new ServerFacade(8080);
     }
 
     public void runDefault(){
