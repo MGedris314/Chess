@@ -212,7 +212,7 @@ public class ClientFunctions {
             aToken = authorized.authToken();
             loggedIn = true;
             System.out.println(help2());
-            return "Registered.  You'll want this later: "+aToken;
+            return "Registered.";
         } catch (Exception e) {
             return "Registration failed.";
         }
