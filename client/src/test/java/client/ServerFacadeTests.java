@@ -16,7 +16,11 @@ public class ServerFacadeTests {
         server = new Server();
         var port = server.run(0);
         System.out.println("Started test HTTP server on " + port);
+    }
 
+    @BeforeEach
+    public void bef(){
+        facade.clear("");
     }
 
     @AfterAll
@@ -56,6 +60,7 @@ public class ServerFacadeTests {
     @DisplayName("Log in correctly")
     public void logIn200() {
         UserData user = new UserData("Steve", "Steve's secure password", "totally an email.");
+        facade.addUser(user);
         try {
             AuthData correct = facade.logI(user);
             Assertions.assertNotNull(correct);
@@ -82,6 +87,7 @@ public class ServerFacadeTests {
     @DisplayName("Log out correctly")
     public void logOut200() {
         UserData user = new UserData("Steve", "Steve's secure password", "totally an email.");
+        facade.addUser(user);
         AuthData needed = facade.logI(user);
         try{
             String correct = facade.logO(needed.authToken());
@@ -109,6 +115,7 @@ public class ServerFacadeTests {
     @DisplayName("List games correctly")
     public void listGames200() {
         UserData user = new UserData("Steve", "Steve's secure password", "totally an email.");
+        facade.addUser(user);
         AuthData needed = facade.logI(user);
         try{
             GameRetrun games = facade.listGame(needed.authToken());
@@ -136,6 +143,7 @@ public class ServerFacadeTests {
     @DisplayName("Create game correctly")
     public void createGame200() {
         UserData user = new UserData("Steve", "Steve's secure password", "totally an email.");
+        facade.addUser(user);
         AuthData needed = facade.logI(user);
         GameName name = new GameName("This is a name");
         try{
@@ -163,7 +171,10 @@ public class ServerFacadeTests {
     @DisplayName("Join game correctly")
     public void joinGame200() {
         UserData user = new UserData("Steve", "Steve's secure password", "totally an email.");
+        facade.addUser(user);
         AuthData needed = facade.logI(user);
+        GameName name = new GameName("This is a name");
+        facade.createGame(name, needed.authToken());
         JoinGameData joiner = new JoinGameData("black", 1);
         try{
             String check = facade.joinGame(joiner, needed.authToken());

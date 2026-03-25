@@ -53,6 +53,11 @@ public class ServerFacade {
         return handleResponse(result, null);
     }
 
+    public void clear(String ctx){
+        var request = buildRequest("DELETE", "/db", ctx, null);
+        var result = sendRequest(request);
+    }
+
     private HttpRequest buildRequest(String method, String path, Object body, String header) {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + path))
