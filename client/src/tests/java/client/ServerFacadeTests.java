@@ -81,14 +81,27 @@ public class ServerFacadeTests {
     @Order(5)
     @DisplayName("Log out correctly")
     public void logOut200() {
-        Assertions.assertTrue(true);
+        UserData user = new UserData("Steve", "Steve's secure password", "totally an email.");
+        AuthData needed = facade.logI(user);
+        try{
+            String correct = facade.logO(needed.authToken());
+            Assertions.assertNull(correct);
+        } catch (Exception e) {
+            Assertions.fail("Got here and shouldn't have.");
+        }
     }
 
     @Test
     @Order(6)
     @DisplayName("Log out incorrectly")
     public void logOut400() {
-        Assertions.assertTrue(true);
+        AuthData fake = new AuthData("Totally a user name", "Totally an authenticate token.");
+        try{
+            String correct = facade.logO(fake.authToken());
+            Assertions.assertNotNull(correct, "Got here some how.");
+        } catch (Exception e) {
+            Assertions.assertTrue(true);
+        }
     }
 
     @Test
