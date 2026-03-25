@@ -108,42 +108,81 @@ public class ServerFacadeTests {
     @Order(7)
     @DisplayName("List games correctly")
     public void listGames200() {
-        Assertions.assertTrue(true);
+        UserData user = new UserData("Steve", "Steve's secure password", "totally an email.");
+        AuthData needed = facade.logI(user);
+        try{
+            GameRetrun games = facade.listGame(needed.authToken());
+            Assertions.assertNotNull(games);
+        } catch (Exception e) {
+            Assertions.assertTrue(false, "Get's here and shouldn't.");
+        }
     }
 
     @Test
     @Order(8)
     @DisplayName("List games incorrectly")
     public void listGames400() {
-        Assertions.assertTrue(true);
+        AuthData needed = new AuthData("Totally a valid user", "Totally a valid auth token");
+        try{
+            GameRetrun games = facade.listGame(needed.authToken());
+            Assertions.assertNull(games, "Shouldn't get here.");
+        } catch (Exception e) {
+            Assertions.assertTrue(true);
+        }
     }
 
     @Test
     @Order(9)
     @DisplayName("Create game correctly")
     public void createGame200() {
-        Assertions.assertTrue(true);
+        UserData user = new UserData("Steve", "Steve's secure password", "totally an email.");
+        AuthData needed = facade.logI(user);
+        GameName name = new GameName("This is a name");
+        try{
+            GameData result = facade.createGame(name, needed.authToken());
+            Assertions.assertNull(result);
+        } catch (Exception e) {
+            Assertions.assertTrue(false, "Shouldn't be getting here.");
+        }
     }
 
     @Test
     @Order(10)
     @DisplayName("Create game incorrectly")
     public void createGame400() {
-        Assertions.assertTrue(true);
+        try{
+            GameData result = facade.createGame(null, null);
+            Assertions.assertNotNull(result, "Shouldn't get here");
+        } catch (Exception e) {
+            Assertions.assertTrue(true);
+        }
     }
 
     @Test
     @Order(11)
     @DisplayName("Join game correctly")
     public void joinGame200() {
-        Assertions.assertTrue(true);
+        UserData user = new UserData("Steve", "Steve's secure password", "totally an email.");
+        AuthData needed = facade.logI(user);
+        JoinGameData joiner = new JoinGameData("black", 1);
+        try{
+            String check = facade.joinGame(joiner, needed.authToken());
+            Assertions.assertNull(check);
+        } catch (Exception e) {
+            Assertions.assertTrue(false, "Shouldn't get here.");
+        }
     }
 
     @Test
     @Order(12)
     @DisplayName("Join game incorrectly")
     public void joinGame400() {
-        Assertions.assertTrue(true);
+        try{
+            String check = facade.joinGame(null, null);
+            Assertions.assertNotNull(check);
+        } catch (Exception e) {
+            Assertions.assertTrue(true, "Shouldn't get here.");
+        }
     }
 
 
