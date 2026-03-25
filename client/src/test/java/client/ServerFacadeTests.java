@@ -8,12 +8,13 @@ import model.*;
 public class ServerFacadeTests {
 
     private static Server server;
-    private final ServerFacade facade = new ServerFacade(8080);
+    private static ServerFacade facade;
 
     @BeforeAll
     public static void init() {
         server = new Server();
         var port = server.run(0);
+        facade = new ServerFacade(port);
         System.out.println("Started test HTTP server on " + port);
     }
 
