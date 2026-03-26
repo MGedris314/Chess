@@ -1,13 +1,11 @@
 package client;
 
 import model.*;
-import ui.boardDraw;
+import ui.BoardDraw;
 
 import java.io.PrintStream;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Scanner;
 
 public class ClientFunctions {
@@ -36,7 +34,7 @@ public class ClientFunctions {
                 System.out.println(output);
             }
             if(joined){
-                boardDraw artist = new boardDraw();
+                BoardDraw artist = new BoardDraw();
                 var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
                 if(isWhite){
                     artist.drawTicTacToeBoard(out, "b");

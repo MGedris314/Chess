@@ -1,12 +1,6 @@
 package client;
 
 import chess.*;
-import ui.boardDraw;
-
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
-import model.*;
 
 public class ClientMain {
     public static void main(String[] args) {
