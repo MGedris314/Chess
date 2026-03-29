@@ -120,4 +120,20 @@ More detailed fail statements.
 03/25/2026
 Okay note to self we have to have the server running if we're wanting to run the tests.
 
-huh
+03/28/2026
+Battle plan:  Each day this coming week I want us to have check in points and benchmarks to try to hit.  If we don't get
+there all the way that's fine, but I want us to be shooting for something at the very least.
+Monday:  Double check the board draw function on the black side, set up all needed code parts in the set up phase, put
+together the menu for phase three.  You don't have to have functionality on it, just set it up.
+Tuesday:  Today I want us to figure out how to draw the board bassed off of a game.  Spend time in the TA lab and look
+at the Github for help.
+Wednesday:  Reevaluate efforts and look to see what we've gotten done.  If we've got it to the point where we can pass
+in a game, and it's read correctly continue to full menu three functionality.  Else, continue to work read in capabilities
+and replan the rest of the week.
+Thursday:  Keep working the menu three functionality, I suspect this will take us quite some time, if possible look into
+websocket and possibly start integrating that.
+Friday:  Go full websocket here.  Doesn't have to be done, but I want it started here.
+
+** This is our finest and final hour for this project.  I know it's going to be a busy week with loaded weeknights.  Take
+care of yourself and your mental health.  There's no point in burning out and over exerting.  Keep this load balanced and
+trust in the Lord.  You've got this.
