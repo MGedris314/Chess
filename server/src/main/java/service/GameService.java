@@ -61,6 +61,7 @@ public class GameService {
         }
         int gameID = colorJoin.gameID();
         GameData game = dataAccess.returnSingleGame(gameID);
+//      the above line is what I want.  What I don't know is how to get it.
         if(game == null){
             throw new UserExceptions("400: Error: bad request");
         }

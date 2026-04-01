@@ -137,3 +137,11 @@ Friday:  Go full websocket here.  Doesn't have to be done, but I want it started
 ** This is our finest and final hour for this project.  I know it's going to be a busy week with loaded weeknights.  Take
 care of yourself and your mental health.  There's no point in burning out and over exerting.  Keep this load balanced and
 trust in the Lord.  You've got this.
+
+Update for Tuesday.  It has been a weird start to the week and I didn't get anything for this done yesterday.  And outside
+of brainstorming I haven't actually written a line of code for this project for nearly a week now.  There are a couple of
+things we should talk to a TA about tomorrow.  The first is how to get the game data to the client side and be able to read
+it in.  The second is similar, I think we may need to call an update game function all the way back to the data access.  If
+that is the case I want to ask if we need to create an additional endpoint, similar to what we may be facing with getting the game.
+I'm not as far as I had hoped I admit, but I trust in the Lord to help me see my blind spots and take this project one line
+at a time.
