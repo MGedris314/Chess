@@ -14,6 +14,7 @@ public class ClientFunctions {
     public String aToken = "";
     private boolean joined = false;
     private boolean isWhite = false;
+    private boolean observe = false;
 
     ClientFunctions(){
         facade = new ServerFacade(8080);
@@ -44,7 +45,14 @@ public class ClientFunctions {
                     artist.drawTicTacToeBoard(out, "w");
                     artist.setWhite(out);
                 }
-                joined = false;
+                if (!observe) {
+                    String output = input3(responce);
+                    System.out.println(output);
+                }
+                else{
+                    String output = input4(responce);
+                    System.out.println(output);
+                }
             }
         }
     }
@@ -65,13 +73,37 @@ public class ClientFunctions {
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
             case "log out" -> logOut();
-            case "quit" -> escape();
+            case "quit" -> escape2();
             case "help" -> help2();
             case "create game" -> create();
             case "list games" -> list();
             case "join game" -> join();
             case "observe" -> observe();
             case "burnt chicken" -> secrets();
+            default-> zeroedOut();
+        });
+    }
+
+    public String input3(String req){
+        String check = req.toLowerCase();
+        return String.valueOf(switch (check){
+            case "redraw" -> logOut();
+            case "leave" -> escape();
+            case "help" -> help2();
+            case "make move" -> create();
+            case "resign" -> create();
+            case "legal moves" -> create();
+            default-> zeroedOut();
+        });
+    }
+
+    public String input4(String req){
+        String check = req.toLowerCase();
+        return String.valueOf(switch (check){
+            case "redraw" -> logOut();
+            case "leave" -> escape();
+            case "help" -> help2();
+            case "legal moves" -> create();
             default-> zeroedOut();
         });
     }
@@ -86,6 +118,11 @@ public class ClientFunctions {
 
     private String escape(){
         return "\n";
+    }
+
+    private String escape2(){
+         joined = false;
+         return "\n";
     }
 
     private String list(){
