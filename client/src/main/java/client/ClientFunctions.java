@@ -225,7 +225,7 @@ public class ClientFunctions {
         }
         GameRetrun games = facade.listGame(aToken);
         int targetRange = games.games().size();
-        if(id < targetRange && id > 0){
+        if(id <= targetRange && id > 0){
             joined = true;
             isWhite = true;
         }
@@ -326,7 +326,7 @@ public class ClientFunctions {
             Help: Returns this menu.
             Log out: Log out and return to previous menu.
             Create game:  Create a new game of chess.
-            List game:  Returns all games on the system.
+            List games:  Returns all games on the system.
             Join game:  Join an available game.
             Observe:  Watch a game (board orientation will be from white players perspective).
             What would you like to do?

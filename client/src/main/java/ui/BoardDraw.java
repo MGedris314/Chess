@@ -142,7 +142,7 @@ public class BoardDraw {
     }
 
     private static void setYellow(PrintStream out) {
-        out.print(SET_BG_COLOR_YELLOW);
+        out.print(SET_BG_COLOR_BLUE);
         out.print(SET_TEXT_COLOR_BLACK);
     }
 
