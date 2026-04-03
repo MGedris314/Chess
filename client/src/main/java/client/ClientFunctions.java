@@ -90,9 +90,9 @@ public class ClientFunctions {
             case "redraw" -> redraw();
             case "leave" -> escape2();
             case "help" -> help3();
-            case "make move" -> create();
-            case "resign" -> escape2();
-            case "legal moves" -> create();
+            case "make move" -> move();
+            case "resign" -> escape2();  //Maybe create a new function here to set a game winner?
+            case "legal moves" -> legal();
             default-> zeroedOut();
         });
     }
@@ -103,9 +103,35 @@ public class ClientFunctions {
             case "redraw" -> redraw();
             case "leave" -> escape2();
             case "help" -> help4();
-            case "legal moves" -> create();
+            case "legal moves" -> legal();
             default-> zeroedOut();
         });
+    }
+
+    private String move(){
+        Scanner log = new Scanner(System.in);
+        String piece = "";
+        System.out.println("What piece do you want to move?");
+        piece = log.nextLine();
+        return "This doesn't work yet, but we'll figure that out later.";
+    }
+
+    private String legal(){
+        Scanner log = new Scanner(System.in);
+        String piece = "";
+        System.out.println("What piece do you want to see possible moves for?");
+        piece = log.nextLine();
+        BoardDraw artist = new BoardDraw();
+        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+        if(isWhite){
+            artist.drawTicTacToeBoard(out, "b");
+            artist.setWhite(out);
+        }
+        else{
+            artist.drawTicTacToeBoard(out, "w");
+            artist.setWhite(out);
+        }
+        return " ";
     }
 
     private String redraw(){
