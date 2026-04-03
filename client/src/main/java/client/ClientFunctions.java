@@ -87,11 +87,11 @@ public class ClientFunctions {
     public String input3(String req){
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
-            case "redraw" -> logOut();
-            case "leave" -> escape();
-            case "help" -> help2();
+            case "redraw" -> redraw();
+            case "leave" -> escape2();
+            case "help" -> help3();
             case "make move" -> create();
-            case "resign" -> create();
+            case "resign" -> escape2();
             case "legal moves" -> create();
             default-> zeroedOut();
         });
@@ -100,12 +100,26 @@ public class ClientFunctions {
     public String input4(String req){
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
-            case "redraw" -> logOut();
-            case "leave" -> escape();
-            case "help" -> help2();
+            case "redraw" -> redraw();
+            case "leave" -> escape2();
+            case "help" -> help4();
             case "legal moves" -> create();
             default-> zeroedOut();
         });
+    }
+
+    private String redraw(){
+        BoardDraw artist = new BoardDraw();
+        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+        if(isWhite){
+            artist.drawTicTacToeBoard(out, "b");
+            artist.setWhite(out);
+        }
+        else{
+            artist.drawTicTacToeBoard(out, "w");
+            artist.setWhite(out);
+        }
+        return " ";
     }
 
     private String secrets(){
@@ -289,6 +303,28 @@ public class ClientFunctions {
             List game:  Returns all games on the system.
             Join game:  Join an available game.
             Observe:  Watch a game (board orientation will be from white players perspective).
+            What would you like to do?
+            """;
+    }
+    public String help3(){
+        return """
+            Optional commands for this window:
+            Help: Returns this menu.
+            Leave:  Leave this game.
+            Redraw board:  Redraws the board state
+            Make move:  Select a piece to move and move it
+            Resign:  Surrender the game:
+            Legal moves:  Select a piece and view all legal options to move that piece
+            What would you like to do?
+            """;
+    }
+    public String help4(){
+        return """
+            Optional commands for this window:
+            Help: Returns this menu.
+            Leave:  Leave this game.
+            Redraw board:  Redraws the board state
+            Legal moves:  Select a piece and view all legal options to move that piece
             What would you like to do?
             """;
     }
