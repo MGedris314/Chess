@@ -153,7 +153,7 @@ public class ClientFunctions {
     }
 
     private String zeroedOut(){
-        return "Hmmm..... It looks like you entered a value that isn't there.";
+        return "Hmmm..... It looks like you entered a value that isn't availabe on this menu.";
     }
 
     private String escape(){
