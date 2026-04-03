@@ -7,6 +7,7 @@ import handler.UserHandler;
 import com.google.gson.Gson;
 import io.javalin.http.Context;
 import io.javalin.Javalin;
+import websocket.WebsocketHandler;
 
 import java.util.Map;
 
@@ -14,14 +15,16 @@ import java.util.Map;
 public class Server {
     private final Javalin javalin;
     private final UserHandler handler;
+    private final WebsocketHandler websock;
 
     public Server() {
-        this(new UserHandler(new SQLDataAccess()));
+        this(new UserHandler(new SQLDataAccess()), new WebsocketHandler());
 
         // Register your endpoints and exception handlers here.
     }
-    public Server(UserHandler handler){
+    public Server(UserHandler handler, WebsocketHandler websock){
         this.handler = handler;
+        this.websock = websock;
         javalin = Javalin.create(config -> config.staticFiles.add("web"))
                 .post("/user", this::addUser)
                 .post("/session", this::logIn)
@@ -29,7 +32,11 @@ public class Server {
                 .put("/game", this::joinGame)
                 .get("game", this::listGames)
                 .delete("/session", this::logOut)
-                .delete("/db", this::fullClear);
+                .delete("/db", this::fullClear)
+                .ws("/ws", ws -> {
+                    ws.onConnect(websock);
+                    ws.onMessage(websock);
+                });
     }
 
     private void addUser(Context ctx){
