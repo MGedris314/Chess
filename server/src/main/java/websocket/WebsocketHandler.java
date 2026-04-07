@@ -26,6 +26,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
     HashMap<String, Integer> sessionInfo = new HashMap<>();
     HashMap<String, Session> sessions = new HashMap<>();
     HashMap<Integer, Boolean> gameLog = new HashMap<>();
+    HashMap<String, Integer> players = new HashMap<>();
 //  If the boolean is true in game log, the game is open, if it's false the game is closed(finished).
 
     @Override
@@ -61,6 +62,12 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 sender(null, msg, context, 0,-1);
                 return -1;
             }else {
+                if(trial.blackUsername() != null){
+                    players.put(trial.blackUsername(), id);
+                }
+                if(trial.whiteUsername() != null){
+                    players.put(trial.whiteUsername(), id);
+                }
                 LoadGameMessage load = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
                 String serialzed = new Gson().toJson(load);
                 context.session.getRemote().sendString(serialzed);
@@ -100,10 +107,31 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             System.out.println("Errored again.");
         }
     }
+
     public void leave(){}
 
-    public void resign(WsMessageContext context, UserGameCommand command){
+    public int resign(WsMessageContext context, UserGameCommand command){
         int id = command.getGameID();
+        DataAccess access = new SQLDataAccess();
+        GameService service = new GameService(access);
+        try {
+            AuthData name = service.findUser(command.getAuthToken());
+            if(players.containsKey(name.userName())){
+                System.out.println("Hit the if");
+            }
+            else {
+                ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "The game is over, why are you resigning?");
+                String msg = new Gson().toJson(errored);
+                try {
+                    sender(null, msg, context, id, -1);
+                } catch (IOException e) {
+                    System.out.println("Something has gone wrong sending the message");
+                }
+                return -1;
+            }
+        } catch (UserExceptions e) {
+            System.out.println("How did we get here");
+        }
         if(gameLog.get(id) == true){
             gameLog.replace(id, true, false);
             NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "has resigned");
@@ -124,6 +152,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 System.out.println("Something has gone wrong sending the message");
             }
         }
+        return 0;
     }
 
     public void sender (String exclude, String notification, WsMessageContext context, int id, int e) throws IOException {
@@ -145,5 +174,6 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         sessions.clear();
         sessionInfo.clear();
         gameLog.clear();
+        players.clear();
     }
 }
