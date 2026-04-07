@@ -5,10 +5,7 @@ import dataaccess.DataAccess;
 import dataaccess.SQLDataAccess;
 import exception.UserExceptions;
 import handler.UserHandler;
-import io.javalin.websocket.WsConnectContext;
-import io.javalin.websocket.WsConnectHandler;
-import io.javalin.websocket.WsMessageContext;
-import io.javalin.websocket.WsMessageHandler;
+import io.javalin.websocket.*;
 import org.eclipse.jetty.websocket.api.Session;
 import model.AuthData;
 import model.GameData;
@@ -25,7 +22,7 @@ import websocket.messages.ServerMessage;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class WebsocketHandler implements WsConnectHandler, WsMessageHandler {
+public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsCloseHandler {
     HashMap<String, Integer> sessionInfo = new HashMap<>();
     HashMap<String, Session> sessions = new HashMap<>();
     HashMap<Integer, Boolean> gameLog = new HashMap<>();
@@ -47,6 +44,9 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler {
             case RESIGN -> resign(wsMessageContext, command);
         }
     }
+
+
+
     public int connect(WsMessageContext context, UserGameCommand command){
         int id = command.getGameID();
         DataAccess access = new SQLDataAccess();
@@ -78,6 +78,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler {
             return 2;
         }
     }
+
     public void move(WsMessageContext context, UserGameCommand command){
         int id = command.getGameID();
         DataAccess access = new SQLDataAccess();
@@ -85,7 +86,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler {
         try {
             AuthData name = service.findUser(command.getAuthToken());
             GameData trial = service.observe(id);
-            if(trial == null || name == null){
+            if(trial == null || name == null ||gameLog.get(id) == false){
                 System.out.println("We need to error out here");
                 ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "ERROR");
                 String msg = new Gson().toJson(errored);
@@ -100,6 +101,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler {
         }
     }
     public void leave(){}
+
     public void resign(WsMessageContext context, UserGameCommand command){
         int id = command.getGameID();
         if(gameLog.get(id) == true){
@@ -138,4 +140,10 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler {
         }
     }
 
+    @Override
+    public void handleClose(@NotNull WsCloseContext wsCloseContext) throws Exception {
+        sessions.clear();
+        sessionInfo.clear();
+        gameLog.clear();
+    }
 }

@@ -36,6 +36,7 @@ public class Server {
                 .ws("/ws", ws -> {
                     ws.onConnect(websock);
                     ws.onMessage(websock);
+                    ws.onClose(websock);
                 });
     }
 
