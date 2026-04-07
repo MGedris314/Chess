@@ -86,7 +86,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         }
     }
 
-    public void move(WsMessageContext context, UserGameCommand command){
+    public int move(WsMessageContext context, UserGameCommand command){
         int id = command.getGameID();
         DataAccess access = new SQLDataAccess();
         GameService service = new GameService(access);
@@ -101,11 +101,29 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             }else {
                 System.out.println("We'll fix this later");
             }
+            try {
+                if(players.containsKey(name.userName())) {
+                    System.out.println("Hit the if");
+                }
+                else {
+                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "The game is over, why are you resigning?");
+                    String msg = new Gson().toJson(errored);
+                    try {
+                        sender(null, msg, context, id, -1);
+                    } catch (IOException e) {
+                        System.out.println("Something has gone wrong sending the message");
+                    }
+                    return -1;
+                }
+            } catch (NullPointerException e) {
+                System.out.println("How did we get here");
+            }
         } catch (UserExceptions e) {
             System.out.println("Errored");
         } catch (IOException e) {
             System.out.println("Errored again.");
         }
+        return 0;
     }
 
     public void leave(){}
