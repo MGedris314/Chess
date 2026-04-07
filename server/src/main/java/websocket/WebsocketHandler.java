@@ -17,6 +17,7 @@ import org.eclipse.jetty.websocket.core.internal.WebSocketConnection;
 import org.jetbrains.annotations.NotNull;
 import service.GameService;
 import websocket.commands.UserGameCommand;
+import websocket.messages.ErrorMessage;
 import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessages;
 import websocket.messages.ServerMessage;
@@ -49,17 +50,25 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler {
         DataAccess access = new SQLDataAccess();
         GameService service = new GameService(access);
         try{
-            GameData trial = service.observe(id);
             AuthData name = service.findUser(command.getAuthToken());
-            LoadGameMessage load = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
-            String serialzed = new Gson().toJson(load);
-            context.session.getRemote().sendString(serialzed);
-            sessionInfo.put(name.userName(), id);
-            sessions.put(name.userName(), context.session);
-            NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "Has joined the game");
-            String msg = new Gson().toJson(note);
-            sender(name.userName(), msg, context, id);
-            return 0;
+            GameData trial = service.observe(id);
+            if(trial == null){
+                System.out.println("We need to error out here");
+                ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "ERROR");
+                String msg = new Gson().toJson(errored);
+                sender(name.userName(), msg, context, 0,-1);
+                return -1;
+            }else {
+                LoadGameMessage load = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
+                String serialzed = new Gson().toJson(load);
+                context.session.getRemote().sendString(serialzed);
+                sessionInfo.put(name.userName(), id);
+                sessions.put(name.userName(), context.session);
+                NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "Has joined the game");
+                String msg = new Gson().toJson(note);
+                sender(name.userName(), msg, context, id,0);
+                return 0;
+            }
         } catch (UserExceptions e) {
             return 1;
         } catch (IOException e) {
@@ -70,12 +79,16 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler {
     public void leave(){}
     public void resign(){}
 
-    public void sender (String exclude, String notification, WsMessageContext context, int id) throws IOException {
-        for (String c : sessionInfo.keySet()){
-            if(!c.equals(exclude) && sessionInfo.get(c) == id){
-                Session neededSession = sessions.get(c);
-                neededSession.getRemote().sendString(notification);
-//                Note to self add an additional data structure to find the sessions.
+    public void sender (String exclude, String notification, WsMessageContext context, int id, int e) throws IOException {
+        if(e == -1){
+            context.session.getRemote().sendString(notification);
+        }
+        else {
+            for (String c : sessionInfo.keySet()) {
+                if (!c.equals(exclude) && sessionInfo.get(c) == id) {
+                    Session neededSession = sessions.get(c);
+                    neededSession.getRemote().sendString(notification);
+                }
             }
         }
     }
