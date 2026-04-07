@@ -1,5 +1,9 @@
 package websocket;
 
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessMove;
+import chess.InvalidMoveException;
 import com.google.gson.Gson;
 import dataaccess.DataAccess;
 import dataaccess.SQLDataAccess;
@@ -13,6 +17,7 @@ import model.UserData;
 import org.eclipse.jetty.websocket.core.internal.WebSocketConnection;
 import org.jetbrains.annotations.NotNull;
 import service.GameService;
+import websocket.commands.MoveCommand;
 import websocket.commands.UserGameCommand;
 import websocket.messages.ErrorMessage;
 import websocket.messages.LoadGameMessage;
@@ -90,6 +95,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         int id = command.getGameID();
         DataAccess access = new SQLDataAccess();
         GameService service = new GameService(access);
+//      Everythig bellow is to make sure the person is authenticated to make a move.
         try {
             AuthData name = service.findUser(command.getAuthToken());
             GameData trial = service.observe(id);
@@ -98,6 +104,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "ERROR");
                 String msg = new Gson().toJson(errored);
                 sender(null, msg, context, 0,-1);
+                return -1;
             }else {
                 System.out.println("We'll fix this later");
             }
@@ -118,6 +125,53 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             } catch (NullPointerException e) {
                 System.out.println("How did we get here");
             }
+
+            if(trial == null){
+                return -1;
+            }
+            ChessGame game = trial.game();
+            MoveCommand commander = new Gson().fromJson(context.message(), MoveCommand.class);
+            ChessMove move = commander.move;
+            if(game.getTeamTurn() == ChessGame.TeamColor.WHITE){
+                if(!name.userName().equals(trial.whiteUsername())){
+                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "The game is over, why are you resigning?");
+                    String msg = new Gson().toJson(errored);
+                    try {
+                        sender(null, msg, context, id, -1);
+                    } catch (IOException e2) {
+                        System.out.println("Something has gone wrong sending the message");
+                    }
+                    return -1;
+                }
+            }
+            if(game.getTeamTurn() == ChessGame.TeamColor.BLACK){
+                if(!name.userName().equals(trial.blackUsername())){
+                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "The game is over, why are you resigning?");
+                    String msg = new Gson().toJson(errored);
+                    try {
+                        sender(null, msg, context, id, -1);
+                    } catch (IOException e2) {
+                        System.out.println("Something has gone wrong sending the message");
+                    }
+                    return -1;
+                }
+            }
+            try{
+                game.makeMove(move);
+                LoadGameMessage note = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
+                String msg = new Gson().toJson(note);
+                sender(name.userName(), msg, context, id,2);
+            } catch (InvalidMoveException e) {
+                ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "The game is over, why are you resigning?");
+                String msg = new Gson().toJson(errored);
+                try {
+                    sender(null, msg, context, id, -1);
+                } catch (IOException e2) {
+                    System.out.println("Something has gone wrong sending the message");
+                }
+                return -1;
+            }
+
         } catch (UserExceptions e) {
             System.out.println("Errored");
         } catch (IOException e) {
@@ -176,12 +230,20 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
     public void sender (String exclude, String notification, WsMessageContext context, int id, int e) throws IOException {
         if(e == -1){
             context.session.getRemote().sendString(notification);
-        }
-        else {
+        } else if (e == 2) {
+            for (String c : sessionInfo.keySet()) {
+                if (sessionInfo.get(c) == id) {
+                    Session neededSession = sessions.get(c);
+                    neededSession.getRemote().sendString(notification);
+                    System.out.println("Sent a message in 2 " + c);
+                }
+            }
+        } else {
             for (String c : sessionInfo.keySet()) {
                 if (!c.equals(exclude) && sessionInfo.get(c) == id) {
                     Session neededSession = sessions.get(c);
                     neededSession.getRemote().sendString(notification);
+                    System.out.println("Sent a message " + c);
                 }
             }
         }

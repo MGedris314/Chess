@@ -145,3 +145,6 @@ it in.  The second is similar, I think we may need to call an update game functi
 that is the case I want to ask if we need to create an additional endpoint, similar to what we may be facing with getting the game.
 I'm not as far as I had hoped I admit, but I trust in the Lord to help me see my blind spots and take this project one line
 at a time.
+
+04/07/2026:
+For the make move for opponent, the black player makes a legal move for the white player.  Check againnst
