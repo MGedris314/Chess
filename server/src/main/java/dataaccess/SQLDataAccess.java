@@ -15,8 +15,6 @@ import static java.sql.Types.NULL;;
 
 public class SQLDataAccess implements DataAccess {
 
-
-
     public SQLDataAccess() {
         try {
             DatabaseManager.createDatabase();
