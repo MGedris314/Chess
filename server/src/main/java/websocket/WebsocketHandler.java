@@ -6,10 +6,12 @@ import chess.ChessMove;
 import chess.InvalidMoveException;
 import com.google.gson.Gson;
 import dataaccess.DataAccess;
+import dataaccess.DataAccessException;
 import dataaccess.SQLDataAccess;
 import exception.UserExceptions;
 import handler.UserHandler;
 import io.javalin.websocket.*;
+import model.PublicGame;
 import org.eclipse.jetty.websocket.api.Session;
 import model.AuthData;
 import model.GameData;
@@ -132,7 +134,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             ChessMove move = commander.move;
             if(game.getTeamTurn() == ChessGame.TeamColor.WHITE){
                 if(!name.userName().equals(trial.whiteUsername())){
-                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "The game is over, why are you resigning?");
+                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "How about this one?");
                     String msg = new Gson().toJson(errored);
                     try {
                         sender(null, msg, context, id, -1);
@@ -144,7 +146,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             }
             if(game.getTeamTurn() == ChessGame.TeamColor.BLACK){
                 if(!name.userName().equals(trial.blackUsername())){
-                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "The game is over, why are you resigning?");
+                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "This one?");
                     String msg = new Gson().toJson(errored);
                     try {
                         sender(null, msg, context, id, -1);
@@ -163,6 +165,9 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 if(whiteC || blackC || whiteS || blackS){
                     gameLog.replace(id, true, false);
                 }
+                if(game.isInCheck(ChessGame.TeamColor.WHITE)){
+                    System.out.println("We get here some how");
+                }
                 LoadGameMessage note = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
                 String msg = new Gson().toJson(note);
                 sender(name.userName(), msg, context, id,2);
@@ -170,7 +175,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 String msg2 = new Gson().toJson(note2);
                 sender(name.userName(), msg2, context, id,0);
             } catch (InvalidMoveException e) {
-                ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "The game is over, why are you resigning?");
+                ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "Is in fact this message");
                 String msg = new Gson().toJson(errored);
                 try {
                     sender(null, msg, context, id, -1);
@@ -187,7 +192,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         }
         return 0;
     }
-
+//  Call update games.
     public void leave(WsMessageContext context, UserGameCommand command){
         int id = command.getGameID();
         DataAccess access = new SQLDataAccess();
@@ -196,8 +201,13 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 AuthData name = service.findUser(command.getAuthToken());
                 GameData trial = service.observe(id);
                 if(name.userName().equals(trial.blackUsername())){
-                    GameData hold = new GameData(trial.gameID(), trial.whiteUsername(), null, trial.gameName(), trial.game());
-                    trial = hold;
+                    GameData hold = new GameData(trial.gameID(), trial.whiteUsername(), "", trial.gameName(), trial.game());
+                    PublicGame pub = new PublicGame(hold.gameID(), hold.whiteUsername(), hold.whiteUsername(), hold.gameName());
+                    try{
+                        access.updateGames(hold, pub, id);
+                    } catch (DataAccessException e) {
+                        System.out.println("Errored out.");
+                    }
                     players.remove(name.userName());
                     sessionInfo.remove(name.userName());
                     NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "has resigned");
@@ -210,8 +220,13 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                     }
                 }
                 else if(name.userName().equals(trial.whiteUsername())) {
-                    GameData hold = new GameData(trial.gameID(), null, trial.blackUsername(), trial.gameName(), trial.game());
-                    trial = hold;
+                    GameData hold = new GameData(trial.gameID(), "", trial.blackUsername(), trial.gameName(), trial.game());
+                    PublicGame pub = new PublicGame(hold.gameID(), hold.whiteUsername(), hold.whiteUsername(), hold.gameName());
+                    try{
+                        access.updateGames(hold, pub, id);
+                    } catch (DataAccessException e) {
+                        System.out.println("Errored out.");
+                    }
                     players.remove(name.userName());
                     sessionInfo.remove(name.userName());
                     NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "has resigned");

@@ -298,7 +298,12 @@ public class SQLDataAccess implements DataAccess {
                 else {
                     statement.setString(2, game.blackUsername());
                 }
-                statement.setString(1, game.whiteUsername());
+                if(game.whiteUsername().isBlank()){
+                    statement.setString(1, "null");
+                }
+                else {
+                    statement.setString(1, game.whiteUsername());
+                }
                 var rs = statement.executeUpdate();
             }
             try (var statement = con.prepareStatement( "UPDATE public SET whiteTeam = ?, blackTeam = ? WHERE id = ?")){
@@ -307,19 +312,20 @@ public class SQLDataAccess implements DataAccess {
                     statement.setString(2, null);
                 }
                 else {
-                    statement.setString(2, game.blackUsername());
+                    statement.setString(2, pub.blackUsername());
                 }
                 if(game.whiteUsername().isBlank()){
                     statement.setString(1, null);
                 }
                 else {
-                    statement.setString(1, game.whiteUsername());
+                    statement.setString(1, pub.whiteUsername());
                 }
                 var rs = statement.executeUpdate();
             }
         } catch (SQLException e) {
             throw new DataAccessException("Error 500.");
         }
+        System.out.println("Here "+ pub.whiteUsername());
     }
 
     @Override

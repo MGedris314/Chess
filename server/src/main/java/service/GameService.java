@@ -77,7 +77,7 @@ public class GameService {
         PublicGame game1 = dataAccess.editPublic(gameID);
         AuthData allowed = dataAccess.findAuth(authData);
         if(desiredColor.equalsIgnoreCase("White")){
-            if(game.whiteUsername().isEmpty()){
+            if(game.whiteUsername().isEmpty() || game.whiteUsername().equals("null")){
                 if(game.blackUsername().isEmpty() || game.blackUsername().equals("null")) {
                     game = new GameData(game.gameID(), allowed.userName(), game.blackUsername(), game.gameName(), game.game());
                     game1 = new PublicGame(game1.gameID(), allowed.userName(), null, game1.gameName());
