@@ -20,6 +20,9 @@ public interface DataAccess {
     GameRetrun gameReturn() throws DataAccessException;
     GameData returnSingleGame(int gameID) throws UserException403, DataAccessException;
     PublicGame editPublic(int gameID) throws DataAccessException;
+
+    void Hello_there(GameData game, int gameID) throws DataAccessException;
+
     void updateGames(GameData game, PublicGame pub, int gameID) throws DataAccessException;
     void clearAuth() throws DataAccessException;
     void clearUsers() throws DataAccessException;

@@ -90,6 +90,12 @@ public class MemoryDataAccess implements DataAccess {
     }
 
     @Override
+    public void Hello_there(GameData game, int gameID) throws DataAccessException {
+        System.out.println("General Kenobi!");
+    }
+
+
+    @Override
     public void updateGames(GameData game, PublicGame pub, int gameid) {
         games.set(gameid-1, game);
         returnable.set(gameid-1, pub);

@@ -6,12 +6,10 @@ import exception.UserException403;
 import model.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static java.sql.Types.NULL;;
+;
 
 public class SQLDataAccess implements DataAccess {
 
@@ -283,6 +281,22 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException e) {
+            throw new DataAccessException("Error 500.");
+        }
+    }
+
+    @Override
+    public void Hello_there(GameData game, int gameID) throws DataAccessException {
+        try(var con = DatabaseManager.getConnection()) {
+            try (var statement = con.prepareStatement( "UPDATE games SET game = ? WHERE id = ?")) {
+                statement.setInt(2, gameID);
+                var state = game.game();
+                var serializer = new Gson();
+                var json = serializer.toJson(state);
+                statement.setString(1, json);
+                var rs = statement.executeUpdate();
+            }
+            }catch (SQLException e) {
             throw new DataAccessException("Error 500.");
         }
     }

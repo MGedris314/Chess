@@ -110,7 +110,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             }
             try {
                 if(players.containsKey(name.userName())) {
-                    System.out.println("Hit the if");
+                    System.out.print("");
                 }
                 else {
                     ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "The game is over, why are you resigning?");
@@ -157,16 +157,21 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 }
             }
             try{
+                game.makeMove(move);
                 boolean whiteC = game.isInCheckmate(ChessGame.TeamColor.WHITE);
                 boolean blackC = game.isInCheckmate(ChessGame.TeamColor.BLACK);
                 boolean whiteS = game.isInStalemate(ChessGame.TeamColor.WHITE);
                 boolean blackS = game.isInStalemate(ChessGame.TeamColor.BLACK);
-                game.makeMove(move);
+                try {
+                    access.Hello_there(trial, id);
+                } catch (DataAccessException e) {
+                    System.out.println("We get here too");
+                }
                 if(whiteC || blackC || whiteS || blackS){
                     gameLog.replace(id, true, false);
-                }
-                if(game.isInCheck(ChessGame.TeamColor.WHITE)){
-                    System.out.println("We get here some how");
+                    NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "Has joined the game");
+                    String msg2 = new Gson().toJson(note2);
+                    sender(name.userName(), msg2, context, id,2);
                 }
                 LoadGameMessage note = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
                 String msg = new Gson().toJson(note);
@@ -306,7 +311,6 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 if (sessionInfo.get(c) == id) {
                     Session neededSession = sessions.get(c);
                     neededSession.getRemote().sendString(notification);
-                    System.out.println("Sent a message in 2 " + c);
                 }
             }
         } else {
@@ -314,7 +318,6 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 if (!c.equals(exclude) && sessionInfo.get(c) == id) {
                     Session neededSession = sessions.get(c);
                     neededSession.getRemote().sendString(notification);
-                    System.out.println("Sent a message " + c);
                 }
             }
         }
