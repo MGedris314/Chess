@@ -161,6 +161,9 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 LoadGameMessage note = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
                 String msg = new Gson().toJson(note);
                 sender(name.userName(), msg, context, id,2);
+                NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "Has joined the game");
+                String msg2 = new Gson().toJson(note2);
+                sender(name.userName(), msg2, context, id,0);
             } catch (InvalidMoveException e) {
                 ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "The game is over, why are you resigning?");
                 String msg = new Gson().toJson(errored);
