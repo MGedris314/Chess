@@ -62,7 +62,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             GameData trial = service.observe(id);
             if(trial == null || name == null){
                 System.out.println("We need to error out here");
-                ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "ERROR");
+                ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "ERROR connecting");
                 String msg = new Gson().toJson(errored);
                 sender(null, msg, context, 0,-1);
                 return -1;
@@ -79,8 +79,9 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 sessionInfo.put(name.userName(), id);
                 sessions.put(name.userName(), context.session);
                 gameLog.put(id, true);
-                NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "Has joined the game");
+                NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, " has joined the game");
                 String msg = new Gson().toJson(note);
+                System.out.println("This worked");
                 sender(name.userName(), msg, context, id,0);
                 return 0;
             }
@@ -113,7 +114,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                     System.out.print("");
                 }
                 else {
-                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "The game is over, why are you resigning?");
+                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "You can't make moves in this game");
                     String msg = new Gson().toJson(errored);
                     try {
                         sender(null, msg, context, id, -1);
@@ -134,7 +135,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             ChessMove move = commander.move;
             if(game.getTeamTurn() == ChessGame.TeamColor.WHITE){
                 if(!name.userName().equals(trial.whiteUsername())){
-                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "How about this one?");
+                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "Move out of turn.");
                     String msg = new Gson().toJson(errored);
                     try {
                         sender(null, msg, context, id, -1);
@@ -146,7 +147,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             }
             if(game.getTeamTurn() == ChessGame.TeamColor.BLACK){
                 if(!name.userName().equals(trial.blackUsername())){
-                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "This one?");
+                    ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "Move out of turn");
                     String msg = new Gson().toJson(errored);
                     try {
                         sender(null, msg, context, id, -1);
@@ -169,9 +170,18 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 }
                 if(whiteC || blackC || whiteS || blackS){
                     gameLog.replace(id, true, false);
-                    NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "Has joined the game");
-                    String msg2 = new Gson().toJson(note2);
-                    sender(name.userName(), msg2, context, id,2);
+                    if(whiteC || blackC) {
+                        NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
+                                "Checkmate, The game is over");
+                        String msg2 = new Gson().toJson(note2);
+                        sender(name.userName(), msg2, context, id, 2);
+                    }
+                    if(whiteS || blackS) {
+                        NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
+                                "You have found yourself in Stalemate, The game is over");
+                        String msg2 = new Gson().toJson(note2);
+                        sender(name.userName(), msg2, context, id, 2);
+                    }
                 }
                 LoadGameMessage note = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
                 String msg = new Gson().toJson(note);

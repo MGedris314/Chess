@@ -2,13 +2,15 @@ package client;
 
 import model.*;
 import ui.BoardDraw;
+import websocket.commands.UserGameCommand;
+import websocket.messages.ServerMessage;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ClientFunctions {
+public class ClientFunctions implements Notifications {
     private final ServerFacade facade;
     private final WebsockFacade websock;
     private boolean loggedIn = false;
@@ -19,7 +21,7 @@ public class ClientFunctions {
 
     ClientFunctions(){
         facade = new ServerFacade(8080);
-        websock = new WebsockFacade();
+        websock = new WebsockFacade("8080", this);
     }
 
     public void runDefault(){
@@ -213,13 +215,15 @@ public class ClientFunctions {
         JoinGameData joiner = new JoinGameData(color, id);
         try{
             facade.joinGame(joiner, aToken);
-            joined = true;
+//            joined = true;
             if(color.equalsIgnoreCase("white")){
                 isWhite = true;
             }
             else{
                 isWhite = false;
             }
+            UserGameCommand command = new UserGameCommand(UserGameCommand.CommandType.CONNECT, aToken, id);
+            websock.connect(command);
             return "Joined game";
         } catch (Exception e) {
             return "Something went wrong, check the game ID you passed in or the color you're joining as.";
@@ -369,4 +373,8 @@ public class ClientFunctions {
             """;
     }
 
+    @Override
+    public void notify(ServerMessage message) {
+        System.out.println(message);
+    }
 }
