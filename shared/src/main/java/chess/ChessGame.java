@@ -348,8 +348,7 @@ public class ChessGame {
  @return True if the specified team is in checkmate */
     public boolean isInCheckmate(TeamColor teamColor) {
 //        Just call valid moves
-        if(teamColor==TeamColor.WHITE){
-//          Base case, if we're not in check, we're not in check mate.
+        if(teamColor==TeamColor.WHITE){//Base case, if we're not in check, we're not in check mate.
             whiteCheck = whiteInCheck(board);
             if(!whiteCheck){
                 return false;
@@ -362,12 +361,11 @@ public class ChessGame {
                 ChessPosition startPoint = validPassIn.get(y);
                 validOuts.addAll(validMoves(startPoint));
             }
-            if(validOuts.isEmpty()){
-                //If it is empty there are no outs, we are in checkmate.
+            if(validOuts.isEmpty()){//If it is empty there are no outs, we are in checkmate.
                 return true;
             }
         }
-        if(teamColor==TeamColor.BLACK){
+        else if(teamColor==TeamColor.BLACK){
             blackCheck = blackInCheck(board);
             if(!blackCheck){
                 return false;
@@ -416,7 +414,7 @@ public class ChessGame {
                 return true;
             }
         }
-        if(teamColor==TeamColor.BLACK){
+        else if(teamColor==TeamColor.BLACK){
             blackCheck = blackInCheck(board);
             if(blackCheck){
                 return false;
