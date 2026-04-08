@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class ClientFunctions {
     private final ServerFacade facade;
+    private final WebsockFacade websock;
     private boolean loggedIn = false;
     public String aToken = "";
     private boolean joined = false;
@@ -18,6 +19,7 @@ public class ClientFunctions {
 
     ClientFunctions(){
         facade = new ServerFacade(8080);
+        websock = new WebsockFacade();
     }
 
     public void runDefault(){
@@ -110,17 +112,29 @@ public class ClientFunctions {
 
     private String move(){
         Scanner log = new Scanner(System.in);
-        String piece = "";
-        System.out.println("What piece do you want to move?");
-        piece = log.nextLine();
+        String rowS = "";
+        String colS = "";
+        String rowE = "";
+        String colE = "";
+        System.out.println("Starting row of the piece");
+        rowS = log.nextLine();
+        System.out.println("Starting column of the piece");
+        colS = log.nextLine();
+        System.out.println("Ending row of the piece");
+        rowE = log.nextLine();
+        System.out.println("Ending column of the piece");
+        colE = log.nextLine();
         return "This doesn't work yet, but we'll figure that out later.";
     }
 
     private String legal(){
         Scanner log = new Scanner(System.in);
-        String piece = "";
-        System.out.println("What piece do you want to see possible moves for?");
-        piece = log.nextLine();
+        String rowS = "";
+        String colS = "";
+        System.out.println("Starting row of the piece");
+        rowS = log.nextLine();
+        System.out.println("Starting column of the piece");
+        colS = log.nextLine();
         BoardDraw artist = new BoardDraw();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
         if(isWhite){
