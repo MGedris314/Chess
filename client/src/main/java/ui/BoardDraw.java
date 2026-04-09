@@ -236,24 +236,48 @@ public class BoardDraw {
 
         if(row == 1 || row == 8){
             if(col == 0 && row == 1){
-                player = " 8 ";
+                if(per.equals("w")) {
+                    player = " 8 ";
+                }
+                else{player = " 1 ";}
             }else if (col == 9 && row == 1){
-                player = " 8 ";
+                if(per.equals("w")) {
+                    player = " 8 ";
+                }
+                else{player = " 1 ";}
             }else if(col == 0 && row == 8){
-                player = " 1 ";
+                if(per.equals("w")) {
+                    player = " 1 ";
+                }
+                else{player = " 8 ";}
             }else if (col == 9 && row == 8){
-                player = " 1 ";
+                if(per.equals("w")) {
+                    player = " 1 ";
+                }
+                else{player = " 8 ";}
             }out.print(player);
         }
         else if (row == 2 || row == 7) {
             if(col == 0 && row == 2){
-                player = " 7 ";
+                if(per.equals("w")) {
+                    player = " 7 ";
+                }
+                else{player = " 2 ";}
             }else if (col == 9 && row == 2){
-                player = " 7 ";
+                if(per.equals("w")) {
+                    player = " 7 ";
+                }
+                else{player = " 2 ";}
             }else if(col == 0 && row == 7){
-                player = " 2 ";
+                if(per.equals("w")) {
+                    player = " 2 ";
+                }
+                else{player = " 7 ";}
             }else if (col == 9 && row == 7){
-                player = " 2 ";
+                if(per.equals("w")) {
+                    player = " 2 ";
+                }
+                else{player = " 7 ";}
             }else {
                 player = " p ";
             }out.print(player);
@@ -261,16 +285,28 @@ public class BoardDraw {
             if(col == 0 || col == 9){
                 switch(row){
                     case 3:
-                        player = " 6 ";
+                        if(per.equals("w")) {
+                            player = " 6 ";
+                        }
+                        else{player = " 3 ";}
                         break;
                     case 4:
-                        player = " 5 ";
+                        if(per.equals("w")) {
+                            player = " 5 ";
+                        }
+                        else{player = " 4 ";}
                         break;
                     case 5:
-                        player = " 4 ";
+                        if(per.equals("w")) {
+                            player = " 4 ";
+                        }
+                        else{player = " 5 ";}
                         break;
                     case 6:
-                        player = " 3 ";
+                        if(per.equals("w")) {
+                            player = " 3 ";
+                        }
+                        else{player = " 6 ";}
                         break;
                     default:
                         player = "   ";
