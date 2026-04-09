@@ -190,24 +190,47 @@ public class BoardDraw {
         }
         ChessBoard board = tester.getBoard();
         if(row != 0 && row!= 9 && col !=0 && col != 9) {
-            ChessPosition pos = new ChessPosition(row, col);
-            if (board.getPiece(pos) != null) {
-                ChessPiece piece = board.getPiece(pos);
-                if (piece.getPieceType() == ChessPiece.PieceType.BISHOP) {
-                    player = " B ";
-                } else if (piece.getPieceType() == ChessPiece.PieceType.ROOK) {
-                    player = " R ";
-                } else if (piece.getPieceType() == ChessPiece.PieceType.KNIGHT) {
-                    player = " N ";
-                } else if (piece.getPieceType() == ChessPiece.PieceType.PAWN) {
-                    player = " P ";
-                } else if (piece.getPieceType() == ChessPiece.PieceType.QUEEN) {
-                    player = " Q ";
-                } else if (piece.getPieceType() == ChessPiece.PieceType.KING) {
-                    player = " K ";
+            if(per.equals("w")) {
+                ChessPosition pos = new ChessPosition(row, col);
+                if (board.getPiece(pos) != null) {
+                    ChessPiece piece = board.getPiece(pos);
+                    if (piece.getPieceType() == ChessPiece.PieceType.BISHOP) {
+                        player = " B ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.ROOK) {
+                        player = " R ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.KNIGHT) {
+                        player = " N ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.PAWN) {
+                        player = " P ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.QUEEN) {
+                        player = " Q ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.KING) {
+                        player = " K ";
+                    }
+                } else {
+                    player = "   ";
                 }
-            } else {
-                player = "   ";
+            }
+            else{
+                ChessPosition pos = new ChessPosition(9-row, 9-col);
+                if (board.getPiece(pos) != null) {
+                    ChessPiece piece = board.getPiece(pos);
+                    if (piece.getPieceType() == ChessPiece.PieceType.BISHOP) {
+                        player = " B ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.ROOK) {
+                        player = " R ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.KNIGHT) {
+                        player = " N ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.PAWN) {
+                        player = " P ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.QUEEN) {
+                        player = " Q ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.KING) {
+                        player = " K ";
+                    }
+                } else {
+                    player = "   ";
+                }
             }
         }
 

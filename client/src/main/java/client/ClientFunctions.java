@@ -419,6 +419,7 @@ public class ClientFunctions implements Notifications {
         BoardDraw artist = new BoardDraw();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
         ChessGame games = new ChessGame();
+        isWhite = true;
         if(isWhite){
             artist.drawTicTacToeBoard(out, "b", games);
             artist.setWhite(out);
