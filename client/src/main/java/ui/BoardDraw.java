@@ -7,6 +7,7 @@ import chess.ChessPosition;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import static ui.EscapeSequences.*;
 
@@ -78,6 +79,85 @@ public class BoardDraw {
 //                drawHorizontalLine(out);
                 setBlack(out);
             }
+        }
+    }
+
+    public void drawHighlight(PrintStream out, String per, ChessGame game, ArrayList<ChessPosition> points){
+        for (int boardRow = 0; boardRow < BOARD_SIZE_IN_SQUARES; ++boardRow) {
+            drawHighligtSquares(out, boardRow, per, game, points);
+
+            if (boardRow < BOARD_SIZE_IN_SQUARES - 1) {
+                // Draw horizontal row separator.
+//                drawHorizontalLine(out);
+                setBlack(out);
+            }
+        }
+    }
+
+    private static void drawHighligtSquares(PrintStream out, int rowVal, String per, ChessGame game, ArrayList<ChessPosition> points){
+        for (int squareRow = 0; squareRow < SQUARE_SIZE_IN_PADDED_CHARS; ++squareRow) {
+            for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
+                int colorVal = 0;
+                if(rowVal == 0 || rowVal == 9){
+                    setGreen(out);
+                    colorVal = 0;
+                }
+                else if(boardCol == 0 || boardCol == 9){
+                    setGreen(out);
+                    colorVal = 0;
+                }
+                else if(boardCol % 2 == 0 && rowVal %2 == 0) {
+                    setWhite(out);
+                    colorVal =1;
+                }
+                else if((boardCol & 1) == 1 && (rowVal & 1) == 1) {
+                    setWhite(out);
+                    colorVal = 1;
+                }
+                else{
+                    setYellow(out);
+                    colorVal = 2;
+                }
+                for(int x = 0; x< points.size(); x++){
+                    ChessPosition end = points.get(x);
+                    int eR = end.getRow();
+                    int eC = end.getColumn();
+                    if(eR == rowVal && eC == boardCol){
+                        setRed(out);
+                        colorVal = 0;
+                    }
+                }
+
+                if (squareRow == SQUARE_SIZE_IN_PADDED_CHARS / 2) {
+                    int prefixLength = SQUARE_SIZE_IN_PADDED_CHARS / 2;
+                    int suffixLength = SQUARE_SIZE_IN_PADDED_CHARS - prefixLength - 1;
+
+                    out.print(EMPTY.repeat(prefixLength));
+                    String let = letters[boardCol];
+                    printPlayer(out, let, rowVal, boardCol,per, game);
+                    switch (colorVal) {
+                        case 0:
+                            setGreen(out);
+                            break;
+                        case 1:
+                            setWhite(out);
+                            break;
+                        case 2:
+                            setYellow(out);
+                            break;
+                        default:
+                            setBlack(out);
+                    }
+                    out.print(EMPTY.repeat(suffixLength));
+                }
+                else {
+                    out.print(EMPTY.repeat(SQUARE_SIZE_IN_PADDED_CHARS));
+                }
+
+                setBlack(out);
+            }
+
+            out.println();
         }
     }
 
@@ -154,6 +234,12 @@ public class BoardDraw {
         out.print(SET_BG_COLOR_DARK_GREEN);
         out.print(SET_TEXT_COLOR_YELLOW);
     }
+
+    private static void setRed(PrintStream out){
+        out.print(SET_BG_COLOR_MAGENTA);
+        out.print(SET_TEXT_COLOR_YELLOW);
+    }
+
 
     private static void setBlack(PrintStream out) {
         out.print(SET_BG_COLOR_BLACK);

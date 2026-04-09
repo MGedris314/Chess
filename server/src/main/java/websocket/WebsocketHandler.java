@@ -47,8 +47,6 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
     }
 
 
-
-
     @Override
     public void handleMessage(@NotNull WsMessageContext wsMessageContext) throws Exception {
         UserGameCommand command = new Gson().fromJson(wsMessageContext.message(), UserGameCommand.class);
@@ -116,7 +114,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 sender(null, msg, context, 0,-1);
                 return -1;
             }else {
-                System.out.println("We'll fix this later");
+                System.out.println("We've fixed this.");
             }
             try {
                 if(players.containsKey(name.userName())) {
@@ -141,6 +139,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             ChessGame game = trial.game();
             MoveCommand commander = new Gson().fromJson(context.message(), MoveCommand.class);
             ChessMove move = commander.move;
+            System.out.println(commander.move);
             if(game.getTeamTurn() == ChessGame.TeamColor.WHITE){
                 if(!name.userName().equals(trial.whiteUsername())){
                     ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "Move out of turn.");
@@ -191,6 +190,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                         sender(name.userName(), msg2, context, id, 2);
                     }
                 }
+                System.out.println(trial.game().getBoard());
                 LoadGameMessage note = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
                 String msg = new Gson().toJson(note);
                 sender(name.userName(), msg, context, id,2);

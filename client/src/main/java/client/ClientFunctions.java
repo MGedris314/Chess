@@ -111,10 +111,19 @@ public class ClientFunctions implements Notifications {
     }
 
     private String resign(){
-        joined = false;
-        UserGameCommand command = new UserGameCommand(UserGameCommand.CommandType.RESIGN, aToken, gameId);
-        websock.leave(command);
-        return "";
+        Scanner log = new Scanner(System.in);
+        String hold = "";
+        System.out.println("Are you sure you wish to resign? ");
+        hold = log.nextLine();
+        if(hold.equals("yes")) {
+            joined = false;
+            UserGameCommand command = new UserGameCommand(UserGameCommand.CommandType.RESIGN, aToken, gameId);
+            websock.leave(command);
+            return "";
+        }
+        else{
+            return "Resuming game.";
+        }
     }
 
     private String leave(){
@@ -244,16 +253,16 @@ public class ClientFunctions implements Notifications {
             ends.add(end);
         }
         System.out.println(ends);
-//        BoardDraw artist = new BoardDraw();
-//        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-//        if(isWhite){
-//            artist.drawTicTacToeBoard(out, "b", gamePlay);
-//            artist.setWhite(out);
-//        }
-//        else{
-//            artist.drawTicTacToeBoard(out, "w", gamePlay);
-//            artist.setWhite(out);
-//        }
+        BoardDraw artist = new BoardDraw();
+        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+        if(isWhite){
+            artist.drawHighlight(out, "b", gamePlay, ends);
+            artist.setWhite(out);
+        }
+        else{
+            artist.drawHighlight(out, "w", gamePlay, ends);
+            artist.setWhite(out);
+        }
         return " ";
     }
 
@@ -311,10 +320,10 @@ public class ClientFunctions implements Notifications {
             facade.joinGame(joiner, aToken);
             joined = true;
             if(color.equalsIgnoreCase("white")){
-                isWhite = true;
+                isWhite = false;
             }
             else{
-                isWhite = false;
+                isWhite = true;
             }
             UserGameCommand command = new UserGameCommand(UserGameCommand.CommandType.CONNECT, aToken, id);
             websock.connect(command);
