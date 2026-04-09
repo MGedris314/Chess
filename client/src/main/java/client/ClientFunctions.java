@@ -243,10 +243,9 @@ public class ClientFunctions implements Notifications {
             return "Joined game";
         } catch (Exception e) {
             joined = false;
-            return "Something went wrong, check the game ID you passed in or the color you're joining as.";
+            return e.getMessage();
         }
     }
-//This is literaly just to see what happens.
     private String observe(){
         Scanner log = new Scanner(System.in);
         String hold = "";
@@ -392,6 +391,6 @@ public class ClientFunctions implements Notifications {
 
     @Override
     public void notify(ServerMessage message) {
-        System.out.println(message);
+        System.out.println(message.getServerMessageType());
     }
 }
