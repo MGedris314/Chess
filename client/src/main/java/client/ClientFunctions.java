@@ -320,10 +320,10 @@ public class ClientFunctions implements Notifications {
             facade.joinGame(joiner, aToken);
             joined = true;
             if(color.equalsIgnoreCase("white")){
-                isWhite = false;
+                isWhite = true;
             }
             else{
-                isWhite = true;
+                isWhite = false;
             }
             UserGameCommand command = new UserGameCommand(UserGameCommand.CommandType.CONNECT, aToken, id);
             websock.connect(command);

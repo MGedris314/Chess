@@ -107,15 +107,15 @@ public class BoardDraw {
                     colorVal = 0;
                 }
                 else if(boardCol % 2 == 0 && rowVal %2 == 0) {
-                    setWhite(out);
+                    setYellow(out);
                     colorVal =1;
                 }
                 else if((boardCol & 1) == 1 && (rowVal & 1) == 1) {
-                    setWhite(out);
+                    setYellow(out);
                     colorVal = 1;
                 }
                 else{
-                    setYellow(out);
+                    setWhite(out);
                     colorVal = 2;
                 }
                 for(int x = 0; x< points.size(); x++){
@@ -124,7 +124,7 @@ public class BoardDraw {
                     int eC = end.getColumn();
                     if(eR == rowVal && eC == boardCol){
                         setRed(out);
-                        colorVal = 0;
+                        colorVal = 3;
                     }
                 }
 
@@ -140,10 +140,13 @@ public class BoardDraw {
                             setGreen(out);
                             break;
                         case 1:
-                            setWhite(out);
+                            setYellow(out);
                             break;
                         case 2:
-                            setYellow(out);
+                            setWhite(out);
+                            break;
+                        case 3:
+                            setRed(out);
                             break;
                         default:
                             setBlack(out);
@@ -175,15 +178,15 @@ public class BoardDraw {
                     colorVal = 0;
                 }
                 else if(boardCol % 2 == 0 && rowVal %2 == 0) {
-                    setWhite(out);
+                    setYellow(out);
                     colorVal =1;
                 }
                 else if((boardCol & 1) == 1 && (rowVal & 1) == 1) {
-                    setWhite(out);
+                    setYellow(out);
                     colorVal = 1;
                 }
                 else{
-                    setYellow(out);
+                    setWhite(out);
                     colorVal = 2;
                 }
 
@@ -199,10 +202,10 @@ public class BoardDraw {
                             setGreen(out);
                             break;
                         case 1:
-                            setWhite(out);
+                            setYellow(out);
                             break;
                         case 2:
-                            setYellow(out);
+                            setWhite(out);
                             break;
                         default:
                             setBlack(out);
@@ -292,6 +295,12 @@ public class BoardDraw {
                         player = " Q ";
                     } else if (piece.getPieceType() == ChessPiece.PieceType.KING) {
                         player = " K ";
+                    }
+                    if(piece.getTeamColor()== ChessGame.TeamColor.WHITE){
+                        setWhite(out);
+                    }
+                    else{
+                        setYellow(out);
                     }
                 } else {
                     player = "   ";
