@@ -45,16 +45,6 @@ public class ClientFunctions implements Notifications {
                 System.out.println(output);
             }
             if(joined){
-//                BoardDraw artist = new BoardDraw();
-//                var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-//                if(isWhite){
-//                    artist.drawTicTacToeBoard(out, "b");
-//                    artist.setWhite(out);
-//                }
-//                else{
-//                    artist.drawTicTacToeBoard(out, "w");
-//                    artist.setWhite(out);
-//                }
                 if (!observe) {
                     String output = input3(responce);
                     System.out.println(output);
@@ -74,6 +64,7 @@ public class ClientFunctions implements Notifications {
             case "quit" -> escape();
             case "help" -> help1();
             case "register" -> register();
+            case "draw" -> draw();
             case "burnt chicken" -> secrets();
             default-> zeroedOut();
         };
@@ -208,6 +199,11 @@ public class ClientFunctions implements Notifications {
                 websock.makeMove(move);
             }
         }
+        else{
+            ChessMove movement = new ChessMove(start, end, null);
+            MoveCommand move = new MoveCommand(UserGameCommand.CommandType.MAKE_MOVE, aToken, gameId, movement);
+            websock.makeMove(move);
+        }
 
         return "This doesn't work yet, but we'll figure that out later.";
     }
@@ -223,11 +219,11 @@ public class ClientFunctions implements Notifications {
         BoardDraw artist = new BoardDraw();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
         if(isWhite){
-            artist.drawTicTacToeBoard(out, "b");
+            artist.drawTicTacToeBoard(out, "b", gamePlay);
             artist.setWhite(out);
         }
         else{
-            artist.drawTicTacToeBoard(out, "w");
+            artist.drawTicTacToeBoard(out, "w", gamePlay);
             artist.setWhite(out);
         }
         return " ";
@@ -237,11 +233,11 @@ public class ClientFunctions implements Notifications {
         BoardDraw artist = new BoardDraw();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
         if(isWhite){
-            artist.drawTicTacToeBoard(out, "b");
+            artist.drawTicTacToeBoard(out, "b", gamePlay);
             artist.setWhite(out);
         }
         else{
-            artist.drawTicTacToeBoard(out, "w");
+            artist.drawTicTacToeBoard(out, "w", gamePlay);
             artist.setWhite(out);
         }
         return " ";
@@ -410,6 +406,21 @@ public class ClientFunctions implements Notifications {
         catch (Exception e){
             return e.getMessage();
         }
+    }
+
+    private String draw(){
+        BoardDraw artist = new BoardDraw();
+        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+        ChessGame games = new ChessGame();
+        if(isWhite){
+            artist.drawTicTacToeBoard(out, "b", games);
+            artist.setWhite(out);
+        }
+        else{
+            artist.drawTicTacToeBoard(out, "w", games);
+            artist.setWhite(out);
+        }
+        return "";
     }
 
     public String help1(){

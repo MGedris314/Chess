@@ -1,5 +1,10 @@
 package ui;
 
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessPiece;
+import chess.ChessPosition;
+
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
@@ -22,8 +27,8 @@ public class BoardDraw {
         out.print(ERASE_SCREEN);
 
         drawHeaders(out);
-
-        drawTicTacToeBoard(out, "b");
+        ChessGame game = new ChessGame();
+        drawTicTacToeBoard(out, "b", game);
 
         out.print(SET_BG_COLOR_MAGENTA);
         out.print(SET_TEXT_COLOR_WHITE);
@@ -63,11 +68,10 @@ public class BoardDraw {
         setBlack(out);
     }
 
-    public void drawTicTacToeBoard(PrintStream out, String per) {
+    public void drawTicTacToeBoard(PrintStream out, String per, ChessGame game) {
 
         for (int boardRow = 0; boardRow < BOARD_SIZE_IN_SQUARES; ++boardRow) {
-
-            drawRowOfSquares(out, boardRow, per);
+            drawRowOfSquares(out, boardRow, per, game);
 
             if (boardRow < BOARD_SIZE_IN_SQUARES - 1) {
                 // Draw horizontal row separator.
@@ -77,7 +81,7 @@ public class BoardDraw {
         }
     }
 
-    private static void drawRowOfSquares(PrintStream out, int rowVal, String per) {
+    private static void drawRowOfSquares(PrintStream out, int rowVal, String per, ChessGame game) {
 
         for (int squareRow = 0; squareRow < SQUARE_SIZE_IN_PADDED_CHARS; ++squareRow) {
             for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
@@ -109,7 +113,7 @@ public class BoardDraw {
 
                     out.print(EMPTY.repeat(prefixLength));
                     String let = letters[boardCol];
-                    printPlayer(out, let, rowVal, boardCol,per);
+                    printPlayer(out, let, rowVal, boardCol,per, game);
                     switch (colorVal) {
                         case 0:
                             setGreen(out);
@@ -156,9 +160,9 @@ public class BoardDraw {
         out.print(SET_TEXT_COLOR_BLACK);
     }
 
-    private static void printPlayer(PrintStream out, String player, int row, int col, String per) {
+    private static void printPlayer(PrintStream out, String player, int row, int col, String per, ChessGame tester) {
         String hold = player;
-        if(per == "w") {
+        if(per.equals("w")) {
             switch (row) {
                 case 9:case 0:
                     setGreen(out);
@@ -183,28 +187,32 @@ public class BoardDraw {
         }
         if(col == 0 || col == 9){
             setGreen(out);
-        }if(row == 1 || row == 8){
-            switch (col) {
-                case 8:case 1:
-                    player = " R ";
-                    break;
-                case 7:case 2:
-                    player = " N ";
-                    break;
-                case 6:case 3:
+        }
+        ChessBoard board = tester.getBoard();
+        if(row != 0 && row!= 9 && col !=0 && col != 9) {
+            ChessPosition pos = new ChessPosition(row, col);
+            if (board.getPiece(pos) != null) {
+                ChessPiece piece = board.getPiece(pos);
+                if (piece.getPieceType() == ChessPiece.PieceType.BISHOP) {
                     player = " B ";
-                    break;
-                case 4:
-                    if(per == "w"){player = " K ";}
-                    else {player = " Q ";}
-                    break;
-                case 5:
-                    if(per == "w"){player = " Q ";}
-                    else {player = " K ";}
-                    break;
-                default:
-                    player = "   ";
-            }if(col == 0 && row == 1){
+                } else if (piece.getPieceType() == ChessPiece.PieceType.ROOK) {
+                    player = " R ";
+                } else if (piece.getPieceType() == ChessPiece.PieceType.KNIGHT) {
+                    player = " N ";
+                } else if (piece.getPieceType() == ChessPiece.PieceType.PAWN) {
+                    player = " P ";
+                } else if (piece.getPieceType() == ChessPiece.PieceType.QUEEN) {
+                    player = " Q ";
+                } else if (piece.getPieceType() == ChessPiece.PieceType.KING) {
+                    player = " K ";
+                }
+            } else {
+                player = "   ";
+            }
+        }
+
+        if(row == 1 || row == 8){
+            if(col == 0 && row == 1){
                 player = " 8 ";
             }else if (col == 9 && row == 1){
                 player = " 8 ";
@@ -213,7 +221,8 @@ public class BoardDraw {
             }else if (col == 9 && row == 8){
                 player = " 1 ";
             }out.print(player);
-        }else if (row == 2 || row == 7) {
+        }
+        else if (row == 2 || row == 7) {
             if(col == 0 && row == 2){
                 player = " 7 ";
             }else if (col == 9 && row == 2){
