@@ -482,6 +482,7 @@ public class ClientFunctions implements Notifications {
         if(message.getServerMessageType() == ServerMessage.ServerMessageType.LOAD_GAME){
             LoadGameMessage load = (LoadGameMessage) message;
             gamePlay = load.returning().game();
+            draw();
         }
     }
 }

@@ -236,22 +236,22 @@ public class BoardDraw {
 
         if(row == 1 || row == 8){
             if(col == 0 && row == 1){
-                if(per.equals("w")) {
+                if(per.equals("b")) {
                     player = " 8 ";
                 }
                 else{player = " 1 ";}
             }else if (col == 9 && row == 1){
-                if(per.equals("w")) {
+                if(per.equals("b")) {
                     player = " 8 ";
                 }
                 else{player = " 1 ";}
             }else if(col == 0 && row == 8){
-                if(per.equals("w")) {
+                if(per.equals("b")) {
                     player = " 1 ";
                 }
                 else{player = " 8 ";}
             }else if (col == 9 && row == 8){
-                if(per.equals("w")) {
+                if(per.equals("b")) {
                     player = " 1 ";
                 }
                 else{player = " 8 ";}
@@ -259,22 +259,22 @@ public class BoardDraw {
         }
         else if (row == 2 || row == 7) {
             if(col == 0 && row == 2){
-                if(per.equals("w")) {
+                if(per.equals("b")) {
                     player = " 7 ";
                 }
                 else{player = " 2 ";}
             }else if (col == 9 && row == 2){
-                if(per.equals("w")) {
+                if(per.equals("b")) {
                     player = " 7 ";
                 }
                 else{player = " 2 ";}
             }else if(col == 0 && row == 7){
-                if(per.equals("w")) {
+                if(per.equals("b")) {
                     player = " 2 ";
                 }
                 else{player = " 7 ";}
             }else if (col == 9 && row == 7){
-                if(per.equals("w")) {
+                if(per.equals("b")) {
                     player = " 2 ";
                 }
                 else{player = " 7 ";}
@@ -285,25 +285,25 @@ public class BoardDraw {
             if(col == 0 || col == 9){
                 switch(row){
                     case 3:
-                        if(per.equals("w")) {
+                        if(per.equals("b")) {
                             player = " 6 ";
                         }
                         else{player = " 3 ";}
                         break;
                     case 4:
-                        if(per.equals("w")) {
+                        if(per.equals("b")) {
                             player = " 5 ";
                         }
                         else{player = " 4 ";}
                         break;
                     case 5:
-                        if(per.equals("w")) {
+                        if(per.equals("b")) {
                             player = " 4 ";
                         }
                         else{player = " 5 ";}
                         break;
                     case 6:
-                        if(per.equals("w")) {
+                        if(per.equals("b")) {
                             player = " 3 ";
                         }
                         else{player = " 6 ";}
