@@ -11,6 +11,7 @@ import websocket.messages.ServerMessage;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Queue;
 import java.util.Scanner;
 
@@ -88,7 +89,7 @@ public class ClientFunctions implements Notifications {
     public String input3(String req){
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
-            case "redraw" -> redraw();
+            case "redraw" -> draw();
             case "leave" -> leave();
             case "help" -> help3();
             case "make move" -> move();
@@ -101,7 +102,7 @@ public class ClientFunctions implements Notifications {
     public String input4(String req){
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
-            case "redraw" -> redraw();
+            case "redraw" -> draw();
             case "leave" -> escape2();
             case "help" -> help4();
             case "legal moves" -> legal();
@@ -217,36 +218,42 @@ public class ClientFunctions implements Notifications {
 
     private String legal(){
         Scanner log = new Scanner(System.in);
-        String rowS = "";
-        String colS = "";
+        String rS = "";
+        String cS = "";
         System.out.println("Starting row of the piece");
-        rowS = log.nextLine();
+        rS = log.nextLine();
         System.out.println("Starting column of the piece");
-        colS = log.nextLine();
-        BoardDraw artist = new BoardDraw();
-        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-        if(isWhite){
-            artist.drawTicTacToeBoard(out, "b", gamePlay);
-            artist.setWhite(out);
+        cS = log.nextLine();
+        int rowS = rowFind(rS);
+        int colS;
+        try {
+            colS = Integer.parseInt(cS);
+        } catch (NumberFormatException e) {
+            return"format columns as numbers, not letters.";
         }
-        else{
-            artist.drawTicTacToeBoard(out, "w", gamePlay);
-            artist.setWhite(out);
+        ChessBoard board = gamePlay.getBoard();
+        ChessPosition start = new ChessPosition(colS, rowS);
+        ChessPiece finder = board.getPiece(start);
+        finder.pieceMoves(board, start);
+//        System.out.println(finder.pieceMoves(board, start));
+        ArrayList<ChessMove> hold = new ArrayList<ChessMove>();
+        hold.addAll(finder.pieceMoves(board, start));
+        ArrayList<ChessPosition> ends = new ArrayList<ChessPosition>();
+        for(int x = 0; x<hold.size(); x++){
+            ChessPosition end = hold.get(x).getEndPosition();
+            ends.add(end);
         }
-        return " ";
-    }
-
-    private String redraw(){
-        BoardDraw artist = new BoardDraw();
-        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-        if(isWhite){
-            artist.drawTicTacToeBoard(out, "b", gamePlay);
-            artist.setWhite(out);
-        }
-        else{
-            artist.drawTicTacToeBoard(out, "w", gamePlay);
-            artist.setWhite(out);
-        }
+        System.out.println(ends);
+//        BoardDraw artist = new BoardDraw();
+//        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+//        if(isWhite){
+//            artist.drawTicTacToeBoard(out, "b", gamePlay);
+//            artist.setWhite(out);
+//        }
+//        else{
+//            artist.drawTicTacToeBoard(out, "w", gamePlay);
+//            artist.setWhite(out);
+//        }
         return " ";
     }
 
@@ -418,13 +425,16 @@ public class ClientFunctions implements Notifications {
     private String draw(){
         BoardDraw artist = new BoardDraw();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-        ChessGame games = new ChessGame();
+        ChessBoard tester = gamePlay.getBoard();
+        if(tester.getPiece(new ChessPosition(3,2)) != null){
+            System.out.println("there should be something here.");
+        }
         if(isWhite){
-            artist.drawTicTacToeBoard(out, "b", games);
+            artist.drawTicTacToeBoard(out, "b", gamePlay);
             artist.setWhite(out);
         }
         else{
-            artist.drawTicTacToeBoard(out, "w", games);
+            artist.drawTicTacToeBoard(out, "w", gamePlay);
             artist.setWhite(out);
         }
         return "";
