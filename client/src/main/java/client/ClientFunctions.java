@@ -185,8 +185,8 @@ public class ClientFunctions implements Notifications {
         } catch (NumberFormatException e) {
             return "Invalid row or collumn space entered.";
         }
-        ChessPosition start = new ChessPosition(rowS, colS);
-        ChessPosition end = new ChessPosition(rowE, colE);
+        ChessPosition start = new ChessPosition(colS, rowS);
+        ChessPosition end = new ChessPosition(colE, rowE);
         ChessPiece mover = board.getPiece(start);
         if (mover.getPieceType() == ChessPiece.PieceType.PAWN){
             if(colE == 8 || colE == 1){
@@ -197,6 +197,12 @@ public class ClientFunctions implements Notifications {
                 ChessMove movement = new ChessMove(start, end, promoter);
                 MoveCommand move = new MoveCommand(UserGameCommand.CommandType.MAKE_MOVE, aToken, gameId, movement);
                 websock.makeMove(move);
+            }
+            else{
+                ChessMove movement = new ChessMove(start, end, null);
+                MoveCommand move = new MoveCommand(UserGameCommand.CommandType.MAKE_MOVE, aToken, gameId, movement);
+                websock.makeMove(move);
+                return "We got to this point";
             }
         }
         else{

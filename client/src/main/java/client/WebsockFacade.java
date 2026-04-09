@@ -5,6 +5,7 @@ import jakarta.websocket.*;
 import server.Server;
 import websocket.commands.MoveCommand;
 import websocket.commands.UserGameCommand;
+import websocket.messages.ErrorMessage;
 import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessages;
 import websocket.messages.ServerMessage;
@@ -29,6 +30,7 @@ public class WebsockFacade extends Endpoint {
 
                 @Override
                 public void onMessage(String message) {
+                    System.out.println("Message recieved");
                     ServerMessage notification = new Gson().fromJson(message, ServerMessage.class);
                     if(notification.getServerMessageType() == ServerMessage.ServerMessageType.NOTIFICATION) {
                         System.out.println("We at least get here");
@@ -41,6 +43,11 @@ public class WebsockFacade extends Endpoint {
                         LoadGameMessage game = new Gson().fromJson(message, LoadGameMessage.class);
                         notifications.notify(game);
                         System.out.println(game.game);
+                    }
+                    if(notification.getServerMessageType() == ServerMessage.ServerMessageType.ERROR){
+                        System.out.println("This is the point we're hitting");
+                        ErrorMessage errored = new Gson().fromJson(message, ErrorMessage.class);
+                        notifications.notify(errored);
                     }
                 }
             });

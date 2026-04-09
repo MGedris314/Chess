@@ -135,8 +135,6 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             } catch (NullPointerException e) {
                 System.out.println("How did we get here");
             }
-
-
             if(trial == null){
                 return -1;
             }
@@ -196,7 +194,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 LoadGameMessage note = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
                 String msg = new Gson().toJson(note);
                 sender(name.userName(), msg, context, id,2);
-                NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "Has joined the game");
+                NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "Has made a move");
                 String msg2 = new Gson().toJson(note2);
                 sender(name.userName(), msg2, context, id,0);
             } catch (InvalidMoveException e) {
