@@ -2,7 +2,10 @@ package client;
 
 import com.google.gson.Gson;
 import jakarta.websocket.*;
+import server.Server;
 import websocket.commands.UserGameCommand;
+import websocket.messages.LoadGameMessage;
+import websocket.messages.NotificationMessages;
 import websocket.messages.ServerMessage;
 
 import java.io.IOException;
@@ -22,10 +25,22 @@ public class WebsockFacade extends Endpoint {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, socketURI);
             this.session.addMessageHandler(new MessageHandler.Whole<String>() {
+
                 @Override
                 public void onMessage(String message) {
                     ServerMessage notification = new Gson().fromJson(message, ServerMessage.class);
-                    notifications.notify(notification);
+                    if(notification.getServerMessageType() == ServerMessage.ServerMessageType.NOTIFICATION) {
+                        System.out.println("We at least get here");
+                        NotificationMessages notes = new Gson().fromJson(message, NotificationMessages.class);
+                        notifications.notify(notification);
+                        System.out.println(notes.message);
+                    }
+                    if(notification.getServerMessageType() == ServerMessage.ServerMessageType.LOAD_GAME) {
+                        System.out.println("Maybe we get here");
+                        LoadGameMessage game = new Gson().fromJson(message, LoadGameMessage.class);
+                        notifications.notify(notification);
+                        System.out.println(game.game);
+                    }
                 }
             });
 
@@ -47,7 +62,13 @@ public class WebsockFacade extends Endpoint {
 
     public void makeMove(){}
 
-    public void leave(){}
+    public void leave(UserGameCommand context){
+        try {
+            this.session.getBasicRemote().sendText(new Gson().toJson(context));
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
+    }
 
     public void resign(){}
 

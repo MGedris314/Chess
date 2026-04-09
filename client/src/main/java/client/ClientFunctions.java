@@ -15,6 +15,7 @@ public class ClientFunctions implements Notifications {
     private final WebsockFacade websock;
     private boolean loggedIn = false;
     public String aToken = "";
+    private int gameId;
     private boolean joined = false;
     private boolean isWhite = false;
     private boolean observe = false;
@@ -39,16 +40,16 @@ public class ClientFunctions implements Notifications {
                 System.out.println(output);
             }
             if(joined){
-                BoardDraw artist = new BoardDraw();
-                var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-                if(isWhite){
-                    artist.drawTicTacToeBoard(out, "b");
-                    artist.setWhite(out);
-                }
-                else{
-                    artist.drawTicTacToeBoard(out, "w");
-                    artist.setWhite(out);
-                }
+//                BoardDraw artist = new BoardDraw();
+//                var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+//                if(isWhite){
+//                    artist.drawTicTacToeBoard(out, "b");
+//                    artist.setWhite(out);
+//                }
+//                else{
+//                    artist.drawTicTacToeBoard(out, "w");
+//                    artist.setWhite(out);
+//                }
                 if (!observe) {
                     String output = input3(responce);
                     System.out.println(output);
@@ -92,10 +93,10 @@ public class ClientFunctions implements Notifications {
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
             case "redraw" -> redraw();
-            case "leave" -> escape2();
+            case "leave" -> leave();
             case "help" -> help3();
             case "make move" -> move();
-            case "resign" -> escape2();  //Maybe create a new function here to set a game winner?
+            case "resign" -> resign();
             case "legal moves" -> legal();
             default-> zeroedOut();
         });
@@ -110,6 +111,20 @@ public class ClientFunctions implements Notifications {
             case "legal moves" -> legal();
             default-> zeroedOut();
         });
+    }
+
+    private String resign(){
+        joined = false;
+        UserGameCommand command = new UserGameCommand(UserGameCommand.CommandType.RESIGN, aToken, gameId);
+        websock.leave(command);
+        return "";
+    }
+
+    private String leave(){
+        joined = false;
+        UserGameCommand command = new UserGameCommand(UserGameCommand.CommandType.LEAVE, aToken, gameId);
+        websock.leave(command);
+        return "";
     }
 
     private String move(){
@@ -177,8 +192,8 @@ public class ClientFunctions implements Notifications {
     }
 
     private String escape2(){
-         joined = false;
-         return "\n";
+        joined = false;
+        return "\n";
     }
 
     private String list(){
@@ -212,10 +227,11 @@ public class ClientFunctions implements Notifications {
         } catch (NumberFormatException e) {
             return "Pleas pass the id in as number not a string.";
         }
+        gameId = id;
         JoinGameData joiner = new JoinGameData(color, id);
         try{
             facade.joinGame(joiner, aToken);
-//            joined = true;
+            joined = true;
             if(color.equalsIgnoreCase("white")){
                 isWhite = true;
             }
@@ -226,6 +242,7 @@ public class ClientFunctions implements Notifications {
             websock.connect(command);
             return "Joined game";
         } catch (Exception e) {
+            joined = false;
             return "Something went wrong, check the game ID you passed in or the color you're joining as.";
         }
     }

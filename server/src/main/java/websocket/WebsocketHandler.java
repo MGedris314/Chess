@@ -1,5 +1,6 @@
 package websocket;
 
+
 import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessMove;
@@ -26,8 +27,10 @@ import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessages;
 import websocket.messages.ServerMessage;
 
+
 import java.io.IOException;
 import java.util.HashMap;
+
 
 public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsCloseHandler {
     HashMap<String, Integer> sessionInfo = new HashMap<>();
@@ -36,10 +39,13 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
     HashMap<String, Integer> players = new HashMap<>();
 //  If the boolean is true in game log, the game is open, if it's false the game is closed(finished).
 
+
     @Override
     public void handleConnect(@NotNull WsConnectContext wsConnectContext) throws Exception {
         System.out.println("Connection established");
     }
+
+
 
 
     @Override
@@ -52,6 +58,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             case RESIGN -> resign(wsMessageContext, command);
         }
     }
+
 
     public int connect(WsMessageContext context, UserGameCommand command){
         int id = command.getGameID();
@@ -92,6 +99,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         }
     }
 
+
     public int move(WsMessageContext context, UserGameCommand command){
         int id = command.getGameID();
         DataAccess access = new SQLDataAccess();
@@ -126,6 +134,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             } catch (NullPointerException e) {
                 System.out.println("How did we get here");
             }
+
 
             if(trial == null){
                 return -1;
@@ -200,6 +209,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 return -1;
             }
 
+
         } catch (UserExceptions e) {
             System.out.println("Errored");
         } catch (IOException e) {
@@ -207,66 +217,67 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         }
         return 0;
     }
-//  Call update games.
+    //  Call update games.
     public void leave(WsMessageContext context, UserGameCommand command){
         int id = command.getGameID();
         DataAccess access = new SQLDataAccess();
         GameService service = new GameService(access);
-            try {
-                AuthData name = service.findUser(command.getAuthToken());
-                GameData trial = service.observe(id);
-                if(name.userName().equals(trial.blackUsername())){
-                    GameData hold = new GameData(trial.gameID(), trial.whiteUsername(), "", trial.gameName(), trial.game());
-                    PublicGame pub = new PublicGame(hold.gameID(), hold.whiteUsername(), hold.whiteUsername(), hold.gameName());
-                    try{
-                        access.updateGames(hold, pub, id);
-                    } catch (DataAccessException e) {
-                        System.out.println("Errored out.");
-                    }
-                    players.remove(name.userName());
-                    sessionInfo.remove(name.userName());
-                    NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "has resigned");
-                    String msg = new Gson().toJson(note);
-                    try{
-                        sender(name.userName(), msg, context, id, 0);
-                    }
-                    catch (IOException e){
-                        System.out.println("Something has gone wrong sending the message");
-                    }
+        try {
+            AuthData name = service.findUser(command.getAuthToken());
+            GameData trial = service.observe(id);
+            if(name.userName().equals(trial.blackUsername())){
+                GameData hold = new GameData(trial.gameID(), trial.whiteUsername(), "", trial.gameName(), trial.game());
+                PublicGame pub = new PublicGame(hold.gameID(), hold.whiteUsername(), hold.whiteUsername(), hold.gameName());
+                try{
+                    access.updateGames(hold, pub, id);
+                } catch (DataAccessException e) {
+                    System.out.println("Errored out.");
                 }
-                else if(name.userName().equals(trial.whiteUsername())) {
-                    GameData hold = new GameData(trial.gameID(), "", trial.blackUsername(), trial.gameName(), trial.game());
-                    PublicGame pub = new PublicGame(hold.gameID(), hold.whiteUsername(), hold.whiteUsername(), hold.gameName());
-                    try{
-                        access.updateGames(hold, pub, id);
-                    } catch (DataAccessException e) {
-                        System.out.println("Errored out.");
-                    }
-                    players.remove(name.userName());
-                    sessionInfo.remove(name.userName());
-                    NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "has resigned");
-                    String msg = new Gson().toJson(note);
-                    try {
-                        sender(name.userName(), msg, context, id, 0);
-                    } catch (IOException e) {
-                        System.out.println("Something has gone wrong sending the message");
-                    }
+                players.remove(name.userName());
+                sessionInfo.remove(name.userName());
+                NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "has resigned");
+                String msg = new Gson().toJson(note);
+                try{
+                    sender(name.userName(), msg, context, id, 0);
                 }
-                else{
-                    sessionInfo.remove(name.userName());
-                    NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "has resigned");
-                    String msg = new Gson().toJson(note);
-                    try{
-                        sender(name.userName(), msg, context, id, 0);
-                    }
-                    catch (IOException e){
-                        System.out.println("Something has gone wrong sending the message");
-                    }
+                catch (IOException e){
+                    System.out.println("Something has gone wrong sending the message");
                 }
-            } catch (UserExceptions e) {
-                System.out.println("Still don't know how we got here");
             }
+            else if(name.userName().equals(trial.whiteUsername())) {
+                GameData hold = new GameData(trial.gameID(), "", trial.blackUsername(), trial.gameName(), trial.game());
+                PublicGame pub = new PublicGame(hold.gameID(), hold.whiteUsername(), hold.whiteUsername(), hold.gameName());
+                try{
+                    access.updateGames(hold, pub, id);
+                } catch (DataAccessException e) {
+                    System.out.println("Errored out.");
+                }
+                players.remove(name.userName());
+                sessionInfo.remove(name.userName());
+                NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "has resigned");
+                String msg = new Gson().toJson(note);
+                try {
+                    sender(name.userName(), msg, context, id, 0);
+                } catch (IOException e) {
+                    System.out.println("Something has gone wrong sending the message");
+                }
+            }
+            else{
+                sessionInfo.remove(name.userName());
+                NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "has resigned");
+                String msg = new Gson().toJson(note);
+                try{
+                    sender(name.userName(), msg, context, id, 0);
+                }
+                catch (IOException e){
+                    System.out.println("Something has gone wrong sending the message");
+                }
+            }
+        } catch (UserExceptions e) {
+            System.out.println("Still don't know how we got here");
+        }
     }
+
 
     public int resign(WsMessageContext context, UserGameCommand command){
         int id = command.getGameID();
@@ -313,6 +324,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         return 0;
     }
 
+
     public void sender (String exclude, String notification, WsMessageContext context, int id, int e) throws IOException {
         if(e == -1){
             context.session.getRemote().sendString(notification);
@@ -333,6 +345,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         }
     }
 
+
     @Override
     public void handleClose(@NotNull WsCloseContext wsCloseContext) throws Exception {
         sessions.clear();
@@ -341,3 +354,4 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         players.clear();
     }
 }
+
