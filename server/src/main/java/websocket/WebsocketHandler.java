@@ -43,6 +43,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
     @Override
     public void handleConnect(@NotNull WsConnectContext wsConnectContext) throws Exception {
         System.out.println("Connection established");
+        wsConnectContext.enableAutomaticPings();
     }
 
 

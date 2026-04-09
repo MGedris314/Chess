@@ -203,6 +203,7 @@ public class ClientFunctions implements Notifications {
             ChessMove movement = new ChessMove(start, end, null);
             MoveCommand move = new MoveCommand(UserGameCommand.CommandType.MAKE_MOVE, aToken, gameId, movement);
             websock.makeMove(move);
+            return "We got to this point";
         }
 
         return "This doesn't work yet, but we'll figure that out later.";

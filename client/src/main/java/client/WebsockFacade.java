@@ -3,6 +3,7 @@ package client;
 import com.google.gson.Gson;
 import jakarta.websocket.*;
 import server.Server;
+import websocket.commands.MoveCommand;
 import websocket.commands.UserGameCommand;
 import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessages;
@@ -38,7 +39,7 @@ public class WebsockFacade extends Endpoint {
                     if(notification.getServerMessageType() == ServerMessage.ServerMessageType.LOAD_GAME) {
                         System.out.println("Maybe we get here");
                         LoadGameMessage game = new Gson().fromJson(message, LoadGameMessage.class);
-                        notifications.notify(notification);
+                        notifications.notify(game);
                         System.out.println(game.game);
                     }
                 }
@@ -60,8 +61,12 @@ public class WebsockFacade extends Endpoint {
         }
     }
 
-    public void makeMove(UserGameCommand context){
-
+    public void makeMove(MoveCommand context){
+        try {
+            this.session.getBasicRemote().sendText(new Gson().toJson(context));
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
     }
 
     public void leave(UserGameCommand context){
