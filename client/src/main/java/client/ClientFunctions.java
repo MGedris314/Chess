@@ -244,13 +244,23 @@ public class ClientFunctions implements Notifications {
         ChessPosition start = new ChessPosition(colS, rowS);
         ChessPiece finder = board.getPiece(start);
         finder.pieceMoves(board, start);
-//        System.out.println(finder.pieceMoves(board, start));
         ArrayList<ChessMove> hold = new ArrayList<ChessMove>();
         hold.addAll(finder.pieceMoves(board, start));
         ArrayList<ChessPosition> ends = new ArrayList<ChessPosition>();
         for(int x = 0; x<hold.size(); x++){
             ChessPosition end = hold.get(x).getEndPosition();
-            ends.add(end);
+            if(isWhite){
+                ChessPosition alter = new ChessPosition(9-end.getRow(), end.getColumn());
+                ends.add(alter);
+            }
+            else {
+                ends.add(end);
+            }
+        }if(isWhite){
+            ChessPosition alter = new ChessPosition(9-start.getRow(), start.getColumn());
+            ends.add(alter);
+        }else {
+            ends.add(start);
         }
         System.out.println(ends);
         BoardDraw artist = new BoardDraw();
