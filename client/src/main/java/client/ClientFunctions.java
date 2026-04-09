@@ -246,7 +246,7 @@ public class ClientFunctions implements Notifications {
             return "Something went wrong, check the game ID you passed in or the color you're joining as.";
         }
     }
-
+//This is literaly just to see what happens.
     private String observe(){
         Scanner log = new Scanner(System.in);
         String hold = "";
