@@ -60,7 +60,9 @@ public class WebsockFacade extends Endpoint {
         }
     }
 
-    public void makeMove(){}
+    public void makeMove(UserGameCommand context){
+
+    }
 
     public void leave(UserGameCommand context){
         try {

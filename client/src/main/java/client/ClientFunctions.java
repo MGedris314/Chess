@@ -1,18 +1,23 @@
 package client;
 
+import chess.*;
 import model.*;
 import ui.BoardDraw;
+import websocket.commands.MoveCommand;
 import websocket.commands.UserGameCommand;
+import websocket.messages.LoadGameMessage;
 import websocket.messages.ServerMessage;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class ClientFunctions implements Notifications {
     private final ServerFacade facade;
     private final WebsockFacade websock;
+    public ChessGame gamePlay;
     private boolean loggedIn = false;
     public String aToken = "";
     private int gameId;
@@ -127,20 +132,83 @@ public class ClientFunctions implements Notifications {
         return "";
     }
 
+    private int rowFind(String row){
+        switch (row){
+            case "a":
+                return 1;
+            case "b":
+                return 2;
+            case "c":
+                return 3;
+            case "d":
+                return 4;
+            case "e":
+                return 5;
+            case "f":
+                return 6;
+            case "g":
+                return 7;
+            case "h":
+                return 8;
+        }
+        return -1;
+    }
+
+    private ChessPiece.PieceType prmote(String part){
+        String piece = part.toLowerCase();
+        switch (piece){
+            case "queen":
+                return ChessPiece.PieceType.QUEEN;
+            case "rook":
+                return ChessPiece.PieceType.ROOK;
+            case "bishop":
+                return ChessPiece.PieceType.BISHOP;
+            case "knight":
+                return ChessPiece.PieceType.KNIGHT;
+        }
+        return null;
+    }
+
     private String move(){
         Scanner log = new Scanner(System.in);
-        String rowS = "";
-        String colS = "";
-        String rowE = "";
-        String colE = "";
+        String rS = "";
+        String cS = "";
+        String rE = "";
+        String cE = "";
         System.out.println("Starting row of the piece");
-        rowS = log.nextLine();
+        rS = log.nextLine();
         System.out.println("Starting column of the piece");
-        colS = log.nextLine();
+        cS = log.nextLine();
         System.out.println("Ending row of the piece");
-        rowE = log.nextLine();
+        rE = log.nextLine();
         System.out.println("Ending column of the piece");
-        colE = log.nextLine();
+        cE = log.nextLine();
+        ChessBoard board = gamePlay.getBoard();
+        int rowS = rowFind(rS);
+        int colS;
+        int rowE = rowFind(rE);
+        int colE;
+        try{
+            colS = Integer.parseInt(cS);
+            colE = Integer.parseInt(cE);
+        } catch (NumberFormatException e) {
+            return "Invalid row or collumn space entered.";
+        }
+        ChessPosition start = new ChessPosition(rowS, colS);
+        ChessPosition end = new ChessPosition(rowE, colE);
+        ChessPiece mover = board.getPiece(start);
+        if (mover.getPieceType() == ChessPiece.PieceType.PAWN){
+            if(colE == 8 || colE == 1){
+                String promotion = "";
+                System.out.println("What piece would you like to promote your pawn to?");
+                promotion = log.nextLine();
+                ChessPiece.PieceType promoter = prmote(promotion);
+                ChessMove movement = new ChessMove(start, end, promoter);
+                MoveCommand move = new MoveCommand(UserGameCommand.CommandType.MAKE_MOVE, aToken, gameId, movement);
+                websock.makeMove(move);
+            }
+        }
+
         return "This doesn't work yet, but we'll figure that out later.";
     }
 
@@ -246,6 +314,7 @@ public class ClientFunctions implements Notifications {
             return e.getMessage();
         }
     }
+
     private String observe(){
         Scanner log = new Scanner(System.in);
         String hold = "";
@@ -392,5 +461,9 @@ public class ClientFunctions implements Notifications {
     @Override
     public void notify(ServerMessage message) {
         System.out.println(message.getServerMessageType());
+        if(message.getServerMessageType() == ServerMessage.ServerMessageType.LOAD_GAME){
+            LoadGameMessage load = (LoadGameMessage) message;
+            gamePlay = load.returning().game();
+        }
     }
 }
