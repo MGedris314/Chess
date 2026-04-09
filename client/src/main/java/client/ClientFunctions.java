@@ -262,6 +262,7 @@ public class ClientFunctions implements Notifications {
         }else {
             ends.add(start);
         }
+
         System.out.println(ends);
         BoardDraw artist = new BoardDraw();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
