@@ -42,7 +42,6 @@ public class WebsockFacade extends Endpoint {
                         System.out.println("Maybe we get here");
                         LoadGameMessage game = new Gson().fromJson(message, LoadGameMessage.class);
                         notifications.notify(game);
-                        System.out.println(game.game.game().getBoard());
                     }
                     if(notification.getServerMessageType() == ServerMessage.ServerMessageType.ERROR){
                         System.out.println("This is the point we're hitting");

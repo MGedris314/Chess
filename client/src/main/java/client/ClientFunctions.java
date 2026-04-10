@@ -82,10 +82,11 @@ public class ClientFunctions implements Notifications {
             default-> zeroedOut();
         });
     }
+
     public String input3(String req){
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
-            case "redraw" -> draw();
+            case "redraw" -> doodle();
             case "leave" -> leave();
             case "help" -> help3();
             case "make move" -> move();
@@ -94,6 +95,7 @@ public class ClientFunctions implements Notifications {
             default-> zeroedOut();
         });
     }
+
     public String input4(String req){
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
@@ -438,9 +440,8 @@ public class ClientFunctions implements Notifications {
     private String doodle(){
         BoardDraw artist = new BoardDraw();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-        ChessBoard tester = new ChessBoard();
-        tester.resetBoard();
-        artist.doodle(out, tester, false);
+        ChessBoard tester = gamePlay.getBoard();
+        artist.doodle(out, tester, isWhite);
         return "";
     }
     public String help1(){
@@ -494,7 +495,7 @@ public class ClientFunctions implements Notifications {
         if(message.getServerMessageType() == ServerMessage.ServerMessageType.LOAD_GAME){
             LoadGameMessage load = (LoadGameMessage) message;
             gamePlay = load.returning().game();
-            draw();
+            doodle();
         }
     }
 }

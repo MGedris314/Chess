@@ -115,6 +115,93 @@ public class BoardDraw {
         }
     }
 
+    public void doodle_with_highlight(PrintStream out,  ChessBoard board, Boolean white, ArrayList<ChessPosition> points){
+        for(int x = 1;x<=8; x++){
+            if(x == 1){
+                setBlack(out);
+                if(white) {
+                    out.print("    a  b  c  d  e  f  g  h");
+                    out.println();
+                }
+                else{
+                    out.print("    h  g  f  e  d  c  b  a");
+                    out.println();
+                }
+            }
+            for(int y = 1;y<=8; y++){
+                if(y == 1){
+                    if(!white) {
+                        setBlack(out);
+                        out.print(" "+ x +" ");
+                    }
+                    else{
+                        setBlack(out);
+                        int hold = (x-9)*-1;
+                        out.print(" "+ hold +" ");
+                    }
+                }
+                int row;
+                int col;
+                if(white) {
+                    row = 9 - x;
+                    col = y;
+                }
+                else{
+                    row = x;
+                    col = 9-y;
+                }
+                if((row + col) % 2 == 1){
+                    setWhite(out);
+                }
+                else{
+                    setYellow(out);
+                }
+                for(int z = 0; z< points.size(); z++){
+                    ChessPosition holder = points.get(z);
+                    int row_check = holder.getRow();
+                    int col_check = holder.getColumn();
+                    if(row_check == row && col_check == col){
+                        setHighlight(out);
+                    }
+                }
+                ChessPosition point = new ChessPosition(row, col);
+                ChessPiece hold = board.getPiece(point);
+                if(hold != null){
+                    if(hold.getTeamColor()== ChessGame.TeamColor.WHITE){
+                        setRed(out);
+                    }else{
+                        setGreen(out);
+                    }
+                    if (hold.getPieceType() == ChessPiece.PieceType.BISHOP) {out.print(" B ");
+                    } else if (hold.getPieceType() == ChessPiece.PieceType.ROOK) {out.print(" R ");
+                    } else if (hold.getPieceType() == ChessPiece.PieceType.KNIGHT) {out.print(" N ");
+                    } else if (hold.getPieceType() == ChessPiece.PieceType.PAWN) {out.print(" P ");
+                    } else if (hold.getPieceType() == ChessPiece.PieceType.QUEEN) {out.print(" Q ");
+                    } else if (hold.getPieceType() == ChessPiece.PieceType.KING) {out.print(" K ");
+                    }
+                }
+                else{
+                    out.print("   ");
+                }
+            }
+            setBlack(out);
+            if(white) {
+                int row = (x-9)*-1;
+                out.println(" " + row + " ");
+            }
+            else{
+                out.println(" " + x + " ");
+            }
+        }
+        if(white) {
+            out.print("    a  b  c  d  e  f  g  h");
+            out.println();
+        }
+        else{
+            out.print("    h  g  f  e  d  c  b  a");
+            out.println();
+        }
+    }
     private static void drawHeaders(PrintStream out) {
 
         setBlack(out);
@@ -322,6 +409,10 @@ public class BoardDraw {
     private static void setBlack(PrintStream out) {
         out.print(SET_BG_COLOR_BLACK);
         out.print(SET_TEXT_COLOR_WHITE);
+    }
+
+    private void setHighlight(PrintStream out){
+        out.print(SET_BG_COLOR_DARK_GREEN);
     }
 
     private static void printPlayer(PrintStream out, String player, int row, int col, String per, ChessGame tester) {
