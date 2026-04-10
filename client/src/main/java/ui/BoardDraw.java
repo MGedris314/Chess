@@ -35,11 +35,25 @@ public class BoardDraw {
         out.print(SET_TEXT_COLOR_WHITE);
     }
 
-    public void doodle(PrintStream out, ChessBoard board){
+    public void doodle(PrintStream out, ChessBoard board, Boolean white){
         for(int x = 1;x<=8; x++){
             for(int y = 1;y<=8; y++){
-                int row = 9-x;
-                int col = y;
+                int row;
+                int col;
+                if(white) {
+                    row = 9 - x;
+                    col = y;
+                }
+                else{
+                    row = x;
+                    col = 9-y;
+                }
+                if((row + col) % 2 == 1){
+                    setWhite(out);
+                }
+                else{
+                    setYellow(out);
+                }
                 ChessPosition point = new ChessPosition(row, col);
                 ChessPiece hold = board.getPiece(point);
                 if(hold != null){
@@ -55,6 +69,9 @@ public class BoardDraw {
                     } else if (hold.getPieceType() == ChessPiece.PieceType.QUEEN) {out.print(" Q ");
                     } else if (hold.getPieceType() == ChessPiece.PieceType.KING) {out.print(" K ");
                     }
+                }
+                else{
+                    out.print("   ");
                 }
             }
             out.println();
@@ -250,28 +267,24 @@ public class BoardDraw {
 
     public static void setWhite(PrintStream out) {
         out.print(SET_BG_COLOR_WHITE);
-        out.print(SET_TEXT_COLOR_BLACK);
     }
 
     private static void setYellow(PrintStream out) {
         out.print(SET_BG_COLOR_BLUE);
-        out.print(SET_TEXT_COLOR_BLACK);
     }
 
     private static void setGreen(PrintStream out){
-        out.print(SET_BG_COLOR_DARK_GREEN);
-        out.print(SET_TEXT_COLOR_YELLOW);
+        out.print(SET_TEXT_COLOR_GREEN);
     }
 
     private static void setRed(PrintStream out){
-        out.print(SET_BG_COLOR_MAGENTA);
-        out.print(SET_TEXT_COLOR_YELLOW);
+        out.print(SET_TEXT_COLOR_MAGENTA);
     }
 
 
     private static void setBlack(PrintStream out) {
         out.print(SET_BG_COLOR_BLACK);
-        out.print(SET_TEXT_COLOR_BLACK);
+        out.print(SET_TEXT_COLOR_BLUE);
     }
 
     private static void printPlayer(PrintStream out, String player, int row, int col, String per, ChessGame tester) {

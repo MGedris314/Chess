@@ -440,7 +440,7 @@ public class ClientFunctions implements Notifications {
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
         ChessBoard tester = new ChessBoard();
         tester.resetBoard();
-        artist.doodle(out, tester);
+        artist.doodle(out, tester, false);
         return "";
     }
     public String help1(){
