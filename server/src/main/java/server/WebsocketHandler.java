@@ -1,5 +1,4 @@
-package websocket;
-
+package server;
 
 import chess.ChessGame;
 import chess.ChessMove;
@@ -9,6 +8,11 @@ import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import dataaccess.SQLDataAccess;
 import exception.UserExceptions;
+import io.javalin.websocket.WsConnectHandler;
+import io.javalin.websocket.WsMessageHandler;
+import io.javalin.websocket.WsCloseHandler;
+import io.javalin.websocket.WsConnectContext;
+import io.javalin.websocket.*;
 import model.AuthData;
 import model.GameData;
 import model.PublicGame;
