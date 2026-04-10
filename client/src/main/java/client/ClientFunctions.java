@@ -99,7 +99,7 @@ public class ClientFunctions implements Notifications {
     public String input4(String req){
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
-            case "redraw" -> draw();
+            case "redraw" -> doodle();
             case "leave" -> escape2();
             case "help" -> help4();
             case "legal moves" -> legal();
@@ -215,6 +215,7 @@ public class ClientFunctions implements Notifications {
         }
         return "This doesn't work yet, but we'll figure that out later.";
     }
+
     private String legal(){
         Scanner log = new Scanner(System.in);
         String rS = "";
@@ -251,7 +252,7 @@ public class ClientFunctions implements Notifications {
         BoardDraw artist = new BoardDraw();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
         ChessBoard tester = gamePlay.getBoard();
-        artist.doodle_with_highlight(out,tester,!isWhite,ends);
+        artist.doodle_with_highlight(out,tester,isWhite,ends);
         return " ";
     }
     private String secrets(){
@@ -319,25 +320,36 @@ public class ClientFunctions implements Notifications {
     private String observe(){
         Scanner log = new Scanner(System.in);
         String hold = "";
-        System.out.println("What game do you want to watch? ");
+        String color = "";
+        System.out.println("What game do you want to join? ");
         hold = log.nextLine();
+        System.out.println("Which color would you like to view as? ");
+        color = log.nextLine();
         int id;
         try {
             id = Integer.parseInt(hold);
         } catch (NumberFormatException e) {
             return "Pleas pass the id in as number not a string.";
         }
-        GameRetrun games = facade.listGame(aToken);
-        int targetRange = games.games().size();
-        if(id <= targetRange && id > 0){
+        gameId = id;
+        JoinGameData joiner = new JoinGameData(color, id);
+        try{
+//            facade.joinGame(joiner, aToken);
             joined = true;
-            isWhite = true;
+            if(color.equalsIgnoreCase("white")){
+                isWhite = true;
+            }
+            else{
+                isWhite = false;
+            }
+            UserGameCommand command = new UserGameCommand(UserGameCommand.CommandType.CONNECT, aToken, id);
+            websock.connect(command);
+            observe = true;
+            return "Joined game";
+        } catch (Exception e) {
+            joined = false;
+            return e.getMessage();
         }
-        else{
-            System.out.println(targetRange);
-            return "That game doesn't exist";
-        }
-        return "";
     }
     private String create(){
         Scanner log = new Scanner(System.in);

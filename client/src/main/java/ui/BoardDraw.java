@@ -160,8 +160,20 @@ public class BoardDraw {
                     ChessPosition holder = points.get(z);
                     int row_check = holder.getRow();
                     int col_check = holder.getColumn();
+                    if(white){
+                        if(z == points.size()-1){
+                            if(row_check == row && col_check == col){
+                                setHighlight(out);
+                            }
+                        }
+                        else if(row_check == 9-row && col_check == col){
+                            setHighlight(out);
+                        }
+                    }
+                    else{
                     if(row_check == row && col_check == col){
-                        setHighlight(out);
+                            setHighlight(out);
+                        }
                     }
                 }
                 ChessPosition point = new ChessPosition(row, col);
