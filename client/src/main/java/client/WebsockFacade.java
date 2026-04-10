@@ -30,21 +30,21 @@ public class WebsockFacade extends Endpoint {
 
                 @Override
                 public void onMessage(String message) {
-                    System.out.println("Message recieved");
+//                    System.out.println("Message recieved");
                     ServerMessage notification = new Gson().fromJson(message, ServerMessage.class);
                     if(notification.getServerMessageType() == ServerMessage.ServerMessageType.NOTIFICATION) {
-                        System.out.println("We at least get here");
+//                        System.out.println("We at least get here");
                         NotificationMessages notes = new Gson().fromJson(message, NotificationMessages.class);
                         notifications.notify(notification);
                         System.out.println(notes.message);
                     }
                     if(notification.getServerMessageType() == ServerMessage.ServerMessageType.LOAD_GAME) {
-                        System.out.println("Maybe we get here");
+//                        System.out.println("Maybe we get here");
                         LoadGameMessage game = new Gson().fromJson(message, LoadGameMessage.class);
                         notifications.notify(game);
                     }
                     if(notification.getServerMessageType() == ServerMessage.ServerMessageType.ERROR){
-                        System.out.println("This is the point we're hitting");
+//                        System.out.println("This is the point we're hitting");
                         ErrorMessage errored = new Gson().fromJson(message, ErrorMessage.class);
                         notifications.notify(errored);
                     }

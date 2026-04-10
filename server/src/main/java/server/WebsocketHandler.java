@@ -83,10 +83,27 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 sessionInfo.put(name.userName(), id);
                 sessions.put(name.userName(), context.session);
                 gameLog.put(id, true);
-                NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, " has joined the game");
-                String msg = new Gson().toJson(note);
-                System.out.println("This worked");
-                sender(name.userName(), msg, context, id,0);
+                if(trial.blackUsername().equals(name.userName())){
+                    NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
+                            name.userName() +" has joined the game as black");
+                    String msg = new Gson().toJson(note);
+//                System.out.println("This worked");
+                    sender(name.userName(), msg, context, id,0);
+                }
+                else if(trial.whiteUsername().equals(name.userName())){
+                    NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
+                            name.userName() +" has joined the game as white");
+                    String msg = new Gson().toJson(note);
+//                System.out.println("This worked");
+                    sender(name.userName(), msg, context, id,0);
+                }
+                else {
+                    NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
+                            name.userName() + " has joined the game as ");
+                    String msg = new Gson().toJson(note);
+//                System.out.println("This worked");
+                    sender(name.userName(), msg, context, id,0);
+                }
                 return 0;
             }
         } catch (UserExceptions e) {
@@ -205,7 +222,8 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 LoadGameMessage note = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
                 String msg = new Gson().toJson(note);
                 sender(name.userName(), msg, context, id,2);
-                NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "Has made a move");
+                NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
+                        name.userName()+" Has made a move " +move);
                 String msg2 = new Gson().toJson(note2);
                 sender(name.userName(), msg2, context, id,0);
             } catch (InvalidMoveException e) {
@@ -240,7 +258,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 }
                 players.remove(name.userName());
                 sessionInfo.remove(name.userName());
-                NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, "has resigned");
+                NotificationMessages note = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION, name.userName()+" has left");
                 String msg = new Gson().toJson(note);
                 try{
                     sender(name.userName(), msg, context, id, 0);

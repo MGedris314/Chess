@@ -100,7 +100,7 @@ public class ClientFunctions implements Notifications {
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
             case "redraw" -> doodle();
-            case "leave" -> escape2();
+            case "leave" -> leave();
             case "help" -> help4();
             case "legal moves" -> legal();
             default-> zeroedOut();
@@ -121,12 +121,14 @@ public class ClientFunctions implements Notifications {
             return "Resuming game.";
         }
     }
+
     private String leave(){
         joined = false;
         UserGameCommand command = new UserGameCommand(UserGameCommand.CommandType.LEAVE, aToken, gameId);
         websock.leave(command);
         return "";
     }
+
     private int rowFind(String row){
         switch (row){
             case "a":
@@ -162,6 +164,7 @@ public class ClientFunctions implements Notifications {
         }
         return null;
     }
+
     private String move(){
         Scanner log = new Scanner(System.in);
         String rS = "";
@@ -234,9 +237,12 @@ public class ClientFunctions implements Notifications {
         ChessBoard board = gamePlay.getBoard();
         ChessPosition start = new ChessPosition(colS, rowS);
         ChessPiece finder = board.getPiece(start);
+        if(finder == null){
+            return"No piece at that square.";
+        }
         finder.pieceMoves(board, start);
         ArrayList<ChessMove> hold = new ArrayList<ChessMove>();
-        hold.addAll(finder.pieceMoves(board, start));
+        hold.addAll(gamePlay.validMoves(start));
         ArrayList<ChessPosition> ends = new ArrayList<ChessPosition>();
         for(int x = 0; x<hold.size(); x++){
             ChessPosition end = hold.get(x).getEndPosition();
@@ -255,15 +261,19 @@ public class ClientFunctions implements Notifications {
         artist.doodle_with_highlight(out,tester,isWhite,ends);
         return " ";
     }
+
     private String secrets(){
         return("Ahh, I see you are trying to discover secrets.  Come back at a later time.....");
     }
+
     private String zeroedOut(){
         return "Hmmm..... It looks like you entered a value that isn't availabe on this menu.";
     }
+
     private String escape(){
         return "\n";
     }
+
     private String escape2(){
         joined = false;
         return "\n";
