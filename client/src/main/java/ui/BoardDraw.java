@@ -105,6 +105,14 @@ public class BoardDraw {
                 out.println(" " + x + " ");
             }
         }
+        if(white) {
+            out.print("    a  b  c  d  e  f  g  h");
+            out.println();
+        }
+        else{
+            out.print("    h  g  f  e  d  c  b  a");
+            out.println();
+        }
     }
 
     private static void drawHeaders(PrintStream out) {
