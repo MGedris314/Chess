@@ -16,6 +16,7 @@ public class Server {
     private final Javalin javalin;
     private final UserHandler handler;
     private final WebsocketHandler websock;
+//    New commit
 
     public Server() {
         this(new UserHandler(new SQLDataAccess()), new WebsocketHandler());
