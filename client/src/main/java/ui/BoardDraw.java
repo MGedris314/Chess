@@ -115,7 +115,7 @@ public class BoardDraw {
         }
     }
 
-    public void doodle_with_highlight(PrintStream out,  ChessBoard board, Boolean white, ArrayList<ChessPosition> points){
+    public void doodle_with_highlight(PrintStream out,  ChessBoard board, Boolean white,ArrayList<ChessPosition> points){
         for(int x = 1;x<=8; x++){
             if(x == 1){
                 setBlack(out);

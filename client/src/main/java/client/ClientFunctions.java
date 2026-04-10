@@ -246,23 +246,12 @@ public class ClientFunctions implements Notifications {
             else {
                 ends.add(end);
             }
-        }if(isWhite){
-            ChessPosition alter = new ChessPosition(9-start.getRow(), start.getColumn());
-            ends.add(alter);
-        }else {
-            ends.add(start);
         }
-        System.out.println(ends);
+        ends.add(start);
         BoardDraw artist = new BoardDraw();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-        if(isWhite){
-            artist.drawHighlight(out, "b", gamePlay, ends);
-            artist.setWhite(out);
-        }
-        else{
-            artist.drawHighlight(out, "w", gamePlay, ends);
-            artist.setWhite(out);
-        }
+        ChessBoard tester = gamePlay.getBoard();
+        artist.doodle_with_highlight(out,tester,!isWhite,ends);
         return " ";
     }
     private String secrets(){
