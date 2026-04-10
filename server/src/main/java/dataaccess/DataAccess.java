@@ -3,10 +3,6 @@ package dataaccess;
 import exception.UserException403;
 import model.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 public interface DataAccess {
 
     UserData findUser(String username) throws DataAccessException;
@@ -21,7 +17,7 @@ public interface DataAccess {
     GameData returnSingleGame(int gameID) throws UserException403, DataAccessException;
     PublicGame editPublic(int gameID) throws DataAccessException;
 
-    void Hello_there(GameData game, int gameID) throws DataAccessException;
+    void helloThere(GameData game, int gameID) throws DataAccessException;
 
     void updateGames(GameData game, PublicGame pub, int gameID) throws DataAccessException;
     void clearAuth() throws DataAccessException;

@@ -286,7 +286,7 @@ public class SQLDataAccess implements DataAccess {
     }
 
     @Override
-    public void Hello_there(GameData game, int gameID) throws DataAccessException {
+    public void helloThere(GameData game, int gameID) throws DataAccessException {
         try(var con = DatabaseManager.getConnection()) {
             try (var statement = con.prepareStatement( "UPDATE games SET game = ? WHERE id = ?")) {
                 statement.setInt(2, gameID);

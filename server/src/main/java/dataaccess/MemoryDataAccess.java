@@ -90,7 +90,7 @@ public class MemoryDataAccess implements DataAccess {
     }
 
     @Override
-    public void Hello_there(GameData game, int gameID) throws DataAccessException {
+    public void helloThere(GameData game, int gameID) throws DataAccessException {
         System.out.println("General Kenobi!");
     }
 

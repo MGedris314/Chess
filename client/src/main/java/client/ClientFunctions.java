@@ -25,12 +25,10 @@ public class ClientFunctions implements Notifications {
     private boolean joined = false;
     private boolean isWhite = false;
     private boolean observe = false;
-
     ClientFunctions(){
         facade = new ServerFacade(8080);
         websock = new WebsockFacade("8080", this);
     }
-
     public void runDefault(){
         Scanner scanner = new Scanner(System.in);
         String responce = "";
@@ -57,7 +55,6 @@ public class ClientFunctions implements Notifications {
             }
         }
     }
-
     public String input1(String req){
         String check = req.toLowerCase();
         return switch (check){
@@ -70,7 +67,6 @@ public class ClientFunctions implements Notifications {
             default-> zeroedOut();
         };
     }
-
     public String input2(String req){
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
@@ -85,7 +81,6 @@ public class ClientFunctions implements Notifications {
             default-> zeroedOut();
         });
     }
-
     public String input3(String req){
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
@@ -98,7 +93,6 @@ public class ClientFunctions implements Notifications {
             default-> zeroedOut();
         });
     }
-
     public String input4(String req){
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
@@ -109,7 +103,6 @@ public class ClientFunctions implements Notifications {
             default-> zeroedOut();
         });
     }
-
     private String resign(){
         Scanner log = new Scanner(System.in);
         String hold = "";
@@ -125,14 +118,12 @@ public class ClientFunctions implements Notifications {
             return "Resuming game.";
         }
     }
-
     private String leave(){
         joined = false;
         UserGameCommand command = new UserGameCommand(UserGameCommand.CommandType.LEAVE, aToken, gameId);
         websock.leave(command);
         return "";
     }
-
     private int rowFind(String row){
         switch (row){
             case "a":
@@ -154,7 +145,6 @@ public class ClientFunctions implements Notifications {
         }
         return -1;
     }
-
     private ChessPiece.PieceType prmote(String part){
         String piece = part.toLowerCase();
         switch (piece){
@@ -169,7 +159,6 @@ public class ClientFunctions implements Notifications {
         }
         return null;
     }
-
     private String move(){
         Scanner log = new Scanner(System.in);
         String rS = "";
@@ -216,15 +205,13 @@ public class ClientFunctions implements Notifications {
             }
         }
         else{
-            ChessMove movement = new ChessMove(start, end, null);
-            MoveCommand move = new MoveCommand(UserGameCommand.CommandType.MAKE_MOVE, aToken, gameId, movement);
+            ChessMove movements = new ChessMove(start, end, null);
+            MoveCommand move = new MoveCommand(UserGameCommand.CommandType.MAKE_MOVE, aToken, gameId, movements);
             websock.makeMove(move);
             return "We got to this point";
         }
-
         return "This doesn't work yet, but we'll figure that out later.";
     }
-
     private String legal(){
         Scanner log = new Scanner(System.in);
         String rS = "";
@@ -262,7 +249,6 @@ public class ClientFunctions implements Notifications {
         }else {
             ends.add(start);
         }
-//Try this?
         System.out.println(ends);
         BoardDraw artist = new BoardDraw();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
@@ -276,24 +262,19 @@ public class ClientFunctions implements Notifications {
         }
         return " ";
     }
-
     private String secrets(){
         return("Ahh, I see you are trying to discover secrets.  Come back at a later time.....");
     }
-
     private String zeroedOut(){
         return "Hmmm..... It looks like you entered a value that isn't availabe on this menu.";
     }
-
     private String escape(){
         return "\n";
     }
-
     private String escape2(){
         joined = false;
         return "\n";
     }
-
     private String list(){
         try {
             GameRetrun check = facade.listGame(aToken);
@@ -310,7 +291,6 @@ public class ClientFunctions implements Notifications {
             return null;
         }
     }
-
     private String join(){
         Scanner log = new Scanner(System.in);
         String hold = "";
@@ -344,7 +324,6 @@ public class ClientFunctions implements Notifications {
             return e.getMessage();
         }
     }
-
     private String observe(){
         Scanner log = new Scanner(System.in);
         String hold = "";
@@ -368,7 +347,6 @@ public class ClientFunctions implements Notifications {
         }
         return "";
     }
-
     private String create(){
         Scanner log = new Scanner(System.in);
         String val = "";
@@ -383,7 +361,6 @@ public class ClientFunctions implements Notifications {
             return e.getMessage();
         }
     }
-
     private String logIn(){
         Scanner log = new Scanner(System.in);
         String user = "";
@@ -403,7 +380,6 @@ public class ClientFunctions implements Notifications {
             return "log in failed";
         }
     }
-
     private String register() {
         Scanner log = new Scanner(System.in);
         String user = "";
@@ -426,7 +402,6 @@ public class ClientFunctions implements Notifications {
             return "Registration failed.";
         }
     }
-
     private String logOut(){
         Scanner log = new Scanner(System.in);
         String test = "";
@@ -441,7 +416,6 @@ public class ClientFunctions implements Notifications {
             return e.getMessage();
         }
     }
-
     private String draw(){
         BoardDraw artist = new BoardDraw();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
@@ -459,7 +433,6 @@ public class ClientFunctions implements Notifications {
         }
         return "";
     }
-
     public String help1(){
         return """
             Optional commands for this window:
@@ -505,7 +478,6 @@ public class ClientFunctions implements Notifications {
             What would you like to do?
             """;
     }
-
     @Override
     public void notify(ServerMessage message) {
         System.out.println(message.getServerMessageType());

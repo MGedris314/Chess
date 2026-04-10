@@ -189,7 +189,6 @@ public class BoardDraw {
                     setWhite(out);
                     colorVal = 2;
                 }
-
                 if (squareRow == SQUARE_SIZE_IN_PADDED_CHARS / 2) {
                     int prefixLength = SQUARE_SIZE_IN_PADDED_CHARS / 2;
                     int suffixLength = SQUARE_SIZE_IN_PADDED_CHARS - prefixLength - 1;
@@ -253,163 +252,97 @@ public class BoardDraw {
         String hold = player;
         if(per.equals("w")) {
             switch (row) {
-                case 9:case 0:
-                    setGreen(out);
-                    break;
-                case 2:case 1:
-                    setWhite(out);
-                    break;
-                case 7:case 8:
-                    setYellow(out);
+                case 9:case 0:setGreen(out);break;
+                case 2:case 1:setWhite(out);break;
+                case 7:case 8:setYellow(out);
             }
         }else{
             switch (row) {
-                case 9:case 0:
-                    setGreen(out);
-                    break;
-                case 2:case 1:
-                    setYellow(out);
-                    break;
-                case 7:case 8:
-                    setWhite(out);
+                case 9:case 0:setGreen(out);break;
+                case 2:case 1:setYellow(out);break;
+                case 7:case 8:setWhite(out);
             }
-        }
-        if(col == 0 || col == 9){
-            setGreen(out);
-        }
-        ChessBoard board = tester.getBoard();
+        }if(col == 0 || col == 9){setGreen(out);
+        }ChessBoard board = tester.getBoard();
         if(row != 0 && row!= 9 && col !=0 && col != 9) {
             if(per.equals("w")) {
                 ChessPosition pos = new ChessPosition(row, col);
                 if (board.getPiece(pos) != null) {
                     ChessPiece piece = board.getPiece(pos);
-                    if (piece.getPieceType() == ChessPiece.PieceType.BISHOP) {
-                        player = " B ";
-                    } else if (piece.getPieceType() == ChessPiece.PieceType.ROOK) {
-                        player = " R ";
-                    } else if (piece.getPieceType() == ChessPiece.PieceType.KNIGHT) {
-                        player = " N ";
-                    } else if (piece.getPieceType() == ChessPiece.PieceType.PAWN) {
-                        player = " P ";
-                    } else if (piece.getPieceType() == ChessPiece.PieceType.QUEEN) {
-                        player = " Q ";
-                    } else if (piece.getPieceType() == ChessPiece.PieceType.KING) {
-                        player = " K ";
-                    }
-                    if(piece.getTeamColor()== ChessGame.TeamColor.WHITE){
+                    if (piece.getPieceType() == ChessPiece.PieceType.BISHOP) {player = " B ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.ROOK) {player = " R ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.KNIGHT) {player = " N ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.PAWN) {player = " P ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.QUEEN) {player = " Q ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.KING) {player = " K ";
+                    }if(piece.getTeamColor()== ChessGame.TeamColor.WHITE){
                         setWhite(out);
-                    }
-                    else{
+                    }else{
                         setYellow(out);
                     }
-                } else {
-                    player = "   ";
+                } else {player = "   ";
                 }
-            }
-            else{
+            }else{
                 ChessPosition pos = new ChessPosition(9-row, 9-col);
                 if (board.getPiece(pos) != null) {
                     ChessPiece piece = board.getPiece(pos);
-                    if (piece.getPieceType() == ChessPiece.PieceType.BISHOP) {
-                        player = " B ";
-                    } else if (piece.getPieceType() == ChessPiece.PieceType.ROOK) {
-                        player = " R ";
-                    } else if (piece.getPieceType() == ChessPiece.PieceType.KNIGHT) {
-                        player = " N ";
-                    } else if (piece.getPieceType() == ChessPiece.PieceType.PAWN) {
-                        player = " P ";
-                    } else if (piece.getPieceType() == ChessPiece.PieceType.QUEEN) {
-                        player = " Q ";
-                    } else if (piece.getPieceType() == ChessPiece.PieceType.KING) {
-                        player = " K ";
+                    if (piece.getPieceType() == ChessPiece.PieceType.BISHOP) {player = " B ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.ROOK) {player = " R ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.KNIGHT) {player = " N ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.PAWN) {player = " P ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.QUEEN) {player = " Q ";
+                    } else if (piece.getPieceType() == ChessPiece.PieceType.KING) {player = " K ";
                     }
-                } else {
-                    player = "   ";
+                } else {player = "   ";
                 }
             }
         }
-
         if(row == 1 || row == 8){
             if(col == 0 && row == 1){
-                if(per.equals("b")) {
-                    player = " 8 ";
-                }
-                else{player = " 1 ";}
+                if(per.equals("b")) {player = " 8 ";
+                }else{player = " 1 ";}
             }else if (col == 9 && row == 1){
-                if(per.equals("b")) {
-                    player = " 8 ";
-                }
-                else{player = " 1 ";}
+                if(per.equals("b")) {player = " 8 ";
+                }else{player = " 1 ";}
             }else if(col == 0 && row == 8){
-                if(per.equals("b")) {
-                    player = " 1 ";
-                }
-                else{player = " 8 ";}
+                if(per.equals("b")) {player = " 1 ";
+                }else{player = " 8 ";}
             }else if (col == 9 && row == 8){
-                if(per.equals("b")) {
-                    player = " 1 ";
-                }
-                else{player = " 8 ";}
+                if(per.equals("b")) {player = " 1 ";
+                }else{player = " 8 ";}
             }out.print(player);
-        }
-        else if (row == 2 || row == 7) {
-            if(col == 0 && row == 2){
-                if(per.equals("b")) {
+        }else if (row == 2 || row == 7) {if(col == 0 && row == 2){
+                if(per.equals("b")) {player = " 7 ";
+                }else{player = " 2 ";}
+            }else if (col == 9 && row == 2){if(per.equals("b")) {
                     player = " 7 ";
-                }
-                else{player = " 2 ";}
-            }else if (col == 9 && row == 2){
-                if(per.equals("b")) {
-                    player = " 7 ";
-                }
-                else{player = " 2 ";}
-            }else if(col == 0 && row == 7){
-                if(per.equals("b")) {
+                }else{player = " 2 ";}
+            }else if(col == 0 && row == 7){if(per.equals("b")) {
                     player = " 2 ";
-                }
-                else{player = " 7 ";}
-            }else if (col == 9 && row == 7){
-                if(per.equals("b")) {
+                }else{player = " 7 ";}
+            }else if (col == 9 && row == 7){if(per.equals("b")) {
                     player = " 2 ";
-                }
-                else{player = " 7 ";}
-            }else {
-                player = " p ";
+                }else{player = " 7 ";}
+            }else {player = " p ";
             }out.print(player);
         }else {
-            if(col == 0 || col == 9){
-                switch(row){
-                    case 3:
-                        if(per.equals("b")) {
-                            player = " 6 ";
+            if(col == 0 || col == 9){switch(row){
+                    case 3:if(per.equals("b")) {player = " 6 ";
                         }
-                        else{player = " 3 ";}
-                        break;
-                    case 4:
-                        if(per.equals("b")) {
-                            player = " 5 ";
+                        else{player = " 3 ";}break;
+                    case 4:if(per.equals("b")) {player = " 5 ";
                         }
-                        else{player = " 4 ";}
-                        break;
-                    case 5:
-                        if(per.equals("b")) {
-                            player = " 4 ";
+                        else{player = " 4 ";}break;
+                    case 5:if(per.equals("b")) {player = " 4 ";
                         }
-                        else{player = " 5 ";}
-                        break;
-                    case 6:
-                        if(per.equals("b")) {
-                            player = " 3 ";
+                        else{player = " 5 ";}break;
+                    case 6:if(per.equals("b")) {player = " 3 ";
                         }
-                        else{player = " 6 ";}
-                        break;
-                    default:
-                        player = "   ";
+                        else{player = " 6 ";}break;
+                    default:player = "   ";
                 }out.print(player);
-            }else if(row == 0 || row == 9){
-                out.print(hold);
-            }else {
-                player = "   ";
+            }else if(row == 0 || row == 9){out.print(hold);
+            }else {player = "   ";
                 out.print(player);
             }
         }

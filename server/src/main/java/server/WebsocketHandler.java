@@ -169,7 +169,7 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 boolean whiteS = game.isInStalemate(ChessGame.TeamColor.WHITE);
                 boolean blackS = game.isInStalemate(ChessGame.TeamColor.BLACK);
                 try {
-                    access.Hello_there(trial, id);
+                    access.helloThere(trial, id);
                 } catch (DataAccessException e) {
                     System.out.println("We get here too");
                 }
