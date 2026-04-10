@@ -165,18 +165,43 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                     System.out.println("We get here too");
                 }if(whiteC || blackC || whiteS || blackS){
                     gameLog.replace(id, true, false);
-                    if(whiteC || blackC) {
+                    if(whiteC) {
                         NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
-                                "Checkmate, The game is over");
+                                trial.whiteUsername()+ " is in checkmate, The game is over");
                         String msg2 = new Gson().toJson(note2);
                         sender(name.userName(), msg2, context, id, 2);
-                    }if(whiteS || blackS) {
+                    }if(blackC){
                         NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
-                                "You have found yourself in Stalemate, The game is over");
+                                trial.blackUsername()+ " is in checkmate, The game is over");
                         String msg2 = new Gson().toJson(note2);
                         sender(name.userName(), msg2, context, id, 2);
                     }
-                }System.out.println(trial.game().getBoard());
+                    if(whiteS) {
+                        NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
+                                trial.whiteUsername()+ " is in stalemate, The game is over");
+                        String msg2 = new Gson().toJson(note2);
+                        sender(name.userName(), msg2, context, id, 2);
+                    }if(blackS){
+                        NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
+                                trial.blackUsername()+ " is in stalemate, The game is over");
+                        String msg2 = new Gson().toJson(note2);
+                        sender(name.userName(), msg2, context, id, 2);
+                    }
+                }
+                boolean wC = game.isInCheck(ChessGame.TeamColor.WHITE);
+                boolean bC = game.isInCheck(ChessGame.TeamColor.BLACK);
+                if(wC) {
+                    NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
+                            trial.whiteUsername()+ " is in check");
+                    String msg2 = new Gson().toJson(note2);
+                    sender(name.userName(), msg2, context, id, 2);
+                }if(bC){
+                    NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
+                            trial.blackUsername()+ " is in check");
+                    String msg2 = new Gson().toJson(note2);
+                    sender(name.userName(), msg2, context, id, 2);
+                }
+                System.out.println(trial.game().getBoard());
                 LoadGameMessage note = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
                 String msg = new Gson().toJson(note);
                 sender(name.userName(), msg, context, id,2);

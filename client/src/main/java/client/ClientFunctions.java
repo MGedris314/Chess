@@ -62,11 +62,12 @@ public class ClientFunctions implements Notifications {
             case "quit" -> escape();
             case "help" -> help1();
             case "register" -> register();
-            case "draw" -> draw();
+            case "draw" -> doodle();
             case "burnt chicken" -> secrets();
             default-> zeroedOut();
         };
     }
+
     public String input2(String req){
         String check = req.toLowerCase();
         return String.valueOf(switch (check){
@@ -431,6 +432,15 @@ public class ClientFunctions implements Notifications {
             artist.drawTicTacToeBoard(out, "w", gamePlay);
             artist.setWhite(out);
         }
+        return "";
+    }
+
+    private String doodle(){
+        BoardDraw artist = new BoardDraw();
+        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+        ChessBoard tester = new ChessBoard();
+        tester.resetBoard();
+        artist.doodle(out, tester);
         return "";
     }
     public String help1(){

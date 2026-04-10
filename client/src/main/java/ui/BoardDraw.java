@@ -35,6 +35,32 @@ public class BoardDraw {
         out.print(SET_TEXT_COLOR_WHITE);
     }
 
+    public void doodle(PrintStream out, ChessBoard board){
+        for(int x = 1;x<=8; x++){
+            for(int y = 1;y<=8; y++){
+                int row = 9-x;
+                int col = y;
+                ChessPosition point = new ChessPosition(row, col);
+                ChessPiece hold = board.getPiece(point);
+                if(hold != null){
+                    if(hold.getTeamColor()== ChessGame.TeamColor.WHITE){
+                        setRed(out);
+                    }else{
+                        setGreen(out);
+                    }
+                    if (hold.getPieceType() == ChessPiece.PieceType.BISHOP) {out.print(" B ");
+                    } else if (hold.getPieceType() == ChessPiece.PieceType.ROOK) {out.print(" R ");
+                    } else if (hold.getPieceType() == ChessPiece.PieceType.KNIGHT) {out.print(" N ");
+                    } else if (hold.getPieceType() == ChessPiece.PieceType.PAWN) {out.print(" P ");
+                    } else if (hold.getPieceType() == ChessPiece.PieceType.QUEEN) {out.print(" Q ");
+                    } else if (hold.getPieceType() == ChessPiece.PieceType.KING) {out.print(" K ");
+                    }
+                }
+            }
+            out.println();
+        }
+    }
+
     private static void drawHeaders(PrintStream out) {
 
         setBlack(out);
@@ -276,14 +302,14 @@ public class BoardDraw {
                     } else if (piece.getPieceType() == ChessPiece.PieceType.QUEEN) {player = " Q ";
                     } else if (piece.getPieceType() == ChessPiece.PieceType.KING) {player = " K ";
                     }if(piece.getTeamColor()== ChessGame.TeamColor.WHITE){
-                        setWhite(out);
+                        setRed(out);
                     }else{
-                        setYellow(out);
+                        setGreen(out);
                     }
                 } else {player = "   ";
                 }
             }else{
-                ChessPosition pos = new ChessPosition(9-row, 9-col);
+                ChessPosition pos = new ChessPosition(row, col);
                 if (board.getPiece(pos) != null) {
                     ChessPiece piece = board.getPiece(pos);
                     if (piece.getPieceType() == ChessPiece.PieceType.BISHOP) {player = " B ";
@@ -292,6 +318,10 @@ public class BoardDraw {
                     } else if (piece.getPieceType() == ChessPiece.PieceType.PAWN) {player = " P ";
                     } else if (piece.getPieceType() == ChessPiece.PieceType.QUEEN) {player = " Q ";
                     } else if (piece.getPieceType() == ChessPiece.PieceType.KING) {player = " K ";
+                    }if(piece.getTeamColor()== ChessGame.TeamColor.WHITE){
+                        setRed(out);
+                    }else{
+                        setGreen(out);
                     }
                 } else {player = "   ";
                 }
@@ -323,7 +353,6 @@ public class BoardDraw {
             }else if (col == 9 && row == 7){if(per.equals("b")) {
                     player = " 2 ";
                 }else{player = " 7 ";}
-            }else {player = " p ";
             }out.print(player);
         }else {
             if(col == 0 || col == 9){switch(row){
