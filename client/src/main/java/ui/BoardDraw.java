@@ -94,11 +94,11 @@ public class BoardDraw {
         }
     }
 
-    private static void drawHighligtSquares(PrintStream out, int rowVal, String per, ChessGame game, ArrayList<ChessPosition> points){
-        for (int squareRow = 0; squareRow < SQUARE_SIZE_IN_PADDED_CHARS; ++squareRow) {
+    private static void drawHighligtSquares(PrintStream out, int rowVals, String per, ChessGame game, ArrayList<ChessPosition> points){
+        for (int squaredRow = 0; squaredRow < SQUARE_SIZE_IN_PADDED_CHARS; ++squaredRow) {
             for (int boardCol = 0; boardCol < BOARD_SIZE_IN_SQUARES; ++boardCol) {
                 int colorVal = 0;
-                if(rowVal == 0 || rowVal == 9){
+                if(rowVals == 0 || rowVals == 9){
                     setGreen(out);
                     colorVal = 0;
                 }
@@ -106,11 +106,11 @@ public class BoardDraw {
                     setGreen(out);
                     colorVal = 0;
                 }
-                else if(boardCol % 2 == 0 && rowVal %2 == 0) {
+                else if(boardCol % 2 == 0 && rowVals %2 == 0) {
                     setYellow(out);
                     colorVal =1;
                 }
-                else if((boardCol & 1) == 1 && (rowVal & 1) == 1) {
+                else if((boardCol & 1) == 1 && (rowVals & 1) == 1) {
                     setYellow(out);
                     colorVal = 1;
                 }
@@ -122,19 +122,19 @@ public class BoardDraw {
                     ChessPosition end = points.get(x);
                     int eR = end.getRow();
                     int eC = end.getColumn();
-                    if(eR == rowVal && eC == boardCol){
+                    if(eR == rowVals && eC == boardCol){
                         setRed(out);
                         colorVal = 3;
                     }
                 }
 
-                if (squareRow == SQUARE_SIZE_IN_PADDED_CHARS / 2) {
+                if (squaredRow == SQUARE_SIZE_IN_PADDED_CHARS / 2) {
                     int prefixLength = SQUARE_SIZE_IN_PADDED_CHARS / 2;
                     int suffixLength = SQUARE_SIZE_IN_PADDED_CHARS - prefixLength - 1;
 
                     out.print(EMPTY.repeat(prefixLength));
                     String let = letters[boardCol];
-                    printPlayer(out, let, rowVal, boardCol,per, game);
+                    printPlayer(out, let, rowVals, boardCol,per, game);
                     switch (colorVal) {
                         case 0:
                             setGreen(out);

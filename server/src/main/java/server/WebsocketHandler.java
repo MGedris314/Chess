@@ -130,11 +130,9 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 }
             } catch (NullPointerException e) {
                 System.out.println("How did we get here");
-            }
-            if(trial == null){
+            }if(trial == null){
                 return -1;
-            }
-            ChessGame game = trial.game();
+            }ChessGame game = trial.game();
             MoveCommand commander = new Gson().fromJson(context.message(), MoveCommand.class);
             ChessMove move = commander.move;
             System.out.println(commander.move);
@@ -142,28 +140,21 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 if(!name.userName().equals(trial.whiteUsername())){
                     ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "Move out of turn.");
                     String msg = new Gson().toJson(errored);
-                    try {
-                        sender(null, msg, context, id, -1);
+                    try {sender(null, msg, context, id, -1);
                     } catch (IOException e2) {
                         System.out.println("Something has gone wrong sending the message");
-                    }
-                    return -1;
+                    }return -1;
                 }
-            }
-            if(game.getTeamTurn() == ChessGame.TeamColor.BLACK){
+            }if(game.getTeamTurn() == ChessGame.TeamColor.BLACK){
                 if(!name.userName().equals(trial.blackUsername())){
                     ErrorMessage errored = new ErrorMessage(ServerMessage.ServerMessageType.ERROR, "Move out of turn");
                     String msg = new Gson().toJson(errored);
-                    try {
-                        sender(null, msg, context, id, -1);
+                    try {sender(null, msg, context, id, -1);
                     } catch (IOException e2) {
                         System.out.println("Something has gone wrong sending the message");
-                    }
-                    return -1;
+                    }return -1;
                 }
-            }
-            try{
-                game.makeMove(move);
+            }try{game.makeMove(move);
                 boolean whiteC = game.isInCheckmate(ChessGame.TeamColor.WHITE);
                 boolean blackC = game.isInCheckmate(ChessGame.TeamColor.BLACK);
                 boolean whiteS = game.isInStalemate(ChessGame.TeamColor.WHITE);
@@ -172,23 +163,20 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                     access.helloThere(trial, id);
                 } catch (DataAccessException e) {
                     System.out.println("We get here too");
-                }
-                if(whiteC || blackC || whiteS || blackS){
+                }if(whiteC || blackC || whiteS || blackS){
                     gameLog.replace(id, true, false);
                     if(whiteC || blackC) {
                         NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
                                 "Checkmate, The game is over");
                         String msg2 = new Gson().toJson(note2);
                         sender(name.userName(), msg2, context, id, 2);
-                    }
-                    if(whiteS || blackS) {
+                    }if(whiteS || blackS) {
                         NotificationMessages note2 = new NotificationMessages(ServerMessage.ServerMessageType.NOTIFICATION,
                                 "You have found yourself in Stalemate, The game is over");
                         String msg2 = new Gson().toJson(note2);
                         sender(name.userName(), msg2, context, id, 2);
                     }
-                }
-                System.out.println(trial.game().getBoard());
+                }System.out.println(trial.game().getBoard());
                 LoadGameMessage note = new LoadGameMessage(ServerMessage.ServerMessageType.LOAD_GAME, trial);
                 String msg = new Gson().toJson(note);
                 sender(name.userName(), msg, context, id,2);
@@ -205,14 +193,9 @@ public class WebsocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 }
                 return -1;
             }
-
-
-        } catch (UserExceptions e) {
-            System.out.println("Errored");
-        } catch (IOException e) {
-            System.out.println("Errored again.");
-        }
-        return 0;
+        } catch (UserExceptions e) {System.out.println("Errored");
+        } catch (IOException e) {System.out.println("Errored again.");
+        }return 0;
     }
     //  Call update games.
     public void leave(WsMessageContext context, UserGameCommand command){
