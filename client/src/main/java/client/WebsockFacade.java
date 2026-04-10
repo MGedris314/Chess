@@ -3,7 +3,6 @@ package client;
 import chess.ChessGame;
 import com.google.gson.Gson;
 import jakarta.websocket.*;
-import server.Server;
 import websocket.commands.MoveCommand;
 import websocket.commands.UserGameCommand;
 import websocket.messages.ErrorMessage;
