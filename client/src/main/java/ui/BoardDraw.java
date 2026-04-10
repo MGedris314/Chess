@@ -37,7 +37,29 @@ public class BoardDraw {
 
     public void doodle(PrintStream out, ChessBoard board, Boolean white){
         for(int x = 1;x<=8; x++){
+            if(x == 1){
+                setBlack(out);
+                if(white) {
+                    out.print("    a  b  c  d  e  f  g  h");
+                    out.println();
+                }
+                else{
+                    out.print("    h  g  f  e  d  c  b  a");
+                    out.println();
+                }
+            }
             for(int y = 1;y<=8; y++){
+                if(y == 1){
+                    if(!white) {
+                        setBlack(out);
+                        out.print(" "+ x +" ");
+                    }
+                    else{
+                        setBlack(out);
+                        int hold = (x-9)*-1;
+                        out.print(" "+ hold +" ");
+                    }
+                }
                 int row;
                 int col;
                 if(white) {
@@ -74,7 +96,14 @@ public class BoardDraw {
                     out.print("   ");
                 }
             }
-            out.println();
+            setBlack(out);
+            if(white) {
+                int row = (x-9)*-1;
+                out.println(" " + row + " ");
+            }
+            else{
+                out.println(" " + x + " ");
+            }
         }
     }
 
@@ -284,7 +313,7 @@ public class BoardDraw {
 
     private static void setBlack(PrintStream out) {
         out.print(SET_BG_COLOR_BLACK);
-        out.print(SET_TEXT_COLOR_BLUE);
+        out.print(SET_TEXT_COLOR_WHITE);
     }
 
     private static void printPlayer(PrintStream out, String player, int row, int col, String per, ChessGame tester) {
