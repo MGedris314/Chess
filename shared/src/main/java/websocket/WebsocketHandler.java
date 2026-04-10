@@ -1,7 +1,6 @@
 package websocket;
 
 
-import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessMove;
 import chess.InvalidMoveException;
@@ -10,14 +9,10 @@ import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import dataaccess.SQLDataAccess;
 import exception.UserExceptions;
-import handler.UserHandler;
-import io.javalin.websocket.*;
-import model.PublicGame;
-import org.eclipse.jetty.websocket.api.Session;
 import model.AuthData;
 import model.GameData;
-import model.UserData;
-import org.eclipse.jetty.websocket.core.internal.WebSocketConnection;
+import model.PublicGame;
+import org.eclipse.jetty.websocket.api.Session;
 import org.jetbrains.annotations.NotNull;
 import service.GameService;
 import websocket.commands.MoveCommand;
@@ -26,7 +21,6 @@ import websocket.messages.ErrorMessage;
 import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessages;
 import websocket.messages.ServerMessage;
-
 
 import java.io.IOException;
 import java.util.HashMap;

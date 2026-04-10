@@ -1,6 +1,5 @@
 package websocket.messages;
 import model.GameData;
-import model.GameRetrun;
 
 
 public class LoadGameMessage extends ServerMessage{
